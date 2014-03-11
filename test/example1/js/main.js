@@ -1,4 +1,9 @@
 // Sets the require.js configuration for your application.
+	String.prototype.trim = function ()
+			{
+				return this.replace(/^\s*/, "").replace(/\s*$/, "");
+			};
+			
 require.config( {
 
 	// 3rd party script alias names
@@ -6,6 +11,12 @@ require.config( {
 
 		// Core Libraries
 		"jquery": "../../libs/js/jquery",
+		"datejs": "../../libs/js/datejs/core",
+        'datejs-parser' : '../../libs/js/datejs/parser',
+        'datejs-sugarpak' : '../../libs/js/datejs/sugarpak',
+        'datejs-time' : '../../libs/js/datejs/time',
+        'datejs-extras' : '../../libs/js/datejs/extras',
+
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
             	"underscore": "../../libs/js/lodash",
             	"backbone": "../../libs/js/backbone",
@@ -28,8 +39,10 @@ require.config( {
 require([
 	"jquery",
 	"backbone",
-	"js/routers/mobileRouter"
-], function ( $, Backbone, Mobile ) {
+	"js/routers/mobileRouter",
+	"js/models/DataModel",
+	"underscore"
+], function ( $, Backbone, Mobile, DataModel, _ ) {
 
 	$( document ).on( "mobileinit",
 
@@ -49,4 +62,22 @@ require([
 		// Instantiates a new Backbone.js Mobile Router
 		this.router = new Mobile();
 	});
+	
+  $(document).on('click', '#submit', function() { // catch the form's submit event
+		if(true ||  $('#username').val().length > 0 && $('#password').val().length > 0){
+			// Send data to server through the ajax call
+			// action is functionality we want to call and outputJSON is our data
+			           
+			// Show's the jQuery Mobile loading icon
+			$.mobile.loading( "show" );
+
+			DataModel.loadFAUXdata( function() {
+					$.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
+				});
+				
+		} else {
+			alert('Please fill all necessary fields');
+		}           
+		return false; // cancel original event to prevent form submitting
+	});    
 });

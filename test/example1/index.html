@@ -1,16 +1,76 @@
 <!doctype html>
 <html class="no-js ui-mobile-rendering" lang="en">
 <head>
-	<title>Backbone.js, Require.js, and jQuery Mobile</title>
+	<title>4PIA</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile-1.4.2.min.css">
+	<link rel="stylesheet" href="css/main.css">
 	<script src="../../libs/js/require.js"></script>
 
     <script src="js/main.js"></script>
 </head>
 <body>
 
+    <div data-role="page" id="login" data-theme="b">
+        <div data-role="header" data-theme="a">
+			<center>
+				<table border=0>
+				<tr><td valign=middle><img src="images/logo.png"></td>
+				<td valign=middle>
+					<div class="fourpia_name">
+						4PIA
+					</div>
+				</td></tr>
+				</table>
+			</center>
+        </div>
+ 
+        <div data-role="content" >
+            <form id="check-user" class="ui-body ui-body-a ui-corner-all" data-ajax="false">
+                <fieldset>
+                    <div data-role="fieldcontain">
+                        <label for="username">Enter your username:</label>
+                        <input type="text" value="" name="username" id="username"/>
+                    </div>                                  
+                    <div data-role="fieldcontain">                                      
+                        <label for="password">Enter your password:</label>
+                        <input type="password" value="" name="password" id="password"/> 
+                    </div>
+                    <input type="button" data-theme="b" name="submit" id="submit" value="Sign In">
+                </fieldset>
+            </form>     
+        </div>
+ 			<div class="fourpia_forgotpassword av_link">
+				 <a href="#forgot" >Forgot Password?</a>
+			</div>
+			<div class="fourpia_join">
+				Not on 4PIA?  <a class="av_link" href="#learn" >Learn More</a>
+			</div>
+
+        <div data-theme="a" data-role="footer" data-position="fixed">
+ 
+        </div>
+    </div>
+    <div data-role="page" id="learn">
+  <div data-role="header">
+    <h1>About 4PIA</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  <center class="textColor">Political Involvement and Advocacy.</center>
+    <p>4PIA is dedicated to help foster a healthy, productive and interactive dialogue in the United States Congress.
+ By bringing together, for the first time, on one page what our elected officials are saying we can actually encourage a tweet-dialogue. 
+You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
+ <a href="#login" class="ui-btn">Sounds impressive - Go Back</a>
+ </div>
+ 
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <h3> <div class="fourpia_copyright">4PIA &copy; 2013, 2014</div><div class="fourpia_authorization"> Commercial use of this site without express authorization is prohibited.</div></h3>
+        </div>
+    </div>
+	
+	
 <div id="categories" data-role="page" data-title="Categories">
 
       <div data-role="header">
@@ -18,14 +78,40 @@
       </div><!-- /header -->
 
       <div role="main" class="ui-content">
-            <h2>Select a Category Below:</h2>
+            <h2>Select Tweets:</h2>
             <ul data-role="listview" data-inset="true">
+                  <li><a href="#category?rtweets" class="rtweets">Rep's tweets <span class="rtweetcnt"></span></a></li>
+                  <li><a href="#category?dtweets" class="dtweets">Dem's tweets <span class="dtweetcnt"></span></a></li>
                   <li><a href="#category?animals" class="animals">Animals</a></li>
                   <li><a href="#category?colors" class="colors">Colors</a></li>
                   <li><a href="#category?vehicles" class="vehicles">Vehicles</a></li>
             </ul>
       </div><!-- /content -->
 
+</div>
+
+<div id="rtweets" data-role="page" data-title="rtweets">
+
+      <div data-role="header">
+	    <h1>Rep's tweets <span class="rtweetcnt"></span></h1>
+      </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+            </ul>
+      </div><!-- /content -->
+</div>
+
+<div id="dtweets" data-role="page" data-title="dtweets">
+
+      <div data-role="header">
+	    <h1>Dem's tweets <span class="dtweetcnt"></span</h1>
+      </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+            </ul>
+      </div><!-- /content -->
 </div>
 
 <div id="animals" data-role="page" data-title="Animals">
@@ -68,11 +154,22 @@
 
 <!-- Underscore Template that is used to display all of the Category Models -->
 <script id="categoryItems" type="text/template">
-
       <% _.each( collection.toJSON(), function( category, id ) { %>
 
             <li class="ui-li-static">
                   <%= category.type %>
+            </li>
+
+      <% }); %>
+
+</script>
+
+<!-- Underscore Template that is used to display all of the Category Models -->
+<script id="forpiaItems" type="text/template">
+      <% _.each( collection.toJSON(), function( category, id ) { %>
+
+            <li class="ui-li-static">
+                  <%= category.timestamp_formatted %>  <%= category.person %> <%= category.followers %> 
             </li>
 
       <% }); %>

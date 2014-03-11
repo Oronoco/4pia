@@ -1,0 +1,32 @@
+.fourpia_forgotpassword {
+	padding: 8px 0px;
+  text-align:center; 
+  }
+.fourpia_join {
+	padding: 8px 0px;
+  text-align:center; 
+  }
+.fourpia_name {
+  font-size: 20px; 
+  padding-left:8px;
+  }
+ .fourpia_copyright {
+  font-size: 20px; 
+   padding-right : 8px;
+   border-right: 1px solid gray;
+display:inline;
+  }
+ .fourpia_authorization {
+  font-size: 9px; 
+  padding-left : 4px;
+  position: relative;
+  top:-2px;
+  display:inline;
+  }
+.av_link {
+	color : lightblue;
+	}
+	
+.textColor {
+	color: #f99600;
+}

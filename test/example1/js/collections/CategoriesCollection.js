@@ -5,7 +5,8 @@
 define([
 	"jquery",
 	"backbone",
-	"../models/CategoryModel" ], function( $, Backbone, CategoryModel ) {
+	"../models/CategoryModel",
+	"../models/DataModel" ], function( $, Backbone, CategoryModel, DataModel ) {
 
     // Extends Backbone.Router
     var Collection = Backbone.Collection.extend( {
@@ -67,16 +68,21 @@ define([
                 // Creates a jQuery Deferred Object
                 deferred = $.Deferred();
 
+			
             // Uses a setTimeout to mimic a real world application that retrieves data asynchronously
             setTimeout( function() {
 
                 // Filters the above sample JSON data to return an array of only the correct category type
-                categories = _.filter( self.jsonArray, function( row ) {
+			   categories = DataModel.loadCategories( method, model, options );
+			   if (categories === undefined)
+			   {
+				   categories = _.filter( self.jsonArray, function( row ) {
 
-                    return row.category === self.type;
+						return row.category === self.type;
 
-                } );
-
+					} );
+				}
+				
                 // Calls the options.success method and passes an array of objects (Internally saves these objects as models to the current collection)
                 options.success( categories );
 

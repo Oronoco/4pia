@@ -25,6 +25,12 @@ define([
             // Instantiates a new Vehicles Category View
             this.vehiclesView = new CategoryView( { el: "#vehicles", collection: new CategoriesCollection( [] , { type: "vehicles" } ) } );
 
+            // Instantiates a new Vehicles Category View
+            this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { type: "rtweets" } ) } );
+
+            // Instantiates a new Vehicles Category View
+            this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" } ) } );
+
             // Tells Backbone to start watching for hashchange events
             Backbone.history.start();
 
@@ -36,16 +42,54 @@ define([
             // When there is no hash bang on the url, the home method is called
             "": "home",
 
+            "login": "login",
+            "join": "join",
+            "learn": "learn",
+            "forgot": "forgot",
+
             // When #category? is on the url, the category method is called
             "category?:type": "category"
 
         },
 
         // Home method
-        home: function() {
+        home: function() {4
+		
 
             // Programatically changes to the categories page
-            $.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
+            $.mobile.changePage( "#catgegories" , { reverse: false, changeHash: false } );
+
+        },
+
+        // Home method
+        login: function() {
+
+            // Programatically changes to the categories page
+            $.mobile.changePage( "#login" , { reverse: false, changeHash: false } );
+
+        },
+
+        // join method
+        learn: function() {
+
+            // Programatically changes to the categories page
+            $.mobile.changePage( "#learn" , { reverse: false, changeHash: false } );
+
+        },
+
+       // join method
+        join: function() {
+
+            // Programatically changes to the categories page
+            $.mobile.changePage( "#join" , { reverse: false, changeHash: false } );
+
+        },
+
+        // forgot method
+        forgot: function() {
+
+            // Programatically changes to the categories page
+            $.mobile.changePage( "#forgot" , { reverse: false, changeHash: false } );
 
         },
 

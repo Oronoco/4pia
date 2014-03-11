@@ -5,8 +5,9 @@
 define([
 	"jquery",
 	"backbone",
-	"../models/CategoryModel"
-], function( $, Backbone, CategoryModel ) {
+	"../models/CategoryModel",
+	"../models/DataModel"
+], function( $, Backbone, CategoryModel, DataModel ) {
 
     // Extends Backbone.View
     var CategoryView = Backbone.View.extend( {
@@ -22,9 +23,9 @@ define([
         // Renders all of the Category models on the UI
         render: function() {
 
-            // Sets the view's template property
-            this.template = _.template( $( "script#categoryItems" ).html(), { "collection": this.collection } );
-
+			var templateName = DataModel.templateName( this.collection )  ||  "script#categoryItems";
+			this.template = _.template( $( templateName ).html(), { "collection": this.collection } );
+			
             // Renders the view's template inside of the current listview element
             this.$el.find("ul").html(this.template);
 
