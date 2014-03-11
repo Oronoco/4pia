@@ -16,6 +16,7 @@ define([
 
             // Sets the type instance property (ie. animals)
             this.type = options.type;
+			this.templateName = options.templateName;
 
         },
 

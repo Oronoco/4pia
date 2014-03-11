@@ -80,8 +80,8 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div role="main" class="ui-content">
             <h2>Select Tweets:</h2>
             <ul data-role="listview" data-inset="true">
-                  <li><a href="#category?rtweets" class="rtweets">Rep's tweets <span class="rtweetcnt"></span></a></li>
-                  <li><a href="#category?dtweets" class="dtweets">Dem's tweets <span class="dtweetcnt"></span></a></li>
+                  <li><a href="#category?rtweets" class="rtweets">Republican tweets <span class="rtweetcnt"></span></a></li>
+                  <li><a href="#category?dtweets" class="dtweets">Democratic tweets <span class="dtweetcnt"></span></a></li>
                   <li><a href="#category?animals" class="animals">Animals</a></li>
                   <li><a href="#category?colors" class="colors">Colors</a></li>
                   <li><a href="#category?vehicles" class="vehicles">Vehicles</a></li>
@@ -93,25 +93,43 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="rtweets" data-role="page" data-title="rtweets">
 
       <div data-role="header">
-	    <h1>Rep's tweets <span class="rtweetcnt"></span></h1>
-      </div><!-- /header -->
+	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+
+		<h1>Republican TWweets <span class="rtweetcnt"></span></h1>
+      <a href="#search" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+
+	  </div><!-- /header -->
 
       <div role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
             </ul>
       </div><!-- /content -->
+  <div data-role="footer">
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Facebook</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Twitter</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Instagram</a>
+  </div>
 </div>
 
 <div id="dtweets" data-role="page" data-title="dtweets">
 
       <div data-role="header">
-	    <h1>Dem's tweets <span class="dtweetcnt"></span</h1>
-      </div><!-- /header -->
+	     <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+		 
+		 <h1>Democratic Tweets <span class="dtweetcnt"></span</h1>
+     <a href="#search" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+
+     </div><!-- /header -->
 
       <div role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
             </ul>
       </div><!-- /content -->
+  <div data-role="footer">
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Facebook</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Twitter</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Instagram</a>
+  </div>
 </div>
 
 <div id="animals" data-role="page" data-title="Animals">
@@ -168,8 +186,23 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <script id="forpiaItems" type="text/template">
       <% _.each( collection.toJSON(), function( category, id ) { %>
 
-            <li class="ui-li-static">
-                  <%= category.timestamp_formatted %>  <%= category.person %> <%= category.followers %> 
+  				<% if (category.hourBreak) { %>
+					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
+				<% } %>
+				
+          <li class="timeline ui-li-static">
+				  <div class="timeline_person"> <%= category.person %> </div>
+                  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
+                  <div class="timeline_followers"> 
+						<%= category.followers_formatted %> followers
+						 <img class="timeline_twitter" src="images/twitter.jpg"> 
+				  
+				  </div>
+				  <div style="clear:both"> </div>
+                 <div class="timeline_description"> 
+						<%= category.description %> 
+				  </div>
+                 
             </li>
 
       <% }); %>

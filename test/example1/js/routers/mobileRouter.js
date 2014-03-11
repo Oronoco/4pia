@@ -26,10 +26,10 @@ define([
             this.vehiclesView = new CategoryView( { el: "#vehicles", collection: new CategoriesCollection( [] , { type: "vehicles" } ) } );
 
             // Instantiates a new Vehicles Category View
-            this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { type: "rtweets" } ) } );
+            this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { type: "rtweets", templateName : "script#forpiaItems" } ) } );
 
             // Instantiates a new Vehicles Category View
-            this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" } ) } );
+            this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" , templateName : "script#forpiaItems"} ) } );
 
             // Tells Backbone to start watching for hashchange events
             Backbone.history.start();
@@ -40,12 +40,13 @@ define([
         routes: {
 
             // When there is no hash bang on the url, the home method is called
-            "": "home",
+           // "": "home",
 
             "login": "login",
             "join": "join",
             "learn": "learn",
             "forgot": "forgot",
+			"categories" : "home",
 
             // When #category? is on the url, the category method is called
             "category?:type": "category"
@@ -53,11 +54,10 @@ define([
         },
 
         // Home method
-        home: function() {4
-		
+        home: function() {
 
             // Programatically changes to the categories page
-            $.mobile.changePage( "#catgegories" , { reverse: false, changeHash: false } );
+            $.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
 
         },
 

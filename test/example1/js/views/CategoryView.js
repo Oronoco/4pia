@@ -23,7 +23,8 @@ define([
         // Renders all of the Category models on the UI
         render: function() {
 
-			var templateName = DataModel.templateName( this.collection )  ||  "script#categoryItems";
+
+			var templateName = this.collection.templateName  ||  "script#categoryItems";
 			this.template = _.template( $( templateName ).html(), { "collection": this.collection } );
 			
             // Renders the view's template inside of the current listview element

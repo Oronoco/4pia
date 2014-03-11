@@ -11,12 +11,8 @@ require.config( {
 
 		// Core Libraries
 		"jquery": "../../libs/js/jquery",
-		"datejs": "../../libs/js/datejs/core",
-        'datejs-parser' : '../../libs/js/datejs/parser',
-        'datejs-sugarpak' : '../../libs/js/datejs/sugarpak',
-        'datejs-time' : '../../libs/js/datejs/time',
-        'datejs-extras' : '../../libs/js/datejs/extras',
-
+		"datejs": "../../libs/js/date",
+		 'numeral' : '../../libs/js/numeral',
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
             	"underscore": "../../libs/js/lodash",
             	"backbone": "../../libs/js/backbone",
@@ -54,6 +50,11 @@ require([
 
 			// Disabling this will prevent jQuery Mobile from handling hash changes
 			$.mobile.hashListeningEnabled = false;
+			
+			// Clear history
+			history.pushState("", document.title, window.location.pathname
+                                                       + window.location.search);
+
 		}
 	)
 

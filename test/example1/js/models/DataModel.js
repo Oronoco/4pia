@@ -6,13 +6,14 @@ define([
 	"jquery",
 	"backbone",
 	"underscore",
+	'numeral', 
 	"datejs"
-], function( $, Backbone, _, datejs ) {
+], function( $, Backbone, _, Numeral, datejs ) {
 
     // The Model constructor
     var dataModels = {};
 
-	 function parseHTML( html ) 
+	 function parseHTML( html, categoryClass ) 
 	 {
 		var d = new Date();
 		var data = [];
@@ -37,43 +38,62 @@ define([
 					var hour = parseInt( timestamp[1], 10);
 					var min = parseInt( timestamp[2], 10);
 					if (timestamp[3] === "P")
-						hour += 12;
+						hour += 11;
 						
 					timestamp = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hour, min);
-					timestamp_formatted = new Date( timestamp ).toString("MM/dd/yy h:mm a");
+					timestamp_formatted = new Date( timestamp ).format("h:MM tt");
 				}
 
 				var twitter = spans[1];
 				var followers = $(spans[2]).text().match(/([-,0-9]+) followers$/);
 				followers = parseInt( followers[1].replace( /,/g, ""), 10 );
+				var followers_formatted = Numeral(followers).format("#,###");
 				
 				var description = $(tds[3]).text();
 				var hrefs = $(tds[3]).find("a");
 				var href = hrefs[0].href;
 				var tmpl = {
 						person : person,
+						type : categoryClass,
 						timestamp : timestamp,
 						timestamp_formatted : timestamp_formatted,
 						followers : followers,
+						followers_formatted : followers_formatted,
 						description : description,
 						href	: href
 					};
 				
 				data.push( tmpl );
 			});
+			
+			data.sort( function( a, b ) {
+					var aTime = a.timestamp.getTime();
+					var bTime = b.timestamp.getTime();
+					if (aTime < bTime) return 1;
+					if (aTime === bTime) return 0;
+					return -1;
+				});
+				
+			var lastHour = undefined;
+			_.each( data, function( entry ) {
+					var hour = entry.timestamp.getHours();
+					entry.hourBreak = false;
+					if (hour !== lastHour)
+					{
+						entry.hourBreak = true;
+						entry.hour_formatted = 
+							new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
+							" at " + 
+							new Date( entry.timestamp ).format("h tt");
+						lastHour = hour;
+					}
+					
+				});
 		return data;
 	}
 	
 	var publicAPI = {
 			models : dataModels,
-			templateName : function( collection ) {
-					var dataset = dataModels[ collection.type ];
-					if (dataset)
-					{
-						return "script#forpiaItems";
-					}
-					return undefined;
-				},
 			loadCategories : function( method, model, options ) {
 					var dataset = dataModels[ model.type ];
 					if (dataset)
@@ -88,8 +108,8 @@ define([
 					
 					$.when( dfd_dnews, dfd_rnews )
 						.done( function(dnews, rnews) {
-								dataModels.dtweets = parseHTML( dnews[0] );
-								dataModels.rtweets = parseHTML( rnews[0] );
+								dataModels.dtweets = parseHTML( dnews[0], "timeline_category_dtweets" );
+								dataModels.rtweets = parseHTML( rnews[0], "timeline_category_rtweets" );
 
 								$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
 								$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
