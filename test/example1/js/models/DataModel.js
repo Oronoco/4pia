@@ -74,22 +74,6 @@ define([
 					return -1;
 				});
 				
-			var lastHour = undefined;
-			_.each( data, function( entry, index ) {
-					entry.id = index;
-					var hour = entry.timestamp.getHours();
-					entry.hourBreak = false;
-					if (hour !== lastHour)
-					{
-						entry.hourBreak = true;
-						entry.hour_formatted = 
-							new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
-							" at " + 
-							new Date( entry.timestamp ).format("h tt");
-						lastHour = hour;
-					}
-					
-				});
 		return data;
 	}
 	

@@ -137,7 +137,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
 
-		<h1>Drill Down for <span class="drilltweeter"> </span> <span class="drilltweetcnt"></span></h1>
+		<h1><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
       <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
@@ -212,7 +212,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
 				<% } %>
 				
-          <li class="timeline ui-li-static">
+          <li class="ui-li-static timeline">
 				  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
                   <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
                   <div class="timeline_followers"> 

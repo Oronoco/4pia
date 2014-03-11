@@ -26,11 +26,34 @@ define([
 
 			var myCollection = this.collection;
 			var templateName = this.collection.templateName  ||  "script#categoryItems";
-			this.template = _.template( $( templateName ).html(), { "collection": this.collection } );
+			
+			var lastHour = undefined;
+			_.each( this.collection.models, function( entry, index ) {
+					entry = entry.attributes;
+					entry.id = index;
+					var hour = entry.timestamp.getHours();
+					entry.hourBreak = false;
+					entry.drillBreak = false;
+					if (hour !== lastHour)
+					{
+						entry.hourBreak = true;
+						entry.hour_formatted = 
+							new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
+							" at " + 
+							new Date( entry.timestamp ).format("h tt");
+						lastHour = hour;
+					}
+					
+				});
+
+				this.template = _.template( $( templateName ).html(), { "collection": this.collection } );
 			
             // Renders the view's template inside of the current listview element
             this.$el.find("ul").html(this.template);
 
+			this.$el.find(".timeline")
+				.css({"border-color" : "#ddd"});
+				
 			this.$el.find(".timeline_person").on('click', function() {
 				var id = $(this).attr("data-id");
 				var targetPerson = myCollection.models[ id ].get("person");

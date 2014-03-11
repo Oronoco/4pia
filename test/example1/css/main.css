@@ -31,6 +31,10 @@ display:inline;
 	color: #f99600;
 }
 
+.timeline, .ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn  {
+.border-style: none;
+}
+
 .timeline_person {
 	display:inline-block;
 	text-decoration : none;
