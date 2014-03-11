@@ -31,6 +31,11 @@ define([
             // Instantiates a new Vehicles Category View
             this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" , templateName : "script#forpiaItems"} ) } );
 
+            // Instantiates a new Vehicles Category View
+            this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { type: "drillDown" , templateName : "script#forpiaItems"} ) } );
+
+			$.drillDownView = this.drillDownView;
+			
             // Tells Backbone to start watching for hashchange events
             Backbone.history.start();
 
@@ -47,6 +52,7 @@ define([
             "learn": "learn",
             "forgot": "forgot",
 			"categories" : "home",
+			"drillDown" : "drillDown",
 
             // When #category? is on the url, the category method is called
             "category?:type": "category"
@@ -54,6 +60,15 @@ define([
         },
 
         // Home method
+        drillDown: function() {
+
+			debugger;
+            // Programatically changes to the categories page
+            $.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
+
+        },
+
+       // Home method
         home: function() {
 
             // Programatically changes to the categories page

@@ -95,8 +95,8 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
 
-		<h1>Republican TWweets <span class="rtweetcnt"></span></h1>
-      <a href="#search" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+		<h1>Republican Tweet Count is <span class="rtweetcnt"></span></h1>
+      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
 
@@ -114,12 +114,12 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="dtweets" data-role="page" data-title="dtweets">
 
       <div data-role="header">
-	     <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
-		 
-		 <h1>Democratic Tweets <span class="dtweetcnt"></span</h1>
-     <a href="#search" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
 
-     </div><!-- /header -->
+		<h1>Democratic Tweet Count is<span class="dtweetcnt"></span></h1>
+      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+
+	  </div><!-- /header -->
 
       <div role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
@@ -131,6 +131,28 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
     <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Instagram</a>
   </div>
 </div>
+
+<div id="drillDown" data-role="page" data-title="drillDown">
+
+      <div data-role="header">
+	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+
+		<h1>Drill Down for <span class="drilltweeter"> </span> <span class="drilltweetcnt"></span></h1>
+      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
+
+	  </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+            </ul>
+      </div><!-- /content -->
+  <div data-role="footer">
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Facebook</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Twitter</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add Me On Instagram</a>
+  </div>
+</div>
+
 
 <div id="animals" data-role="page" data-title="Animals">
 
@@ -191,7 +213,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 				<% } %>
 				
           <li class="timeline ui-li-static">
-				  <div class="timeline_person"> <%= category.person %> </div>
+				  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
                   <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
                   <div class="timeline_followers"> 
 						<%= category.followers_formatted %> followers

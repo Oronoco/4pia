@@ -75,7 +75,8 @@ define([
 				});
 				
 			var lastHour = undefined;
-			_.each( data, function( entry ) {
+			_.each( data, function( entry, index ) {
+					entry.id = index;
 					var hour = entry.timestamp.getHours();
 					entry.hourBreak = false;
 					if (hour !== lastHour)
@@ -110,6 +111,7 @@ define([
 						.done( function(dnews, rnews) {
 								dataModels.dtweets = parseHTML( dnews[0], "timeline_category_dtweets" );
 								dataModels.rtweets = parseHTML( rnews[0], "timeline_category_rtweets" );
+								dataModels.drillDown = [];
 
 								$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
 								$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
