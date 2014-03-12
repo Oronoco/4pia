@@ -25,16 +25,22 @@ define([
             // Instantiates a new Vehicles Category View
             this.vehiclesView = new CategoryView( { el: "#vehicles", collection: new CategoriesCollection( [] , { type: "vehicles" } ) } );
 
-            // Instantiates a new Vehicles Category View
+          // Instantiates a new tweet cloud Category View
+            this.ctweetsView = new CategoryView( { el: "#ctweets", collection: new CategoriesCollection( [] , { type: "ctweets" } ) } );
+
+             // Instantiates a new republican Category View
             this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { type: "rtweets", templateName : "script#forpiaItems" } ) } );
 
-            // Instantiates a new Vehicles Category View
+            // Instantiates a new democrat Category View
             this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" , templateName : "script#forpiaItems"} ) } );
 
             // Instantiates a new Vehicles Category View
-            this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { type: "drillDown" , templateName : "script#forpiaItems"} ) } );
+            this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { type: "drillDown" , templateName : "script#forpiaDrill"} ) } );
 
-			$.drillDownView = this.drillDownView;
+            // Instantiates a new Vehicles Category View
+            this.dailyView = new CategoryView( { el: "#daily", collection: new CategoriesCollection( [] , { type: "daily" , templateName : "script#forpiaItems"} ) } );
+
+			$.CategoryRouter = this;
 			
             // Tells Backbone to start watching for hashchange events
             Backbone.history.start();

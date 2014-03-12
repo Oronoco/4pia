@@ -25,28 +25,29 @@ define([
         render: function() {
 
 			var myCollection = this.collection;
-			var templateName = this.collection.templateName  ||  "script#categoryItems";
+			var templateName = myCollection.templateName  ||  "script#categoryItems";
 			
-			var lastHour = undefined;
-			_.each( this.collection.models, function( entry, index ) {
-					entry = entry.attributes;
-					entry.id = index;
-					var hour = entry.timestamp.getHours();
-					entry.hourBreak = false;
-					entry.drillBreak = false;
-					if (hour !== lastHour)
-					{
-						entry.hourBreak = true;
-						entry.hour_formatted = 
-							new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
-							" at " + 
-							new Date( entry.timestamp ).format("h tt");
-						lastHour = hour;
-					}
-					
-				});
-
-				this.template = _.template( $( templateName ).html(), { "collection": this.collection } );
+			if (myCollection.templateName)
+			{
+				var lastHour = undefined;
+				_.each( myCollection.models, function( entry, index ) {
+						entry = entry.attributes;
+						entry.id = index;
+						var hour = entry.timestamp.getHours();
+						entry.hourBreak = false;
+						if (hour !== lastHour)
+						{
+							entry.hourBreak = true;
+							entry.hour_formatted = 
+								new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
+								" at " + 
+								new Date( entry.timestamp ).format("h tt");
+							lastHour = hour;
+						}
+						
+					});
+				}
+				this.template = _.template( $( templateName ).html(), { "collection": myCollection } );
 			
             // Renders the view's template inside of the current listview element
             this.$el.find("ul").html(this.template);
@@ -61,10 +62,27 @@ define([
 						return entry.get("person") === targetPerson;
 					});
 					
-				$.drillDownView.collection.models = DataModel.models.drillDown;
-				// Triggers the custom `added` method (which the Category View listens for)
-                $.drillDownView.collection.trigger( "added" );
+				var strippedPerson = targetPerson
+					.replace(/Rep\. /i, "" )
+					.replace(/Cong\. /i, "" )
+					.replace(/Congressman /i, "" )
+					.replace(/U.S\. Rep\. /i, "" )
+					.replace(/Senator/i, "" ).trim();
 
+					var person = _.find( DataModel.models.people, function( entry, key ) {
+							return  (entry.name.toLowerCase().indexOf( strippedPerson.toLowerCase()) > 0);
+						});
+
+				$.CategoryRouter.drillDownView.collection.drillDown = {
+						targetPerson : targetPerson,
+						url : person ? person.url : false
+					};
+				$.CategoryRouter.drillDownView.collection.models = DataModel.models.drillDown;
+				// Triggers the custom `added` method (which the Category View listens for)
+                $.CategoryRouter.drillDownView.collection.trigger( "added" );
+
+
+				$("body").find(".drilltweeter").text( targetPerson );
 				$("body").find(".drilltweeter").text( targetPerson );
 				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
 				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );

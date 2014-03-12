@@ -1,3 +1,5 @@
+
+
 .fourpia_forgotpassword {
 	padding: 8px 0px;
   text-align:center; 
@@ -34,22 +36,34 @@ display:inline;
 .timeline, .ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn  {
 .border-style: none;
 }
-
+.ui-listview>.ui-li-static {
+padding: .3em 1em;
+}
 .timeline_person {
 	display:inline-block;
 	text-decoration : none;
-	margin-left: 8px;
-	font-size:14px;
+	margin-left: 18px;
+	font-size:12px;
 	padding: 0px;
 	font-weight:500;
 	color:#666;
+  color:#47bbdc;
 	padding-right : 8px;
    border-right: 1px solid gray;
 }
+
 .timeline_person:hover {
   cursor: pointer;
   color:#47bbdc;
 	border-bottom: 1px dashed #f99600;
+}
+.timeline_time {
+	display:inline-block;
+	margin-left: 4px;
+	font-size:12px;
+	padding: 0px;
+	font-weight:500;
+	color:#47bbdc;
 }
 
 .timeline:before {
@@ -62,20 +76,36 @@ width: 12px;
 border-radius: 8px 0 0 8px;
 background-color:lightGray;
 }
+.dtweets:before {
+		background-color:#232066;
+}
+.rtweets:before {
+		background-color:#E91D0E;
+}
 .timeline_description {
 	display:block;
-	margin-left: 8px;
-	font-size:14px;
-	padding-top: 8px;
+	margin-left: 18px;
+	font-size:12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 	font-weight:500;
 	color:#aaaaaa;
 }
 
+.timelineItem {
+	border-top: 1px solid lightGray;
+	border-bottom: 1px solid lightGray;
+	margin-left:10px;
+}
+
+.timeline {
+	position:relative;
+}
 .timeline_twitter {
 	display:inline-block;
 	position:relative;
-	top:6px;
-  width: 60px;
+	top:4px;
+  width: 58px;
   cursor: pointer;
   margin-left:10px;
   padding: 0;
@@ -86,26 +116,20 @@ background-color:lightGray;
 .timeline_followers {
 	display:inline-block;
 	margin-left: 8px;
-	font-size:14px;
+	font-size:12px;
 	padding: 0px;
 	font-weight:500;
-	color:#47bbdc;
+	color:#26C94A;
 	float:right;
-}
-.timeline_time {
-	display:inline-block;
-	margin-left: 8px;
-	font-size:14px;
-	padding: 0px;
-	font-weight:500;
-	color:#666;
 }
 
 .timeline_category_rtweets {
 background-color: #E91D0E;
+background-color: #444444;
 }
 .timeline_category_dtweets {
 background-color: #232066;
+background-color: #444444;
 }
 
 .timeline_heading {
