@@ -24,6 +24,20 @@
 	padding: 0px 10px;
 	display:inline;
 }
+
+.category-header-icon {
+	max-height:36px;
+	max-width: 40px;
+	padding-left: 0px 32px;
+	display:inline;
+}
+
+.category-header-text {
+	font-size: 32px;
+	color:#47bbdc;
+	padding: 0px 10px;
+	display:inline;
+}
 .fourpia_forgotpassword {
 	padding: 8px 0px;
   text-align:center; 

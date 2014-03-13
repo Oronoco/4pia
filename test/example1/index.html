@@ -78,7 +78,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="categories" data-role="page" data-title="Categories">
 
       <div data-role="header">
-            <h1>Streams</h1>
+            <h1>Interests</h1>
       </div><!-- /header -->
 
       <div role="main" class="ui-content">
@@ -102,8 +102,12 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-
-		<h1>Daily Tweet Count is&nbsp;<span class="dailycnt"></span></h1>
+			<center>
+			<img src="images/dem.png" alt="USA" class="category-header-icon">
+			<div class="category-header-text "><span class="dtweetcnt"></span></div>
+			<img src="images/rep.png" style="margin-left:32px" alt="USA" class="category-header-icon">
+			<div class="category-header-text "><span class="rtweetcnt"></span></div>
+			</center>
 
 	  </div><!-- /header -->
 
@@ -123,8 +127,10 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-
-		<h1>Republican Tweet Count is&nbsp;<span class="rtweetcnt"></span></h1>
+			<center>
+			<img src="images/rep.png" alt="USA" class="category-header-icon">
+			<div class="category-header-text "><span class="rtweetcnt"></span></div>
+			</center>
 
 	  </div><!-- /header -->
 
@@ -143,11 +149,13 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+			
+			<center>
+			<img src="images/dem.png" alt="USA" class="category-header-icon">
+			<div class="category-header-text "><span class="dtweetcnt"></span></div>
+			</center>
 
-
-		<h1>Democratic Tweet Count is&nbsp;<span class="dtweetcnt"></span></h1>
-
-	  </div><!-- /header -->
+			</div><!-- /header -->
 
       <div role="main" class="ui-content">
             <ul data-role="listview" data-inset="true">
@@ -292,7 +300,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
  					<tr>
  					<td width=48%>
-					<% if (category.categoryClass === "dtweets") { %>
+					<% if (!collection.options.sidebyside || category.categoryClass === "dtweets") { %>
 						 <li class="ui-li-static timeline  <%= category.categoryClass %>">
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
@@ -310,7 +318,8 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 </li>
 					<% } %>
 					</td>
-					<td xstyle="width:16px">
+  				<% if (collection.options.sidebyside) { %>
+					<td >
 					&nbsp;
 					</td>
 					<td width=48%>
@@ -332,7 +341,8 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 </li>
 					<% } %>
 					</td>
-  					</tr>
+ 				<% } %>
+ 					</tr>
 
       <% }); %>
 					</table>

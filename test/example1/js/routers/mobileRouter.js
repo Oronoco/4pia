@@ -41,7 +41,7 @@ define([
             this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { style: "timeline", type: "drillDown" , templateName : "script#forpiaDrill"} ) } );
 
             // Instantiates a new daily tweets Category View
-            this.dailyView = new CategoryView( { el: "#daily", collection: new CategoriesCollection( [] , { style: "timeline", type: "daily" , templateName : "script#forpiaItems"} ) } );
+            this.dailyView = new CategoryView( { el: "#daily", collection: new CategoriesCollection( [] , { style: "timeline", type: "daily" , templateName : "script#forpiaItems", sidebyside : true} ) } );
 
 			$.CategoryRouter = this;
 			
