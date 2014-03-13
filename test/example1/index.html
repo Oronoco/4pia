@@ -30,21 +30,21 @@
 				</table>
 			</center>
         </div>
- 
+
         <div data-role="content" >
             <form id="check-user" class="ui-body ui-body-a ui-corner-all" data-ajax="false">
                 <fieldset>
                     <div data-role="fieldcontain">
                         <label for="username">Enter your username:</label>
                         <input type="text" value="me@interested.com" name="username" id="username"/>
-                    </div>                                  
-                    <div data-role="fieldcontain">                                      
+                    </div>
+                    <div data-role="fieldcontain">
                         <label for="password">Enter your password:</label>
-                        <input type="password" value="123456" name="password" id="password"/> 
+                        <input type="password" value="123456" name="password" id="password"/>
                     </div>
                     <input type="button" data-theme="b" name="submit" id="submit" value="Sign In">
                 </fieldset>
-            </form>     
+            </form>
         </div>
  			<div class="fourpia_forgotpassword av_link">
 				 <a href="#forgot" >Forgot Password?</a>
@@ -54,7 +54,7 @@
 			</div>
 
         <div data-theme="a" data-role="footer" data-position="fixed">
- 
+
         </div>
     </div>
     <div data-role="page" id="learn">
@@ -65,16 +65,16 @@
   <div data-role="main" class="ui-content">
   <center class="textColor">Political Involvement and Advocacy.</center>
     <p>4PIA is dedicated to help foster a healthy, productive and interactive dialogue in the United States Congress.
- By bringing together, for the first time, on one page what our elected officials are saying we can actually encourage a tweet-dialogue. 
+ By bringing together, for the first time, on one page what our elected officials are saying we can actually encourage a tweet-dialogue.
 You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
  <a href="#login" class="ui-btn">Sounds impressive - Go Back</a>
  </div>
- 
+
         <div data-theme="a" data-role="footer" data-position="fixed">
             <h3> <div class="fourpia_copyright">4PIA &copy; 2013, 2014</div><div class="fourpia_authorization"> Commercial use of this site without express authorization is prohibited.</div></h3>
         </div>
     </div>
-	
+
 <div id="categories" data-role="page" data-title="Categories">
 
       <div data-role="header">
@@ -86,7 +86,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
                   <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>
                   <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Democratic Tweets <span class="ui-li-count dtweetcnt"></span></a></li>
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
-                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
+                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
                   <li data-role="list-divider">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
@@ -100,9 +100,10 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="daily" data-role="page" data-title="Daily">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-		<h1>Daily Tweet Count is <span class="dailycnt"></span></h1>
+
+		<h1>Daily Tweet Count is&nbsp;<span class="dailycnt"></span></h1>
 
 	  </div><!-- /header -->
 
@@ -120,9 +121,10 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="rtweets" data-role="page" data-title="Republican">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-		<h1>Republican Tweet Count is <span class="rtweetcnt"></span></h1>
+
+		<h1>Republican Tweet Count is&nbsp;<span class="rtweetcnt"></span></h1>
 
 	  </div><!-- /header -->
 
@@ -140,9 +142,10 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="dtweets" data-role="page" data-title="Democratic">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-		<h1>Democratic Tweet Count is<span class="dtweetcnt"></span></h1>
+
+		<h1>Democratic Tweet Count is&nbsp;<span class="dtweetcnt"></span></h1>
 
 	  </div><!-- /header -->
 
@@ -157,10 +160,10 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
   </div>
 </div>
 
-<div id="drillDown" data-role="page" data-title="drillDown">
+<div id="drillDown" data-role="page" data-title="Tweet Details">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
 		<h1><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
 
@@ -180,7 +183,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="ctweets" data-role="page" data-title="Tweet Cloud">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
 	    <h1>Tweet Cloud</h1>
       </div><!-- /header -->
@@ -196,7 +199,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="bios" data-role="page" data-title="Representatives">
 
       <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
 	    <h1>Representatives</h1>
       </div><!-- /header -->
@@ -286,7 +289,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
 					<table style="position:relative" border=0 width="100%">
 				<% } %>
-				
+
  					<tr>
  					<td width=48%>
 					<% if (category.categoryClass === "dtweets") { %>
@@ -294,16 +297,16 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-							  <div class="timeline_followers"> 
+							  <div class="timeline_followers">
 									<%= category.followers_formatted %> followers
-									 <img class="timeline_twitter" src="images/twitter.jpg"> 
-							  
+									 <img class="timeline_twitter" src="images/twitter.jpg">
+
 							  </div>
 							  <div style="clear:both"> </div>
-							 <div class="timeline_description"> 
-									<%= category.description %> 
+							 <div class="timeline_description">
+									<%= category.description %>
 							  </div>
-						 </div>    
+						 </div>
 						 </li>
 					<% } %>
 					</td>
@@ -316,21 +319,21 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-							  <div class="timeline_followers"> 
+							  <div class="timeline_followers">
 									<%= category.followers_formatted %> followers
-									 <img class="timeline_twitter" src="images/twitter.jpg"> 
-							  
+									 <img class="timeline_twitter" src="images/twitter.jpg">
+
 							  </div>
 							  <div style="clear:both"> </div>
-							 <div class="timeline_description"> 
-									<%= category.description %> 
+							 <div class="timeline_description">
+									<%= category.description %>
 							  </div>
-						 </div>    
+						 </div>
 						 </li>
 					<% } %>
 					</td>
   					</tr>
- 
+
       <% }); %>
 					</table>
 </script>
@@ -363,20 +366,20 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
   				<% if (category.hourBreak) { %>
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
 				<% } %>
-				
+
           <li class="ui-li-static timeline   <%= category.categoryClass %>">
 				  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
                   <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-                  <div class="timeline_followers"> 
+                  <div class="timeline_followers">
 						<%= category.followers_formatted %> followers
-						 <img class="timeline_twitter" src="images/twitter.jpg"> 
-				  
+						 <img class="timeline_twitter" src="images/twitter.jpg">
+
 				  </div>
 				  <div style="clear:both"> </div>
-                 <div class="timeline_description"> 
-						<%= category.description %> 
+                 <div class="timeline_description">
+						<%= category.description %>
 				  </div>
-                 
+
             </li>
 
       <% }); %>

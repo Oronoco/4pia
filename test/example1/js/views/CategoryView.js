@@ -80,7 +80,7 @@ define([
 		searchCollection : function ( targetCollection, callback) {
 				
 				// If there are no collections in the current Category View
-				if(!targetCollection.length) {
+				if (!targetCollection.length) {
 
 					// Show's the jQuery Mobile loading icon
 					$.mobile.loading( "show" );
@@ -160,8 +160,17 @@ define([
 
 
 			this.$el.find(".tweetCloudItem").on('click', function() {
-					var searchStr = $(this).text();
-					self.search( searchStr );
+					var elem = $(this);
+					
+					$(elem).addClass("tweetCloudItemPress");
+						
+					 setTimeout( function() {
+					//	$(elem).removeClass("tweetCloudItemPress");
+
+						var searchStr = $(elem).text();
+						self.search( searchStr );
+
+							}, 500);
 			
 					return false; // cancel original event to prevent form submitting
 				}); 

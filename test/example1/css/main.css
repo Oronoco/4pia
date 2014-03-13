@@ -3,6 +3,14 @@
 	max-width:24px;
 }
 
+.tweetCloudItem:hover {
+	background-color : #47bbdc;
+}
+.tweetCloudItemPress {
+	color : #f99600;
+	background-color : #47bbdc;
+}
+
 .drilldown-header-icon {
 	max-height: 60px;
 	max-width: 40px;
