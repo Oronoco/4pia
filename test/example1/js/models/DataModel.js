@@ -1811,7 +1811,7 @@ CynthiaLummis :  {
 					var self = this;
 					var dfd_dnews = $.get("data/view-source 4pia.com Dnews_window.php.html");
 					var dfd_rnews = $.get("data/view-source 4pia.com Rnews_window.php.html");
-					var dfd_ctweets = result.isMobile ? true : $.get("http://4pia.com/TweetCloud.php");
+					var dfd_ctweets = result.isMobile ? $.get("data/view-source 4pia.com ctweet_window.php.html") : $.get("http://4pia.com/TweetCloud.php");
 					var dfd_people = _.each( people, function( entry, key ) {
 							entry.profileImage = "http://twitter.com/api/users/profile_image/" + key;
 							entry.url = "http://4pia.com/" + entry.File;
