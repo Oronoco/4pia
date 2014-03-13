@@ -13,9 +13,9 @@ define([
     // The Model constructor
     var dataModels = {};
 
-	 function parseHTML( html, categoryClass ) 
+	 function parseHTML( html, categoryClass, d) 
 	 {
-		var d = new Date();
+		d = d || new Date();
 		var data = [];
 		var start = html.indexOf("<!-- SCROLLER CONTENT STARTS HERE -->");
 		var end = html.indexOf("<!-- SCROLLER CONTENT ENDS HERE -->");
@@ -1821,8 +1821,8 @@ CynthiaLummis :  {
 					
 					$.when( dfd_dnews, dfd_rnews, dfd_people, dfd_ctweets)
 						.done( function(dnews, rnews, people, cloud) {
-								dataModels.dtweets = parseHTML( dnews[0], "dtweets" );
-								dataModels.rtweets = parseHTML( rnews[0], "rtweets" );
+								dataModels.dtweets = parseHTML( dnews[0], "dtweets", new Date( 2014, 02, 10) );
+								dataModels.rtweets = parseHTML( rnews[0], "rtweets", new Date( 2014, 02, 10) );
 								
 								dataModels.daily = [];
 								_.each(dataModels.dtweets, function(entry) {

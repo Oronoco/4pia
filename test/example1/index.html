@@ -88,7 +88,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
                   <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
-                  <li data-role="list-divider">Other Topics</li>
+                  <li data-role="list-divider">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
                   <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
                   <li><a href="#category?climate" class="climate">Climate Change</a></li>
@@ -339,6 +339,18 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="forpiaDrill" type="text/template">
 	<table style="position:relative" border=0 width="100%" >
+<% if (collection.drillDown.header) { %>
+	<tr>
+	<td valign=top>
+		<center>
+			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
+			<div class="drilldown-header-text "><%= collection.drillDown.demCnt %></div>
+			<img src="images/rep.png" style="margin-left:32px" alt="USA" class="drilldown-header-icon">
+			<div class="drilldown-header-text "><%= collection.drillDown.repCnt %></div>
+		</center>
+	</td>
+	</tr>
+<% } %>
 	<tr>
 <% if (collection.drillDown.url) { %>
 	<td valign=top>

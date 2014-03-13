@@ -22,7 +22,7 @@ define([
         },
 						
 
-		drillDown : function( targetPerson, myCollection ) {
+		drillDown : function( targetPerson, myCollection, options ) {
 				var person = undefined;
 				if (targetPerson &&  myCollection)
 				{
@@ -37,10 +37,11 @@ define([
 							});
 				}
 
-				$.CategoryRouter.drillDownView.collection.drillDown = {
+				$.CategoryRouter.drillDownView.collection.drillDown = $.extend({
 						targetPerson : targetPerson,
 						url : person ? person.url : false
-					};
+					}, options );
+					
 				$.CategoryRouter.drillDownView.collection.models = DataModel.models.drillDown;
 				// Triggers the custom `added` method (which the Category View listens for)
                 $.CategoryRouter.drillDownView.collection.trigger( "added" );
@@ -49,6 +50,8 @@ define([
 				$("body").find(".drilltweeter").text( targetPerson );
 				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
 				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
+				
+				return $.CategoryRouter.drillDownView.collection.drillDown;
 			},
 			
 		search : function( searchStr ) {
@@ -56,13 +59,21 @@ define([
 				var myCollection = $.CategoryRouter.dailyView.collection;
 				self.searchCollection( myCollection, function() {
 						var s = searchStr.toLowerCase().trim();
+						var demCnt = 0;
+						var repCnt = 0;
 						DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
 								var desc = entry.get("person") + " " + entry.get("description");
 								var match = desc.toLowerCase().indexOf( s );
-								return match >= 0;
+								if (match >= 0)
+								{
+									if (entry.get("categoryClass") === "rtweets") repCnt++
+									else demCnt++;
+									return true;
+								}
+								return false;
 							});
 
-						self.drillDown( searchStr );
+						self.drillDown( searchStr, undefined, {header: true, demCnt : demCnt, repCnt : repCnt} );
 				});
 			},
 			
