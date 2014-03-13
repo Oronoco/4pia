@@ -4,6 +4,18 @@
 				return this.replace(/^\s*/, "").replace(/\s*$/, "");
 			};
 			
+	String.prototype.sortName = function ()
+			{
+				return this
+					.replace(/Rep\. /i, "" )
+					.replace(/Sen\. /i, "" )
+					.replace(/Cong\. /i, "" )
+					.replace(/President /i, "" )
+					.replace(/Congressman /i, "" )
+					.replace(/U.S\. Rep\. /i, "" )
+					.replace(/Senator/i, "" ).trim();
+			};
+
 require.config( {
 
 	// 3rd party script alias names
@@ -14,8 +26,8 @@ require.config( {
 		"datejs": "../../libs/js/date",
 		 'numeral' : '../../libs/js/numeral',
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
-            	"underscore": "../../libs/js/lodash",
-            	"backbone": "../../libs/js/backbone",
+		"underscore": "../../libs/js/lodash",
+		"backbone": "../../libs/js/backbone",
 
 	},
 
@@ -39,7 +51,6 @@ require([
 	"js/models/DataModel",
 	"underscore"
 ], function ( $, Backbone, Mobile, DataModel, _ ) {
-
 	$( document ).on( "mobileinit",
 
 		// Set up the "mobileinit" handler before requiring jQuery Mobile's module

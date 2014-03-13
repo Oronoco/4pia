@@ -75,7 +75,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
         </div>
     </div>
 	
-	
 <div id="categories" data-role="page" data-title="Categories">
 
       <div data-role="header">
@@ -84,14 +83,15 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
       <div role="main" class="ui-content">
              <ul data-role="listview" data-inset="true">
-                  <li><a href="#category?daily" class="daily"><img src="images/logo.png" alt="USA" class="ui-li-icon">Daily tweets <span class="dailycnt"></span></a></li>
-                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.jpg" alt="USA" class="ui-li-icon">Republican tweets <span class="rtweetcnt"></span></a></li>
-                  <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.jpg" alt="USA" class="ui-li-icon">Democratic tweets <span class="dtweetcnt"></span></a></li>
-                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud logo.jpg" alt="USA" class="ui-li-icon">Live Tweet Cloud</a></li>
+                  <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>
+                  <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Democratic Tweets <span class="ui-li-count dtweetcnt"></span></a></li>
+                  <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
+                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
+                  <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
                   <li data-role="list-divider">Other Topics</li>
-				  <li><a href="#category?animals" class="animals">Healthcare</a></li>
-                  <li><a href="#category?colors" class="colors">Ukraine</a></li>
-                  <li><a href="#category?vehicles" class="vehicles">Climate Change</a></li>
+				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
+                  <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
+                  <li><a href="#category?climate" class="climate">Climate Change</a></li>
             </ul>
       </div><!-- /content -->
 
@@ -103,7 +103,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
 
 		<h1>Daily Tweet Count is <span class="dailycnt"></span></h1>
-      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
 
@@ -124,7 +123,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
 
 		<h1>Republican Tweet Count is <span class="rtweetcnt"></span></h1>
-      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
 
@@ -145,7 +143,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
 
 		<h1>Democratic Tweet Count is<span class="dtweetcnt"></span></h1>
-      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
 
@@ -166,7 +163,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
 
 		<h1><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
-      <a href="#search_rtweet" class="ui-btn ui-corner-all ui-shadow ui-icon-search ui-btn-icon-left">Search</a>
 
 	  </div><!-- /header -->
 
@@ -181,7 +177,41 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
   </div>
 </div>
 
-<div id="animals" data-role="page" data-title="Animals">
+<div id="ctweets" data-role="page" data-title="Tweet Cloud">
+
+      <div data-role="header">
+	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+
+	    <h1>Tweet Cloud</h1>
+      </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+		   <ul >
+ 				<div class="tweetCloud"> To be loaded </div>
+            </ul>
+  </div><!-- /content -->
+
+</div>
+
+<div id="bios" data-role="page" data-title="Representatives">
+
+      <div data-role="header">
+	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
+
+	    <h1>Representatives</h1>
+      </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+		   <form class="ui-filterable">
+			  <input id="bioFilter" data-type="search" placeholder="Search for names..">
+			</form>
+			<ul data-role="listview" data-filter="true" data-input="#bioFilter" data-autodividers="true" data-inset="true">
+           </ul>
+      </div><!-- /content -->
+
+</div>
+
+<div id="healthcare" data-role="page" data-title="Healthcare">
 
       <div data-role="header">
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
@@ -194,7 +224,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       </div><!-- /content -->
 </div>
 
-<div id="colors" data-role="page" data-title="Colors">
+<div id="ukraine" data-role="page" data-title="Ukraine">
 
       <div data-role="header">
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
@@ -208,7 +238,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
 </div>
 
-<div id="vehicles" data-role="page" data-title="Vehicles">
+<div id="climate" data-role="page" data-title="Climate Change">
 
       <div data-role="header">
 	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
@@ -222,19 +252,6 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
 </div>
 
-<div id="ctweets" data-role="page" data-title="Tweet Cloud">
-
-      <div data-role="header">
-	    <a href="#categories" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Back</a>
-
-	    <h1>Tweet Cloud</h1>
-      </div><!-- /header -->
-
-      <div role="main" class="ui-content">
-		<div class="tweetCloud"> Rod </div>
-    </div><!-- /content -->
-
-</div>
 
 <!-- Underscore Template that is used to display all of the Category Models -->
 <script id="categoryItems" type="text/template">
@@ -249,7 +266,16 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 </script>
 
 
-<!-- Underscore Template that is used to display all of the Category Models -->
+<!-- Underscore Template that is used to display all of the Bios Models -->
+<script id="forpiaBios" type="text/template">
+      <% _.each( collection.toJSON(), function( category, id ) { %>
+			<li><a href="#bios?<%= category.bio.key %>"><%= category.bio.sortName %></a></li>
+      <% }); %>
+
+</script>
+
+
+<!-- Underscore Template that is used to display all of the Item Models -->
 <script id="forpiaItems" type="text/template">
       <% _.each( collection.toJSON(), function( category, id ) { %>
 
@@ -263,7 +289,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 				
  					<tr>
  					<td width=48%>
-					<% if (category.categoryClass === "rtweets") { %>
+					<% if (category.categoryClass === "dtweets") { %>
 						 <li class="ui-li-static timeline  <%= category.categoryClass %>">
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
@@ -285,7 +311,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 					&nbsp;
 					</td>
 					<td width=48%>
-					<% if (category.categoryClass === "dtweets") { %>
+					<% if (category.categoryClass === "rtweets") { %>
 						 <li class="ui-li-static timeline  <%= category.categoryClass %>">
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
@@ -308,7 +334,9 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <% }); %>
 					</table>
 </script>
-<!-- Underscore Template that is used to display all of the Category Models -->
+
+
+<!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="forpiaDrill" type="text/template">
 	<table style="position:relative" border=0 width="100%" >
 	<tr>

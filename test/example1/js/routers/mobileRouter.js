@@ -16,29 +16,32 @@ define([
         // The Router constructor
         initialize: function() {
 
-            // Instantiates a new Animal Category View
-            this.animalsView = new CategoryView( { el: "#animals", collection: new CategoriesCollection( [] , { type: "animals" } ) } );
+            // Instantiates a new Animal health View
+            this.healthcareView = new CategoryView( { el: "#healthcare", collection: new CategoriesCollection( [] , { type: "healthcare" } ) } );
 
-            // Instantiates a new Colors Category View
-            this.colorsView = new CategoryView( { el: "#colors", collection: new CategoriesCollection( [] , { type: "colors" } ) } );
+            // Instantiates a new Colors ukraine View
+            this.ukraineView = new CategoryView( { el: "#ukraine", collection: new CategoriesCollection( [] , { type: "ukraine" } ) } );
 
-            // Instantiates a new Vehicles Category View
-            this.vehiclesView = new CategoryView( { el: "#vehicles", collection: new CategoriesCollection( [] , { type: "vehicles" } ) } );
+            // Instantiates a new Vehicles climate View
+            this.climateView = new CategoryView( { el: "#climate", collection: new CategoriesCollection( [] , { type: "climate" } ) } );
 
-          // Instantiates a new tweet cloud Category View
-            this.ctweetsView = new CategoryView( { el: "#ctweets", collection: new CategoriesCollection( [] , { type: "ctweets" } ) } );
+          // Instantiates a new tweet cloud bios View
+            this.biosView = new CategoryView( { el: "#bios", collection: new CategoriesCollection( [] , { style: "bios", type: "bios", templateName : "script#forpiaBios" } ) } );
+
+         // Instantiates a new tweet cloud Category View
+            this.ctweetsView = new CategoryView( { el: "#ctweets", collection: new CategoriesCollection( [] , {  style: "ctweets", type: "ctweets" } ) } );
 
              // Instantiates a new republican Category View
-            this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { type: "rtweets", templateName : "script#forpiaItems" } ) } );
+            this.rtweetsView = new CategoryView( { el: "#rtweets", collection: new CategoriesCollection( [] , { style: "timeline", type: "rtweets", templateName : "script#forpiaItems" } ) } );
 
             // Instantiates a new democrat Category View
-            this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { type: "dtweets" , templateName : "script#forpiaItems"} ) } );
+            this.dtweetsView = new CategoryView( { el: "#dtweets", collection: new CategoriesCollection( [] , { style: "timeline", type: "dtweets" , templateName : "script#forpiaItems"} ) } );
 
-            // Instantiates a new Vehicles Category View
-            this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { type: "drillDown" , templateName : "script#forpiaDrill"} ) } );
+            // Instantiates a new drilldown Category View
+            this.drillDownView = new CategoryView( { el: "#drillDown", collection: new CategoriesCollection( [] , { style: "timeline", type: "drillDown" , templateName : "script#forpiaDrill"} ) } );
 
-            // Instantiates a new Vehicles Category View
-            this.dailyView = new CategoryView( { el: "#daily", collection: new CategoriesCollection( [] , { type: "daily" , templateName : "script#forpiaItems"} ) } );
+            // Instantiates a new daily tweets Category View
+            this.dailyView = new CategoryView( { el: "#daily", collection: new CategoriesCollection( [] , { style: "timeline", type: "daily" , templateName : "script#forpiaItems"} ) } );
 
 			$.CategoryRouter = this;
 			
@@ -58,7 +61,7 @@ define([
             "learn": "learn",
             "forgot": "forgot",
 			"categories" : "home",
-			"drillDown" : "drillDown",
+			"bios" : "bios",
 
             // When #category? is on the url, the category method is called
             "category?:type": "category"
@@ -66,13 +69,15 @@ define([
         },
 
         // Home method
-        drillDown: function() {
+        bios: function(bioKey) {
+			var type = "bios";
+			
+             // Stores the current Category View  inside of the currentView variable
+            var currentView = this[ type + "View" ];
 
-			debugger;
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
-
-        },
+			currentView.bios( bioKey );
+			
+         },
 
        // Home method
         home: function() {

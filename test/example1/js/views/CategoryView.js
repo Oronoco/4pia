@@ -20,17 +20,94 @@ define([
             this.collection.on( "added", this.render, this );
 
         },
+						
 
+		drillDown : function( targetPerson, myCollection ) {
+				var person = undefined;
+				if (targetPerson &&  myCollection)
+				{
+					DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
+							return entry.get("person") === targetPerson;
+						});
+					
+					var sortName = targetPerson.sortName()
+
+					var person = _.find( DataModel.models.people, function( entry, key ) {
+								return  (entry.name.toLowerCase().indexOf( sortName.toLowerCase()) > 0);
+							});
+				}
+
+				$.CategoryRouter.drillDownView.collection.drillDown = {
+						targetPerson : targetPerson,
+						url : person ? person.url : false
+					};
+				$.CategoryRouter.drillDownView.collection.models = DataModel.models.drillDown;
+				// Triggers the custom `added` method (which the Category View listens for)
+                $.CategoryRouter.drillDownView.collection.trigger( "added" );
+
+
+				$("body").find(".drilltweeter").text( targetPerson );
+				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
+				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
+			},
+			
+		search : function( searchStr ) {
+				var self = this;
+				var myCollection = $.CategoryRouter.dailyView.collection;
+				self.searchCollection( myCollection, function() {
+						var s = searchStr.toLowerCase().trim();
+						DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
+								var desc = entry.get("person") + " " + entry.get("description");
+								var match = desc.toLowerCase().indexOf( s );
+								return match >= 0;
+							});
+
+						self.drillDown( searchStr );
+				});
+			},
+			
+		searchCollection : function ( targetCollection, callback) {
+				
+				// If there are no collections in the current Category View
+				if(!targetCollection.length) {
+
+					// Show's the jQuery Mobile loading icon
+					$.mobile.loading( "show" );
+
+					// Fetches the Collection of Category Models for the current Category View
+					targetCollection.fetch().done( callback );
+
+				}
+				else
+				{
+					callback();
+				}
+			},
+			
+		bios : function( bioKey ) {
+				var self = this;
+				var targetBio = _.filter( DataModel.models.bios, function( entry, index ) {
+						return entry.bio.key === bioKey;
+					});
+					
+				if (targetBio.length)
+				{
+					self.searchCollection( $.CategoryRouter.dailyView.collection, function() {
+							self.drillDown( targetBio[0].bio.sortName, $.CategoryRouter.dailyView.collection );
+						});
+				}
+			},
+			
         // Renders all of the Category models on the UI
         render: function() {
 
-			var myCollection = this.collection;
-			var templateName = myCollection.templateName  ||  "script#categoryItems";
-			
-			if (myCollection.templateName)
+			var self = this;
+			var templateName = self.collection.templateName  ||  "script#categoryItems";
+
+			if (self.collection.options.style === "timeline")
 			{
 				var lastHour = undefined;
-				_.each( myCollection.models, function( entry, index ) {
+				_.each( self.collection.models, function( entry, index ) {
 						entry = entry.attributes;
 						entry.id = index;
 						var hour = entry.timestamp.getHours();
@@ -46,50 +123,37 @@ define([
 						}
 						
 					});
-				}
-				this.template = _.template( $( templateName ).html(), { "collection": myCollection } );
+			}
 			
-            // Renders the view's template inside of the current listview element
-            this.$el.find("ul").html(this.template);
+			this.template = _.template( $( templateName ).html(), { "collection": self.collection } );
+			
+ 			if (self.collection.options.style === "ctweets")
+			{
+				this.template = DataModel.models.ctweets;
+			}
+			
+           // Renders the view's template inside of the current listview element
+            this.$el.find("ul").empty().html(this.template);
 
 			this.$el.find(".timeline")
 				.css({"border-color" : "#ddd"});
 				
 			this.$el.find(".timeline_person").on('click', function() {
-				var id = $(this).attr("data-id");
-				var targetPerson = myCollection.models[ id ].get("person");
-				DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
-						return entry.get("person") === targetPerson;
-					});
-					
-				var strippedPerson = targetPerson
-					.replace(/Rep\. /i, "" )
-					.replace(/Cong\. /i, "" )
-					.replace(/Congressman /i, "" )
-					.replace(/U.S\. Rep\. /i, "" )
-					.replace(/Senator/i, "" ).trim();
-
-					var person = _.find( DataModel.models.people, function( entry, key ) {
-							return  (entry.name.toLowerCase().indexOf( strippedPerson.toLowerCase()) > 0);
-						});
-
-				$.CategoryRouter.drillDownView.collection.drillDown = {
-						targetPerson : targetPerson,
-						url : person ? person.url : false
-					};
-				$.CategoryRouter.drillDownView.collection.models = DataModel.models.drillDown;
-				// Triggers the custom `added` method (which the Category View listens for)
-                $.CategoryRouter.drillDownView.collection.trigger( "added" );
+					var id = $(this).attr("data-id");
+					var targetPerson = self.collection.models[ id ].get("person");
+				
+					self.drillDown( targetPerson, self.collection );
+				
+					return false; // cancel original event to prevent form submitting
+				}); 
 
 
-				$("body").find(".drilltweeter").text( targetPerson );
-				$("body").find(".drilltweeter").text( targetPerson );
-				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
-				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
-
-				return false; // cancel original event to prevent form submitting
-			}); 
-
+			this.$el.find(".tweetCloudItem").on('click', function() {
+					var searchStr = $(this).text();
+					self.search( searchStr );
+			
+					return false; // cancel original event to prevent form submitting
+				}); 
 			
             // Maintains chainability
             return this;

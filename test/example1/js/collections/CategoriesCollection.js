@@ -15,8 +15,9 @@ define([
         initialize: function( models, options ) {
 
             // Sets the type instance property (ie. animals)
-            this.type = options.type;
-			this.templateName = options.templateName;
+           	this.options = options;
+			this.type = options.type;
+            this.templateName = options.templateName;
 
         },
 
@@ -26,31 +27,29 @@ define([
         // Sample JSON data that in a real app will most likely come from a REST web service
         jsonArray: [
 
-            { "category": "animals", "type": "Pets" },
+        	{ "category": "healthcare", "type": "Insurance Coverage" },
 
-            { "category": "animals", "type": "Farm Animals" },
+            { "category": "healthcare", "type": "World Health Organization" },
 
-            { "category": "animals", "type": "Wild Animals" },
+           	{ "category": "healthcare", "type": "Immunization" },
 
-            { "category": "colors", "type": "Blue" },
+            { "category": "healthcare", "type": "Clinical Trials" },
 
-            { "category": "colors", "type": "Green" },
+           	{ "category": "healthcare", "type": "Elder Care" },
 
-            { "category": "colors", "type": "Orange" },
+            { "category": "ukraine", "type": "Chronology of Coverage" },
 
-            { "category": "colors", "type": "Purple" },
+            { "category": "ukraine", "type": "US Policy" },
 
-            { "category": "colors", "type": "Red" },
+            { "category": "ukraine", "type": "European Union" },
 
-            { "category": "colors", "type": "Yellow" },
+            { "category": "ukraine", "type": "Crimean Vote" },
 
-            { "category": "colors", "type": "Violet" },
+            { "category": "climate", "type": "Weather Predictions" },
 
-            { "category": "vehicles", "type": "Cars" },
+            { "category": "climate", "type": "Renewable Energy" },
 
-            { "category": "vehicles", "type": "Planes" },
-
-            { "category": "vehicles", "type": "Construction" }
+            { "category": "climate", "type": "Scientific Papers and Conferences" }
 
         ],
 

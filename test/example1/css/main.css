@@ -1,4 +1,7 @@
-
+.ui-listview>.ui-li-has-icon>img:first-child, .ui-listview>.ui-li-has-icon>.ui-btn>img:first-child {
+	max-height:40px;
+	max-width:24px;
+}
 
 .fourpia_forgotpassword {
 	padding: 8px 0px;

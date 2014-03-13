@@ -1743,16 +1743,83 @@ CynthiaLummis :  {
 					}
 					return undefined;
 				},
+			markupTweetCloud : function( cloud ) {
+
+					var pos = cloud.indexOf("<body>") + 6;
+					var str = cloud.substring( pos );
+					var div = $("<div>").html(str);
+					var b = $(div).find("#contents");
+					
+					var spans = $(b).find("font").find("span");
+					var sizes = {};
+					_.each( spans, function( span ) {
+							var fs = $(span).css("font-size");
+							var size = sizes[ fs ];
+							if (size === undefined)
+							{
+								size = [];
+								sizes[fs] = size;
+							}
+							size.push( span );
+							
+							$(span)
+								.addClass("tweetCloudItem");
+						});
+						
+					var maxSizes = 5;
+					var cnt = 0;
+					var min = undefined;
+					var max = undefined;
+					_.each( sizes, function( items, pxSize ) {
+							var px = parseInt( pxSize, 10 );
+							max = Math.max( max || 0, px );
+							min = Math.min( min  || px, px );
+							cnt++;
+						});
+						
+					var bucketSize = max / maxSizes;
+					
+					_.each( sizes, function( items, pxSize ) {
+							var px = parseInt( pxSize, 10 );
+							px = Math.round( (px - min) / bucketSize );
+							var fontSize = min + px * bucketSize;
+//							console.log( pxSize, px , fontSize, min, max, bucketSize, maxSizes );
+							var sizeClass = "tweetCloudSize" + px;
+							
+							var fontColor = undefined;
+							if (maxSizes - px < 2)
+							{
+								fontColor = "#0F0";
+							}
+							
+							if (fontColor)
+							{
+								$(items)
+									.css({"color" : fontColor});
+							}
+							
+							$(items)
+								.addClass( sizeClass )
+								.css({"font-size" : fontSize});
+						});
+					
+					dataModels.ctweets = b;
+					
+				},
+				
 			loadFAUXdata : function ( callback ) {
+					var self = this;
 					var dfd_dnews = $.get("data/view-source 4pia.com Dnews_window.php.html");
 					var dfd_rnews = $.get("data/view-source 4pia.com Rnews_window.php.html");
-					var dfd_tcloud = result.isMobile ? true : $.get("http://4pia.com/TweetCloud.php");
+					var dfd_ctweets = result.isMobile ? true : $.get("http://4pia.com/TweetCloud.php");
 					var dfd_people = _.each( people, function( entry, key ) {
 							entry.profileImage = "http://twitter.com/api/users/profile_image/" + key;
 							entry.url = "http://4pia.com/" + entry.File;
+							entry.key = key;
+							entry.sortName = entry.name.sortName()
 						});
 					
-					$.when( dfd_dnews, dfd_rnews, dfd_people, dfd_tcloud)
+					$.when( dfd_dnews, dfd_rnews, dfd_people, dfd_ctweets)
 						.done( function(dnews, rnews, people, cloud) {
 								dataModels.dtweets = parseHTML( dnews[0], "dtweets" );
 								dataModels.rtweets = parseHTML( rnews[0], "rtweets" );
@@ -1772,18 +1839,22 @@ CynthiaLummis :  {
 										return -1;
 									});
 									
+								dataModels.bios = [];
+								_.each( people, function( entry, key ) {
+										dataModels.bios.push( {category : "bios", bio : entry } );
+									});
+								dataModels.bios.sort(function(a, b) {
+//										if (a.bio.sortName === "Denny Heck") return -1;
+										return a.bio.sortName.localeCompare( b.bio.sortName );
+									});
+									
 								dataModels.drillDown = [];
 								dataModels.people = people;
 								if (cloud !== true)
 								{
-									dataModels.tcloud = cloud[0];
-									var pos = dataModels.tcloud.indexOf("<body>") + 6;
-									var s = dataModels.tcloud.substring( pos );
-									var div = $("<div>").html(s);
-									var b = $(div).find("#contents");
-									
-									$("body").find(".tweetCloud").empty().append(b);
+									self.markupTweetCloud( cloud[0] );
 								}
+								$("body").find(".biocnt").text( dataModels.bios.length );
 								$("body").find(".dailycnt").text( dataModels.daily.length );
 								$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
 								$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
