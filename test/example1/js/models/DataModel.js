@@ -1726,7 +1726,7 @@ CynthiaLummis :  {
 		var match = /(?:; ([^;)]+) Build\/.*)?\bSilk\/([0-9._-]+)\b(.*\bMobile Safari\b)?/.exec(b);
 		if (match) {
 			result.isKindle = true;
-			alert("Detected Silk version "+match[2]+" on device "+(match[1] || "Kindle Fire")+" in mode "+(match[3] ? "Mobile" : "Default (desktop)"));
+//			alert("Detected Silk version "+match[2]+" on device "+(match[1] || "Kindle Fire")+" in mode "+(match[3] ? "Mobile" : "Default (desktop)"));
 		}
 		result.isIDevice		= result.isIPhone  ||  result.isIPod  ||  result.isIPad;
 		result.isMobile		= result.isIDevice  ||  result.isKindle;

@@ -15,6 +15,36 @@
 	<script src="../../libs/js/require.js"></script>
 
     <script src="js/main.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+var alertTimerId = 0;
+
+function removeMessage()
+{
+	var elem = document.getElementById("pageCounter");
+	elem.src ="";
+
+	alertTimerId = 0;
+}
+
+function messageFromProfile( msg )
+{
+
+	var elem = document.getElementById("pageCounter");
+	var msg = msg.replace(/ /g, "_");
+	elem.src ="index_cnt.html?" + msg;
+console.log("messageFromProfile: " + msg );
+	if (alertTimerId != 0)
+	{
+		clearTimeout( alertTimerId );
+		alertTimerId = 0;
+	}
+
+	alertTimerId = setTimeout(removeMessage, 1000);
+}
+
+</script>
+
 </head>
 <body>
 
@@ -398,6 +428,27 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 	</tr>
 	</table>
 </script>
+
+<iframe class=invisible id="pageCounter" width="100%" height="400px"  src="" scrolling="no" frameborder="0"></iframe>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=9673894; 
+var sc_invisible=1; 
+var sc_security="68ae5167"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="web counter"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="http://c.statcounter.com/9673894/0/68ae5167/1/"
+alt="web counter"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
+
 
 </body>
 </html>

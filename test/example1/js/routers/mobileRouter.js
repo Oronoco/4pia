@@ -68,10 +68,9 @@ define([
 
         },
 
-        // Home method
+        // bios method
         bios: function(bioKey) {
 			var type = "bios";
-			
              // Stores the current Category View  inside of the currentView variable
             var currentView = this[ type + "View" ];
 
@@ -79,49 +78,53 @@ define([
 			
          },
 
-       // Home method
+		changePage : function(pageName) {
+		
+				messageFromProfile( pageName );
+				
+				// Programatically changes to the categories page
+				$.mobile.changePage( pageName , { reverse: false, changeHash: false } );
+			},
+ 
+		// Home method
         home: function() {
 
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
-
+			this.changePage( "#categories" );
         },
 
-        // Home method
+        // login method
         login: function() {
 
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#login" , { reverse: false, changeHash: false } );
-
+ 			this.changePage( "#login" );
+ 
         },
 
-        // join method
+        // learn method
         learn: function() {
 
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#learn" , { reverse: false, changeHash: false } );
-
+			this.changePage( "#learn" );
+ 
         },
 
        // join method
         join: function() {
 
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#join" , { reverse: false, changeHash: false } );
-
+			this.changePage( "#join" );
+ 
         },
 
         // forgot method
         forgot: function() {
 
-            // Programatically changes to the categories page
-            $.mobile.changePage( "#forgot" , { reverse: false, changeHash: false } );
-
+ 			this.changePage( "#forgot" );
+ 
         },
 
         // Category method that passes in the type that is appended to the url hash
         category: function(type) {
 
+		var self = this;
+			
             // Stores the current Category View  inside of the currentView variable
             var currentView = this[ type + "View" ];
 
@@ -134,8 +137,7 @@ define([
                 // Fetches the Collection of Category Models for the current Category View
                 currentView.collection.fetch().done( function() {
 
-                    // Programatically changes to the current categories page
-                    $.mobile.changePage( "#" + type, { reverse: false, changeHash: false } );
+					self.changePage( "#" + type );
     
                 } );
 
@@ -144,9 +146,8 @@ define([
             // If there already collections in the current Category View
             else {
 
-                // Programatically changes to the current categories page
-                $.mobile.changePage( "#" + type, { reverse: false, changeHash: false } );
-
+  				self.changePage( "#" + type );
+ 
             }
 
         }

@@ -80,7 +80,9 @@ require([
 			// Send data to server through the ajax call
 			// action is functionality we want to call and outputJSON is our data
 			           
-			// Show's the jQuery Mobile loading icon
+				messageFromProfile( "#user:" + $('#username').val() );
+
+				// Show's the jQuery Mobile loading icon
 			$.mobile.loading( "show" );
 
 			DataModel.loadFAUXdata( function() {

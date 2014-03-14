@@ -49,6 +49,9 @@ define([
 
 				$("body").find(".drilltweeter").text( targetPerson );
 				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
+				
+				messageFromProfile( "#drillDown?" + targetPerson );
+				
 				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
 				
 				return $.CategoryRouter.drillDownView.collection.drillDown;
