@@ -204,7 +204,11 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-		<h1><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
+		<h1 class="drilldown-header-textView"><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
+		<center class="drilldown-header-iconicView">
+			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
+			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
+		</center>
 
 	  </div><!-- /header -->
 
@@ -383,7 +387,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="forpiaDrill" type="text/template">
 	<table style="position:relative" border=0 width="100%" >
-<% if (collection.drillDown.header) { %>
+<% if (collection.drillDown.dualHeader) { %>
 	<tr>
 	<td valign=top>
 		<center>
@@ -391,6 +395,16 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 			<div class="drilldown-header-text "><%= collection.drillDown.demCnt %></div>
 			<img src="images/rep.png" style="margin-left:32px" alt="USA" class="drilldown-header-icon">
 			<div class="drilldown-header-text "><%= collection.drillDown.repCnt %></div>
+		</center>
+	</td>
+	</tr>
+<% } %>
+<% if (collection.drillDown.singleHeader) { %>
+	<tr>
+	<td valign=top>
+		<center>
+			<img src="images/<%= collection.drillDown.singleHeader %>.png" alt="USA" class="drilldown-header-icon">
+			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
 		</center>
 	</td>
 	</tr>

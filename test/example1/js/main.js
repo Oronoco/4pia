@@ -1,5 +1,21 @@
 // Sets the require.js configuration for your application.
-	String.prototype.trim = function ()
+function gup( str, name ) {
+		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp( regexS );
+		var results = regex.exec( str );
+		if( results === null )
+			return undefined;
+		else
+			return results[1];
+	};
+
+			String.prototype.gup = function( name )
+			{
+				return gup( this, name );
+			};
+
+		String.prototype.trim = function ()
 			{
 				return this.replace(/^\s*/, "").replace(/\s*$/, "");
 			};

@@ -24,6 +24,8 @@ define([
 
 		drillDown : function( targetPerson, myCollection, options ) {
 				var person = undefined;
+				$(".drilldown-header-iconicView").hide();
+				$(".drilldown-header-textView").show();
 				if (targetPerson &&  myCollection)
 				{
 					DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
@@ -32,9 +34,23 @@ define([
 					
 					var sortName = targetPerson.sortName()
 
-					var person = _.find( DataModel.models.people, function( entry, key ) {
+					person = _.find( DataModel.models.people, function( entry, key ) {
 								return  (entry.name.toLowerCase().indexOf( sortName.toLowerCase()) > 0);
 							});
+					
+					if (options && options.singleHeader)
+					{
+						var categoryClass = DataModel.models.drillDown ? DataModel.models.drillDown[0].attributes.categoryClass :  myCollection.type;
+
+						if (categoryClass === "dtweets"  ||  categoryClass === "rtweets")
+						{
+							options.singleHeader = (categoryClass === "dtweets") ? "images/dem.png" : "images/rep.png";
+							$(".drilldown-header-icon").attr({src : options.singleHeader});
+							$(".drilldown-header-iconicView").show();
+							$(".drilldown-header-textView").hide();
+						}
+						options.singleHeader = false;
+					}
 				}
 
 				$.CategoryRouter.drillDownView.collection.drillDown = $.extend({
@@ -76,7 +92,7 @@ define([
 								return false;
 							});
 
-						self.drillDown( searchStr, undefined, {header: true, demCnt : demCnt, repCnt : repCnt} );
+						self.drillDown( searchStr, undefined, {dualHeader: true, demCnt : demCnt, repCnt : repCnt} );
 				});
 			},
 			
@@ -107,7 +123,7 @@ define([
 				if (targetBio.length)
 				{
 					self.searchCollection( $.CategoryRouter.dailyView.collection, function() {
-							self.drillDown( targetBio[0].bio.sortName, $.CategoryRouter.dailyView.collection );
+							self.drillDown( targetBio[0].bio.sortName, $.CategoryRouter.dailyView.collection, {singleHeader : true} );
 						});
 				}
 			},
@@ -156,7 +172,7 @@ define([
 					var id = $(this).attr("data-id");
 					var targetPerson = self.collection.models[ id ].get("person");
 				
-					self.drillDown( targetPerson, self.collection );
+					self.drillDown( targetPerson, self.collection, {singleHeader : true} );
 				
 					return false; // cancel original event to prevent form submitting
 				}); 
@@ -168,7 +184,7 @@ define([
 					$(elem).addClass("tweetCloudItemPress");
 						
 					 setTimeout( function() {
-					//	$(elem).removeClass("tweetCloudItemPress");
+						$(elem).removeClass("tweetCloudItemPress");
 
 						var searchStr = $(elem).text();
 						self.search( searchStr );
