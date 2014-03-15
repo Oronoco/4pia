@@ -40,7 +40,7 @@ define([
 					
 					if (options && options.singleHeader)
 					{
-						var categoryClass = DataModel.models.drillDown ? DataModel.models.drillDown[0].attributes.categoryClass :  myCollection.type;
+						var categoryClass = DataModel.models.drillDown.length > 0 ? DataModel.models.drillDown[0].attributes.categoryClass :  myCollection.type;
 
 						if (categoryClass === "dtweets"  ||  categoryClass === "rtweets")
 						{

@@ -32,8 +32,8 @@ function messageFromProfile( msg )
 
 	var elem = document.getElementById("pageCounter");
 	var msg = msg.replace(/ /g, "_");
-	elem.src ="index_cnt.html?" + msg;
-console.log("messageFromProfile: " + msg );
+	elem.src ="../../index_cnt.html?" + msg;
+//console.log("messageFromProfile: " + msg );
 	if (alertTimerId != 0)
 	{
 		clearTimeout( alertTimerId );
@@ -119,7 +119,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
                   <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
-                  <li data-role="list-divider">Other Interests</li>
+                  <li data-role="list-divider" style="margin-top:40px">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
                   <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
                   <li><a href="#category?climate" class="climate">Climate Change</a></li>
@@ -204,7 +204,8 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-		<h1 class="drilldown-header-textView"><span class="drilltweetcnt"></span> tweets for <span class="drilltweeter"> </span> </h1>
+		<h1 class="drilldown-header-textView">
+			<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
 		<center class="drilldown-header-iconicView">
 			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
 			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
