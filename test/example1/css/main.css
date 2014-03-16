@@ -2,6 +2,16 @@
 	max-height:40px;
 	max-width:24px;
 }
+.ui-content .ui-listview-inset, .ui-panel-inner>.ui-listview-inset {
+	margin : -1em;
+}
+.env-viewport-large .ui-header {
+}
+
+.tweetCloudHeader {
+	font-size : 14px;
+	text-transform:capitalize;
+}
 
 .tweetCloudItem:hover {
 	background-color : #47bbdc;
@@ -9,6 +19,9 @@
 .tweetCloudItemPress {
 	color : #f99600;
 	background-color : #47bbdc;
+}
+.noFloat {
+	float:none;
 }
 
 .drilldown-header-icon {
@@ -26,14 +39,14 @@
 }
 
 .category-header-icon {
-	max-height:36px;
+	max-height:32px;
 	max-width: 40px;
 	padding-left: 0px 32px;
 	display:inline;
 }
 
 .category-header-text {
-	font-size: 32px;
+	font-size: 30px;
 	color:#47bbdc;
 	padding: 0px 10px;
 	display:inline;
@@ -80,7 +93,7 @@ padding: .3em 1em;
 .timeline_person {
 	display:inline-block;
 	text-decoration : none;
-	margin-left: 18px;
+	margin-left: 12px;
 	font-size:12px;
 	padding: 0px;
 	font-weight:500;
@@ -122,7 +135,7 @@ background-color:lightGray;
 }
 .timeline_description {
 	display:block;
-	margin-left: 18px;
+	margin-left: 12px;
 	font-size:12px;
 	padding-top: 4px;
 	padding-bottom: 4px;

@@ -5,10 +5,8 @@
 	<meta name="description" content="">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	 <meta name="apple-mobile-web-app-capable" content="yes"/>
-	 <meta name="viewport" content="minimal-ui">
-<LINK REL="apple-touch-icon" HREF="images/apple-touch-icon.png" /> 
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<LINK REL="apple-touch-icon" HREF="images/apple-touch-icon.png" /> 
 
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile-1.4.2.min.css">
 	<link rel="stylesheet" href="css/main.css">
@@ -17,7 +15,41 @@
     <script src="js/main.js"></script>
 <script language="JavaScript" type="text/javascript">
 
-var alertTimerId = 0;
+function gup( str, name ) {
+		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp( regexS );
+		var results = regex.exec( str );
+		if( results === null )
+			return undefined;
+		else
+			return results[1];
+	};
+
+			String.prototype.gup = function( name )
+			{
+				return gup( this, name );
+			};
+
+		String.prototype.trim = function ()
+			{
+				return this.replace(/^\s*/, "").replace(/\s*$/, "");
+			};
+			
+	String.prototype.sortName = function ()
+			{
+				return this
+					.replace(/Rep\. /i, "" )
+					.replace(/Sen\. /i, "" )
+					.replace(/Cong\. /i, "" )
+					.replace(/President /i, "" )
+					.replace(/Congressman /i, "" )
+					.replace(/U.S\. Rep\. /i, "" )
+					.replace(/Senator/i, "" ).trim();
+			};
+
+
+			var alertTimerId = 0;
 
 function removeMessage()
 {
@@ -42,6 +74,18 @@ function messageFromProfile( msg )
 
 	alertTimerId = setTimeout(removeMessage, 1000);
 }
+
+var viewportSize;
+
+function updateLayout() {
+  if (window.innerWidth != currentWidth) {
+    currentWidth = window.innerWidth;
+    var orient = (currentWidth == 320) ? "profile" : "landscape";
+    document.body.setAttribute("orient", orient);
+    window.scrollTo(0, 1);
+  }
+};
+
 
 </script>
 
@@ -109,7 +153,12 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <div id="categories" data-role="page" data-title="Categories">
 
       <div data-role="header">
-            <h1>Interests</h1>
+            <h1>Interests 
+				<span class=debugInfo> 
+					<span class="env-viewport-width"></span>,
+					<span class="env-viewport-height"></span> <span class="env-viewport-size"></span>
+				</span>
+			</h1>
       </div><!-- /header -->
 
       <div role="main" class="ui-content">
@@ -119,7 +168,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
                   <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
-                  <li data-role="list-divider" style="margin-top:40px">Other Interests</li>
+                  <li data-role="list-divider" style="margin-top:20px">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
                   <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
                   <li><a href="#category?climate" class="climate">Climate Change</a></li>
@@ -223,7 +272,15 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
     <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Instagram</a>
   </div>
 </div>
-
+   <div id="tags" style="display: none;">
+      <ul>
+        <li><a href="http://www.google.com" target="_blank">Google</a></li>
+        <li><a href="/fish">Fish</a></li>
+        <li><a href="/chips">Chips</a></li>
+        <li><a href="/salt">Salt</a></li>
+        <li><a href="/vinegar">Vinegar</a></li>
+      </ul>
+    </div>		   
 <div id="ctweets" data-role="page" data-title="Tweet Cloud">
 
       <div data-role="header">
@@ -233,7 +290,12 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
       </div><!-- /header -->
 
       <div role="main" class="ui-content">
-		   <ul >
+	  <div id="myCanvasContainer"  style="display: none;">
+		<canvas width="300" height="300" id="myCanvas">
+			<p>Anything in here will be replaced on browsers that support the canvas element</p>
+		</canvas>
+	</div>
+	<ul >
  				<div class="tweetCloud"> To be loaded </div>
             </ul>
   </div><!-- /content -->
@@ -341,12 +403,25 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-							  <div class="timeline_followers">
-									<%= category.followers_formatted %> followers
-									 <img class="timeline_twitter" src="images/twitter.jpg">
 
-							  </div>
-							  <div style="clear:both"> </div>
+							  <% if (viewportSize ==="small") { %>
+									<div class="timeline_followers">
+										<img class="timeline_twitter" src="images/twitter.jpg">
+									</div>
+									<div style="clear:both"> </div>
+									<center class="timeline_followers" style="float:none;clear:both;display:block">
+										<%= category.followers_formatted %> followers
+									</center>
+									<div style="clear:both"> </div>
+							<% } else { %>
+									  <div class="timeline_followers">
+											<%= category.followers_formatted %> followers
+											 <img class="timeline_twitter" src="images/twitter.jpg">
+
+									  </div>
+									  <div style="clear:both"> </div>
+									
+							<% } %>
 							 <div class="timeline_description">
 									<%= category.description %>
 							  </div>
@@ -364,13 +439,27 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 						 <div class="timelineItem">
 							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-							  <div class="timeline_followers">
-									<%= category.followers_formatted %> followers
-									 <img class="timeline_twitter" src="images/twitter.jpg">
 
-							  </div>
-							  <div style="clear:both"> </div>
-							 <div class="timeline_description">
+							  <% if (viewportSize ==="small") { %>
+									<div class="timeline_followers">
+										<img class="timeline_twitter" src="images/twitter.jpg">
+									</div>
+									<div style="clear:both"> </div>
+									<center class="timeline_followers" style="float:none;clear:both;display:block">
+										<%= category.followers_formatted %> followers
+									</center>
+									<div style="clear:both"> </div>
+							<% } else { %>
+									  <div class="timeline_followers">
+											<%= category.followers_formatted %> followers
+											 <img class="timeline_twitter" src="images/twitter.jpg">
+
+									  </div>
+									  <div style="clear:both"> </div>
+									
+							<% } %>
+
+							  <div class="timeline_description">
 									<%= category.description %>
 							  </div>
 						 </div>
@@ -445,6 +534,7 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 </script>
 
 <iframe class=invisible id="pageCounter" width="100%" height="400px"  src="" scrolling="no" frameborder="0"></iframe>
+    
 
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
