@@ -39,8 +39,10 @@ require.config( {
 	// Sets the configuration for your third party scripts that are not AMD compatible
 	shim: {
 
+       'highcharts_more': {
+            deps:["highcharts"]
+        },
        'highcharts_funnel': {
-            exports: 'tbd',
             deps:["highcharts"]
         },
       'tbd': {

@@ -94,7 +94,21 @@ define([
     });		
 
 	var publicAPI = {
-						
+		
+		DataGenFAUXhourlyData : function( lo, hi, date  ) {
+				var data = [];
+				date = date || new Date();
+				date = new Date( date.getFullYear(), date.getMonth(), date.getDay() );
+				
+				for (var hour = 0; hour < 24; hour++) {
+						data.push([
+								Date.UTC( date.getFullYear(), date.getMonth(), date.getDay(), hour ),
+								DataGen.utils.range( lo, hi )()
+							])
+					}
+				return data;
+			},
+			
 		makePulseCharts : function ( view, person )
 		{
 			var self = this;
@@ -141,96 +155,22 @@ define([
 							"height" : "140px",
 							"margin" : "0 auto"
 						});
+				
 				var range = { hi : 10, lo : 0 };
 				var series = [{
 					name: 'Dem',
 					color: '#232066',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 0, 10, new Date( 2014, 2, 10) ),
 					stack: 'dem'
 				}, {
 					name: 'Rep',
 					color: '#E91D0E',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 0, 10, new Date( 2014, 2, 10) ),
 					stack: 'rep'
 				}, {
 					name: personName,
 					color: '#f99600',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 0, 10, new Date( 2014, 2, 10) ),
 					stack: personName
 				}];
 				
@@ -297,92 +237,17 @@ define([
 				var series = [{
 					name: 'Dem',
 					color: '#232066',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 12345, 50000 ),
 					stack: 'dem'
 				}, {
 					name: 'Rep',
 					color: '#E91D0E',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 12345, 50000 ),
 					stack: 'rep'
 				}, {
 					name: personName,
 					color: '#f99600',
-					data: [
-						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
-						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
-					],
+					data: this.DataGenFAUXhourlyData( 12345, 50000 ),
 					stack: personName
 				}];
 				
