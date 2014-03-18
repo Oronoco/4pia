@@ -1,5 +1,19 @@
 // Sets the require.js configuration for your application.
 
+function removeFromGlobal(name, force) 
+{
+    var ptr = this[name];
+    try
+	{
+        delete this[name];
+    }
+	catch (e)
+	{
+        this[name] = undefined;
+    }
+    return ptr;
+}
+
 require.config( {
 
 	// 3rd party script alias names
@@ -9,9 +23,14 @@ require.config( {
 		"jquery": "../../libs/js/jquery",
 		"datejs": "../../libs/js/date",
 		"numeral" : '../../libs/js/numeral',
+		"class": '../../libs/js/my.class',
+        "tbd" : '../../libs/js/tbd',
+		"dataGen" : '../../js/dataGen',
 		"tagcanvas" : '../../libs/js/tagcanvas/jquery.tagcanvas.min',
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
 		"highcharts": "../../libs/js/highcharts/js/highcharts.src",
+		"highcharts_more": "../../libs/js/highcharts/js/highcharts-more.src",
+		"highcharts_funnel": "../../libs/js/highcharts/js/modules/funnel",
 		"underscore": "../../libs/js/lodash",
 		"backbone": "../../libs/js/backbone",
 
@@ -20,6 +39,16 @@ require.config( {
 	// Sets the configuration for your third party scripts that are not AMD compatible
 	shim: {
 
+       'highcharts_funnel': {
+            exports: 'tbd',
+            deps:["highcharts"]
+        },
+      'tbd': {
+            exports: 'tbd',
+            init: function() {
+//                return removeFromGlobal('tbd');
+            }
+        },
 		"backbone": {
 			"deps": [ "underscore", "jquery" ],
 			"exports": "Backbone"

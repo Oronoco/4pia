@@ -171,6 +171,7 @@ function updateLayout() {
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
                   <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
+                  <li><a href="#category?pulse" class="bios"><img src="images/twitter-bird-pulse.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">4PIA Pulse</a></li>
                   <li data-role="list-divider" style="margin-top:20px">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
                   <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
@@ -234,7 +235,7 @@ function updateLayout() {
 		<a href="#back" data-rel="back" data-icon="back">Back</a>
 
 	    <center>
-	    	<img src="images/logo.png" class="pulse-header-icon">
+	    	<img src="images/twitter-bird-pulse.png" class="pulse-header-icon">
 	    	<div class="pulse-header-text">Pulse</div>
 	    </center>
 
@@ -356,7 +357,7 @@ top: -4px;">Pulse</div>
 				  <input id="bioFilter" data-type="search" placeholder="Search for names..">
 				</form>
 			</td>
-			<td width="12%">
+			<td width="15%">
 				<div id="bioFilter_controlGroup" data-role="fieldcontain" style="margin-left:20px">
 					<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 						<input type="radio" name="bioFilter" id="all" value="on" checked="checked" />
@@ -444,6 +445,8 @@ top: -4px;">Pulse</div>
 	 <div class="pulse-chart-container">
 		<div class="pulse-chart" data-type="dailyTweets" id="pulse_dailyTweets">Daily Tweets</div>
 		<div class="pulse-chart" data-type="followers" id="pulse_followers">Followers</div>
+		<div class="pulse-chart" data-type="funnel" id="pulse_followers">Tweet Funnel</div>
+		<div class="pulse-chart" data-type="gauge" id="pulse_followers">Activity</div>
 	</div>
 </script>
 

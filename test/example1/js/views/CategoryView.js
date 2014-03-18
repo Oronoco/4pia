@@ -59,6 +59,7 @@ define([
 
 				$.CategoryRouter.drillDownView.collection.drillDown = $.extend({
 						targetPerson : targetPerson,
+						person	: person,
 						url : person ? person.url : false
 					}, options );
 					

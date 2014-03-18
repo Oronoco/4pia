@@ -6,12 +6,15 @@ define([
 	"jquery",
 	"backbone",
 	"highcharts",
+	"dataGen",
 	"../routers/mobileRouter",
 	"../models/CategoryModel",
 	"../models/PreferenceModel",
 	"../models/DataModel",
-	"tagcanvas"
-], function( $, Backbone, HighCharts, Mobile, CategoryModel, Preferences, DataModel, TagCanvas ) {
+	"tagcanvas",
+	"highcharts_more",
+	"highcharts_funnel"
+], function( $, Backbone, HighCharts, DataGen, Mobile, CategoryModel, Preferences, DataModel, TagCanvas ) {
 
 	var body = $('body'),
 		chartDefaultCSS = {
@@ -92,15 +95,23 @@ define([
 
 	var publicAPI = {
 						
-		makePulseCharts : function ( view )
+		makePulseCharts : function ( view, person )
 		{
 			var self = this;
 			var pulseContainer = $(view.$el).find(".pulse-chart-container");
-
+			
 			if (!pulseContainer  ||  pulseContainer.length === 0)
 			{
 				return;
 			}
+			
+			var drillCollection = $.CategoryRouter.drillDownView.collection;
+			var person = undefined;
+			if (drillCollection  &&  drillCollection.drillDown)
+			{
+				person = drillCollection.drillDown.person;
+			}
+			
 			var charts = $(pulseContainer).find(".pulse-chart");
 			_.each( charts, function( entry ) {
 					var chartType = $(entry).attr("data-type");
@@ -108,7 +119,7 @@ define([
 					var div;
 					if (func)
 					{
-						div = func.apply( self, [view, entry ] );
+						div = func.apply( self, [view, entry, person, person ? person.sortName : undefined ] );
 					}
 					else
 					{
@@ -122,7 +133,7 @@ define([
 				});
 		},
 		
-		dailyTweets : function( view, elem ) {
+		dailyTweets : function( view, elem, person, personName  ) {
 				var chartContainer = $("<div>")
 					.css({
 							"max-width" : window.innerWidth,
@@ -130,7 +141,104 @@ define([
 							"height" : "140px",
 							"margin" : "0 auto"
 						});
-						
+				var range = { hi : 10, lo : 0 };
+				var series = [{
+					name: 'Dem',
+					color: '#232066',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: 'dem'
+				}, {
+					name: 'Rep',
+					color: '#E91D0E',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: 'rep'
+				}, {
+					name: personName,
+					color: '#f99600',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: personName
+				}];
+				
+				if (personName === undefined)
+				{
+					series.length = 2;
+				}
+				
 				$(function () {
 						$(chartContainer).highcharts({
 
@@ -143,7 +251,7 @@ define([
 							},
 
 							xAxis: {
-								categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+								 type: 'datetime'
 							},
 
 							yAxis: {
@@ -155,7 +263,8 @@ define([
 							},
 
 							tooltip: {
-								formatter: function() {
+								shared : true,
+								xformatter: function() {
 									return '<b>'+ this.x +'</b><br/>'+
 										this.series.name +': '+ this.y +'<br/>'+
 										'Total: '+ this.point.stackTotal;
@@ -168,29 +277,14 @@ define([
 								}
 							},
 
-							series: [{
-								name: 'Dem',
-								color: '#232066',
-        						data: [3, 4, 4, 2, 5, 3, 1],
-								stack: 'dem'
-							}, {
-								name: 'Rep',
-								color: '#E91D0E',
-        						data: [3, 0, 4, 4, 3, 2, 4],
-								stack: 'rep'
-							}, {
-								name: 'me',
-								color: '#0F0',
-        						data: [3, 0, 4, 4, 3, 2, 4],
-								stack: 'me'
-							}]
+							series: series
 						});
 					});
-    
+					
 				return chartContainer;
 			},
 			
-		followers : function( view, elem ) {
+		followers : function( view, elem, person, personName ) {
 				var chartContainer = $("<div>")
 					.css({
 							"max-width" : window.innerWidth,
@@ -199,6 +293,103 @@ define([
 							"margin" : "0 auto"
 						});
 						
+				var range = { hi : 12345, lo : 50000 };
+				var series = [{
+					name: 'Dem',
+					color: '#232066',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: 'dem'
+				}, {
+					name: 'Rep',
+					color: '#E91D0E',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: 'rep'
+				}, {
+					name: personName,
+					color: '#f99600',
+					data: [
+						[Date.UTC(2014, 2, 10, 00), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 01), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 02), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 03), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 04), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 05), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 06), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 07), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 08), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 09), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 10), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 11), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 12), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 13), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 14), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 15), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 16), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 17), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 18), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 19), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 20), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 21), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 22), DataGen.utils.range(range.lo, range.hi)()],
+						[Date.UTC(2014, 2, 10, 23), DataGen.utils.range(range.lo, range.hi)()] 
+					],
+					stack: personName
+				}];
+				
+				if (personName === undefined)
+				{
+					series.length = 2;
+				}
 				$(function () {
 						$(chartContainer).highcharts({
 
@@ -207,7 +398,7 @@ define([
 							},
 
 							title: {
-								text: 'Hourly Followers'
+								text: 'Daily Followers'
 							},
 
 							xAxis: {
@@ -223,7 +414,8 @@ define([
 							},
 
 							tooltip: {
-								formatter: function() {
+								shared : true,
+								xformatter: function() {
 									return '<b>'+ this.x +'</b><br/>'+
 										this.series.name +': '+ this.y +'<br/>'+
 										'Total: '+ this.point.stackTotal;
@@ -236,206 +428,205 @@ define([
 								}
 							},
 
-							series: [{
-								name: 'Dem',
-								color: '#232066',
-        						data: [
-									[Date.UTC(2010, 0, 1, 10), 12312],
-									[Date.UTC(2010, 0, 1, 20), 12312],
-									[Date.UTC(2010, 0, 2, 10), 12432],
-									[Date.UTC(2010, 0, 2, 20), 11253],
-									[Date.UTC(2010, 0, 3, 10), 15345],
-									[Date.UTC(2010, 0, 3, 20), 62346],
-									[Date.UTC(2010, 0, 4, 10), 34234],
-									[Date.UTC(2010, 0, 4, 20), 32454] 
-        						],
-								stack: 'dem'
-							}, {
-								name: 'Rep',
-								color: '#E91D0E',
-        						data: [
-									[Date.UTC(2010, 0, 1, 10), 23542],
-									[Date.UTC(2010, 0, 1, 20), 34214],
-									[Date.UTC(2010, 0, 2, 10), 32142],
-									[Date.UTC(2010, 0, 2, 20), 23412],
-									[Date.UTC(2010, 0, 3, 10), 42324],
-									[Date.UTC(2010, 0, 3, 20), 23234],
-									[Date.UTC(2010, 0, 4, 10), 43123],
-									[Date.UTC(2010, 0, 4, 20), 43433]  
-        						],
-								stack: 'rep'
-							}, {
-								name: 'me',
-								color: '#0F0',
-        						data: [
-									[Date.UTC(2010, 0, 1, 10), 23542],
-									[Date.UTC(2010, 0, 1, 20), 34214],
-									[Date.UTC(2010, 0, 2, 10), 32142],
-									[Date.UTC(2010, 0, 2, 20), 23412],
-									[Date.UTC(2010, 0, 3, 10), 42324],
-									[Date.UTC(2010, 0, 3, 20), 23234],
-									[Date.UTC(2010, 0, 4, 10), 43123],
-									[Date.UTC(2010, 0, 4, 20), 43433]  
-        						],
-								stack: 'me'
-							}]
+							series: series
 						});
 					});
-    
+				
+				return chartContainer;
+			},
+		funnel : function( view, elem, person, personName ) {
+				var chartContainer = $("<div>")
+					.css({
+							"max-width" : window.innerWidth,
+							"width" : window.innerWidth,
+							"height" : "240px",
+							"margin" : "0 auto"
+						});
+						
+				$(function () {
+						$(chartContainer).highcharts({
+						chart: {
+							type: 'funnel',
+							marginRight: 100
+						},
+						title: {
+							text: 'Tweet Funnel',
+							x: -50
+						},
+						plotOptions: {
+							series: {
+								dataLabels: {
+									enabled: true,
+									format: '<b>{point.name}</b> ({point.y:,.0f})',
+									color: 'black',
+									softConnector: true
+								},
+								neckWidth: '30%',
+								neckHeight: '25%'
+								
+								//-- Other available options
+								// height: pixels or percent
+								// width: pixels or percent
+							}
+						},
+						legend: {
+							enabled: false
+						},
+						series: [{
+							name: 'Unique users',
+							data: [
+								['Followers',   15654],
+								['Retweets',       4064],
+								['New Followers', 1987],
+								['New Media',    976],
+								['Tweets',    846]
+							]
+						}]
+					});
+					});
+				
 				return chartContainer;
 			},
 			
-		makeDrillDownCharts : function ( chartContainer, params )
-		{
-			var defaults = {
-				width:320,
-				height:240,
-				bgColor:"EEEEEE",
-				colors:"",
-				toLegend: function( x ) { return x }
-			};
+		gauge : function( view, elem, person, personName ) {
+				var chartContainer = $("<div>")
+					.css({
+							"max-width" : window.innerWidth,
+							"width" : window.innerWidth,
+							"height" : "140px",
+							"margin" : "0 auto"
+						});
 
-			params = $.extend( {}, defaults, params );
-			var yearChart = $("<img id=funFacts_year>");
-			var monthChart = $("<img id=funFacts_month>");
-			var dayChart = $("<img id=funFacts_day>");
-	
-			var charts = $("<div>")
-				.append(yearChart)
-				.append(monthChart)
-				.append(dayChart);
-		
-			$(chartContainer)
-				.append( charts );
-		
-			function getChartValues( container, name, params )
-			{
-				var variables = {};
-				variables.sorting = {
-						byDate_day : {
-								01: 2,
-								02: 2,
-								03: 2,
-								04: 1,
-								05: 2,
-								06: 4,
-								07: 1,
-								08: 2,
-								09: 4,
-								10: 3,
-								11: 3,
-								12: 4,
-								13: 3,
-								14: 2,
-								15: 1,
-								16: 4,
-								17: 1,
-								20: 1,
-								21: 6,
-								23: 1,
-								24: 3,
-								25: 5,
-								26: 1,
-								27: 2,
-								28: 3,
-								29: 2,
-								31: 1						
+				$(function () {
+						$(chartContainer).highcharts({
+
+							chart: {
+								type: 'gauge',
+								plotBorderWidth: 1,
+								plotBackgroundColor: {
+									linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+									stops: [
+										[0, '#FFF4C6'],
+										[0.3, '#FFFFFF'],
+										[1, '#FFF4C6']
+									]
+								},
+								plotBackgroundImage: null,
+								height: 200
 							},
-						byDate_month : {
-								01: 8,
-								02: 2,
-								03: 8,
-								04: 5,
-								05: 4,
-								06: 10,
-								07: 1,
-								08: 1,
-								09: 9,
-								10: 6,
-								11: 3,
-								12: 9
+						
+							title: {
+								text: '4PIA meter'
 							},
-						byDate_year : {
-								2004: 7,
-								2005: 8,
-								2006: 7,
-								2007: 7,
-								2008: 6,
-								2009: 8,
-								2010: 6,
-								2011: 6,
-								2012: 5,
-								2013: 5,
-								2014: 1						
-							}
-					}
-				var temp = [];
-				for (var item in variables.sorting[ name ])
-				{
-					temp.push( item );
-				}
-				temp.sort();
-
-				var legends = "";
-				var data = "";
-				var maxValue = 0;
-		
-				if (params.sequence)
-				{
-					temp = params.sequence;
-				}
-				for (var x = 0; x < temp.length; x++)
-				{
-					var value = variables.sorting[ name ][ temp[x] ];
-					if (value == undefined) value = 0;
-					data += "," + value;
-					legends += "|" + params.toLegend( temp[x] );
-					maxValue = Math.max( value, maxValue );
-				}
-		//		console.log(data);
-
-				var template = "http://chart.apis.google.com/chart?chf=bg,s,{bgColor}&chxl=0:{legends}&chco={colors}&chxr=1,0,{max}&chxt=x,y&chbh=a&chs={dimensions}&cht=bvs&chds=0,{max}&chd=t:{data}&chtt={title}";
-				url = template.replace(/{dimensions}/g, Math.floor(params.width / 3) + "x" + params.height)
-					 .replace(/{bgColor}/g, params.bgColor)
-					 .replace(/{max}/g, maxValue)
-					 .replace(/{colors}/g, params.colors)
-					 .replace(/{data}/g, encodeURIComponent(data.substring(1)) )
-					 .replace(/{legends}/g, encodeURIComponent(legends) )
-					 .replace(/{title}/g, encodeURIComponent(params.title) );
-			 
-		//		console.log(url);
-		
-				var img = $("<img id=funFactsChart_" + name + ">")
-					.attr( "src", url )
-					.css("width", params.width / 3)
-					.css("height", params.height)
-					.css("margin-right", "10px")
-
-				$(chartContainer)
-					.append(img);
-		
-				return {maxValue:maxValue, legends:legends, data:data, url:url };
-
+							
+							pane: [{
+								startAngle: -45,
+								endAngle: 45,
+								background: null,
+								center: ['25%', '145%'],
+								size: 300
+							}, {
+								startAngle: -45,
+								endAngle: 45,
+								background: null,
+								center: ['75%', '145%'],
+								size: 300
+							}],	    		        
+						
+							yAxis: [{
+								min: -20,
+								max: 6,
+								minorTickPosition: 'outside',
+								tickPosition: 'outside',
+								labels: {
+									rotation: 'auto',
+									distance: 20
+								},
+								plotBands: [{
+									from: 0,
+									to: 6,
+									color: '#C02316',
+									innerRadius: '100%',
+									outerRadius: '105%'
+								}],
+								pane: 0,
+								title: {
+									text: 'VU<br/><span style="font-size:8px">Tweet Activity</span>',
+									y: -40
+								}
+							}, {
+								min: -20,
+								max: 6,
+								minorTickPosition: 'outside',
+								tickPosition: 'outside',
+								labels: {
+									rotation: 'auto',
+									distance: 20
+								},
+								plotBands: [{
+									from: 0,
+									to: 6,
+									color: '#C02316',
+									innerRadius: '100%',
+									outerRadius: '105%'
+								}],
+								pane: 1,
+								title: {
+									text: 'VU<br/><span style="font-size:8px">Follower Activity</span>',
+									y: -40
+								}
+							}],
+							
+							plotOptions: {
+								gauge: {
+									dataLabels: {
+										enabled: false
+									},
+									dial: {
+										radius: '100%'
+									}
+								}
+							},
+								
+						
+							series: [{
+								data: [-20],
+								yAxis: 0
+							}, {
+								data: [-20],
+								yAxis: 1
+							}]
+						
+						},
+						
+						// Let the music play
+						function(chart) {
+							setInterval(function() {
+								var left = chart.series[0].points[0],
+									right = chart.series[1].points[0],
+									leftVal, 
+									inc = (Math.random() - 0.5) * 3;
+						
+								leftVal =  left.y + inc;
+								rightVal = leftVal + inc / 3;
+								if (leftVal < -20 || leftVal > 6) {
+									leftVal = left.y - inc;
+								}
+								if (rightVal < -20 || rightVal > 6) {
+									rightVal = leftVal;
+								}
+						
+								left.update(leftVal, false);
+								right.update(rightVal, false);
+								chart.redraw();
+						
+							}, 500);
+						
+						});
+					});
+					
+				return chartContainer;
 			}
-			
-			params.title = "# Dinners per Year";
-			params.colors = "004970";
-			params.toLegend = function(x) { x = x % 100; return "'" + ((x<10)?"0":"") + x };
-			getChartValues( yearChart, "byDate_year", params ); 
-	
-			params.title = "Most Popluar Months";
-			params.colors = "A29B76";
-			params.toLegend = function(x) { v = parseInt(x, 10) - 1; return (v%2)==0 ?monthNames_abbv[v]:"" };
-			getChartValues( monthChart, "byDate_month", params ); 
-	
-			params.title = "Most Popular Days";
-			params.colors = "692F2F";
-			params.sequence = ["01","02","03","04","05","06","07","08","09",10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 ];
-			params.toLegend = function(x) { return ((x % 5) == 0  && x!=30) ||(x==31)||(x==1)? parseInt(x, 10) : "" };
-			getChartValues( dayChart, "byDate_day", params ); 
-		},
-
-  
     };
 
     // Returns the View class
