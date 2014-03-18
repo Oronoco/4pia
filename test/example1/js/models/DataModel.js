@@ -7,8 +7,9 @@ define([
 	"backbone",
 	"underscore",
 	'numeral', 
-	"datejs"
-], function( $, Backbone, _, Numeral, datejs ) {
+	"datejs",
+	"../models/PreferenceModel"
+], function( $, Backbone, _, Numeral, datejs, Preferences ) {
 
     // The Model constructor
     var dataModels = {};
@@ -26,7 +27,7 @@ define([
 		var div = $( "<div>" ).html(ss);
 		var table = $(div).find("table");
 		_.each( table, function( tbl, index ) {
-//s				if (index > 10) return;
+//				if (index > 10) return;
 				var spans = $(tbl).find("span");
 				var tds = $(tbl).find("td");
 				var person = $(spans[0]).text();
@@ -1751,6 +1752,7 @@ CynthiaLummis :  {
 		}
 	var publicAPI = {
 			models : dataModels,
+			
 			loadCategories : function( method, model, options ) {
 					var dataset = dataModels[ model.type ];
 					if (dataset)
@@ -1759,16 +1761,22 @@ CynthiaLummis :  {
 					}
 					return undefined;
 				},
+				
 			markupTweetCloud : function( cloud ) {
 
 					var pos = cloud.indexOf("<body>") + 6;
 					var str = cloud.substring( pos );
 					var div = $("<div>").html(str);
-					var b = $(div).find("#contents");
-					var header = $(b).find("h2")
+					var contents = $(div).find("#contents")
+						.addClass("tweetCloudContents");
+						
+					var header = $(contents).find("h2")
 						.addClass("tweetCloudHeader");
 						
-					var spans = $(b).find("font").find("span");
+					var container = $(contents).find("center").find("div")
+						.addClass("tweetCloudContainer");
+					
+					var spans = $(contents).find("font").find("span");
 					var tagcanvas = $("<ul>");
 					var sizes = {};
 					var itemIndex = 0;
@@ -1786,11 +1794,11 @@ CynthiaLummis :  {
 								.addClass("tweetCloudItem");
 								
 							var text = $(span).text();
-							if (text.length >= 3)
+							if (text.length >= Preferences.minTweetCloudSize)
 							{
 								 
 								var aref = $("<a href='#tagcanvas?" + itemIndex + "' class='tweetCloudItem'>")
-									.text( $(span).text() );
+									.text( text );
 									
 								var li = $("<li class='tagcanvas tagcanvas" + itemIndex + "' >")
 									.append(aref);
@@ -1800,9 +1808,21 @@ CynthiaLummis :  {
 								size.push( li );
 								itemIndex++;
 							}
+							else
+							{
+								$(span)
+									.hide();
+							}
 						});
 						
 					var maxSizes = 5;
+					var fontScale = 1;
+					if (Preferences.viewportSize.type !== "large")
+					{
+						var pad = 10;
+						fontScale = (Preferences.viewportSize.limit - pad) / 850;
+						$(container).css({width : window.innerWidth - pad});
+					}
 					var cnt = 0;
 					var min = undefined;
 					var max = undefined;
@@ -1818,7 +1838,7 @@ CynthiaLummis :  {
 					_.each( sizes, function( items, pxSize ) {
 							var px = parseInt( pxSize, 10 );
 							px = Math.round( (px - min) / bucketSize );
-							var fontSize = min + px * bucketSize;
+							var fontSize = min + px * bucketSize * fontScale;
 //							console.log( pxSize, px , fontSize, min, max, bucketSize, maxSizes );
 							var sizeClass = "tweetCloudSize" + px;
 							
@@ -1839,9 +1859,16 @@ CynthiaLummis :  {
 								.css({"font-size" : fontSize});
 						});
 					
-					dataModels.ctweets = b;
+					dataModels.ctweets = contents;
 					dataModels.tagcanvas = tagcanvas;
 					
+				},
+				
+			updateCounts : function() {
+					$("body").find(".biocnt").text( dataModels.bios.length );
+					$("body").find(".dailycnt").text( dataModels.daily.length );
+					$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
+					$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
 				},
 				
 			loadFAUXdata : function ( callback ) {
@@ -1897,9 +1924,24 @@ CynthiaLummis :  {
 										return -1;
 									});
 									
+								var tweetCnt = {};
+								_.each( dataModels.daily, function( entry ) {
+									
+										var sortName = entry.person.sortName()
+
+										var cnt = tweetCnt[ sortName ];
+										if (cnt === undefined)
+										{
+											cnt = 0;
+										}
+										cnt++;
+										tweetCnt[ sortName ]= cnt;
+									});
+									
 								dataModels.bios = [];
-								_.each( people, function( entry, key ) {
-										dataModels.bios.push( {category : "bios", bio : entry } );
+								_.each( people, function( bio, key ) {
+										var cnt = tweetCnt[ bio.sortName ] || undefined;
+										dataModels.bios.push( {category : "bios", bio : bio, tweetCnt : cnt } );
 									});
 								dataModels.bios.sort(function(a, b) {
 //										if (a.bio.sortName === "Denny Heck") return -1;
@@ -1912,10 +1954,8 @@ CynthiaLummis :  {
 								{
 									self.markupTweetCloud( cloud[0] );
 								}
-								$("body").find(".biocnt").text( dataModels.bios.length );
-								$("body").find(".dailycnt").text( dataModels.daily.length );
-								$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
-								$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
+
+								self.updateCounts();
 								callback();
 							});
 				},

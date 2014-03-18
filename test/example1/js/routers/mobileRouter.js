@@ -6,9 +6,10 @@ define([
 	"jquery",
 	"backbone",
 	"../models/CategoryModel",
+	"../models/PreferenceModel",
 	"../collections/CategoriesCollection",
 	"../views/CategoryView"
-], function( $, Backbone, CategoryModel, CategoriesCollection, CategoryView ) {
+], function( $, Backbone, CategoryModel, Preferences, CategoriesCollection, CategoryView ) {
 
     // Extends Backbone.Router
     var CategoryRouter = Backbone.Router.extend( {
@@ -25,10 +26,13 @@ define([
             // Instantiates a new Vehicles climate View
             this.climateView = new CategoryView( { el: "#climate", collection: new CategoriesCollection( [] , { type: "climate" } ) } );
 
-          // Instantiates a new tweet cloud bios View
+          	// Instantiates a new tweet pulse bios View
+            this.pulseView = new CategoryView( { el: "#pulse", collection: new CategoriesCollection( [] , { style: "pulse", type: "pulse" , templateName : "script#forpiaPulse" } ) } );
+
+         	// Instantiates a new tweet cloud bios View
             this.biosView = new CategoryView( { el: "#bios", collection: new CategoriesCollection( [] , { style: "bios", type: "bios", templateName : "script#forpiaBios" } ) } );
 
-         // Instantiates a new tweet cloud Category View
+         	// Instantiates a new tweet cloud Category View
             this.ctweetsView = new CategoryView( { el: "#ctweets", collection: new CategoriesCollection( [] , {  style: "ctweets", type: "ctweets" } ) } );
 
              // Instantiates a new republican Category View
@@ -58,10 +62,12 @@ define([
 
             "login": "login",
             "join": "join",
+            "back": "back",
             "learn": "learn",
             "forgot": "forgot",
 			"categories" : "home",
 			"tagcanvas" : "tagcanvas",
+			"pulse" : "pulse",
 			"bios" : "bios",
 
             // When #category? is on the url, the category method is called
@@ -85,6 +91,8 @@ define([
 			var type = "bios";
              // Stores the current Category View  inside of the currentView variable
             var currentView = this[ type + "View" ];
+				
+			Preferences.lastPageName = "#" + type + "?" + bioKey;
 
 			currentView.bios( bioKey );
 			
@@ -92,16 +100,33 @@ define([
 
 		changePage : function(pageName) {
 		
+				if (pageName != "#pulse")
+				{
+					Preferences.lastPageName = pageName;
+				}
+				
 				messageFromProfile( pageName );
 				
 				// Programatically changes to the categories page
 				$.mobile.changePage( pageName , { reverse: false, changeHash: false } );
 			},
  
+		// Back method
+        back: function() {
+			var url = Preferences.lastPageName  ||  "#categories";
+			this.changePage( url );
+        },
+
 		// Home method
         home: function() {
 
 			this.changePage( "#categories" );
+        },
+
+		// Home method
+        pulse: function() {
+
+			this.changePage( "#pulse" );
         },
 
         // login method

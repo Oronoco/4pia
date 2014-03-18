@@ -5,7 +5,46 @@
 .ui-content .ui-listview-inset, .ui-panel-inner>.ui-listview-inset {
 	margin : -1em;
 }
+
+
+.twitter-radio-icon {
+width: 16px;
+height: 16px;
+background-size: 24px;
+background-position: 8px;
+background-repeat: no-repeat;
+background-image: url(../images/twitter-bird-light-bgs.png);
+}
+
+.xxui-input-search input {
+	padding-left: 3.75em;
+}
+#xxbioFilter {
+	position:relative;
+}
+.xxtwitter_pulse {
+position: absolute;
+left: 29px;
+top: 10px;
+width: 20px;
+height: 20px;
+filter: Alpha(Opacity=50);
+opacity: .5;
+}
+.xxtwitter_pulse:hover {
+		background-color:#F00;
+}
+
 .env-viewport-large .ui-header {
+}
+
+.tweetCloudContainer {
+	margin-right:20px;
+}
+
+.tweetCloudContents {
+	margin-left :-46px;
+	
 }
 
 .tweetCloudHeader {
@@ -25,14 +64,14 @@
 }
 
 .drilldown-header-icon {
-	max-height: 60px;
+	max-height:32px;
 	max-width: 40px;
 	padding-left: 0px 32px;
 	display:inline;
 }
 
 .drilldown-header-text {
-	font-size: 48px;
+	font-size: 30px;
 	color:#47bbdc;
 	padding: 0px 10px;
 	display:inline;
@@ -43,6 +82,29 @@
 	max-width: 40px;
 	padding-left: 0px 32px;
 	display:inline;
+}
+
+.pulse-chart-container {
+}
+
+.pulse-chart {
+	font-size:14px;
+	padding: 8px;
+}
+
+.pulse-header-icon {
+	max-height:32px;
+	max-width: 40px;
+	padding-left: 0px 32px;
+	padding-top:8px;
+	display:inline;
+}
+
+.pulse-header-text {
+	padding: 0px 10px;
+	display: inline;
+	position: relative;
+	top: -12px;
 }
 
 .category-header-text {
@@ -64,7 +126,7 @@
   padding-left:8px;
   }
  .fourpia_copyright {
-  font-size: 20px; 
+  font-size: 14px; 
    padding-right : 8px;
    border-right: 1px solid gray;
 display:inline;
@@ -90,6 +152,8 @@ display:inline;
 .ui-listview>.ui-li-static {
 padding: .3em 1em;
 }
+
+
 .timeline_person {
 	display:inline-block;
 	text-decoration : none;

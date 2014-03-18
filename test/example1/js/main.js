@@ -11,6 +11,7 @@ require.config( {
 		"numeral" : '../../libs/js/numeral',
 		"tagcanvas" : '../../libs/js/tagcanvas/jquery.tagcanvas.min',
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
+		"highcharts": "../../libs/js/highcharts/js/highcharts.src",
 		"underscore": "../../libs/js/lodash",
 		"backbone": "../../libs/js/backbone",
 
@@ -34,8 +35,9 @@ require([
 	"backbone",
 	"js/routers/mobileRouter",
 	"js/models/DataModel",
+	"js/models/PreferenceModel",
 	"underscore"
-], function ( $, Backbone, Mobile, DataModel, _ ) {
+], function ( $, Backbone, Mobile, DataModel, Preferences, _) {
 	$( document ).on( "mobileinit",
 
 
@@ -54,12 +56,14 @@ require([
                                                        + window.location.search);
 			
 			function updateDebugInfo() {
-				viewportSize = document.location.href.gup("viewportSize");
-				if (!viewportSize)
+
+				Preferences.viewportSize = document.location.href.gup("viewportSize");
+				if (!Preferences.viewportSize)
 				{
-					viewportSize = "large";
-					if (window.innerWidth < 600) viewportSize = "medium";
-					if (window.innerWidth < 400) viewportSize = "small";
+					Preferences.viewportSize = undefined;
+					_.each( Preferences.viewportLimits, function(entry) {
+							if (window.innerWidth < entry.limit) Preferences.viewportSize = entry;
+						});
 				}
 					
 				if (document.location.href.gup("debugInfo"))
@@ -74,11 +78,11 @@ require([
 				}
 
 				$("body")
-					.attr({"env-viewport-size" : viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
-					.addClass( "env-viewport-" + viewportSize);
+					.attr({"env-viewport-size" : Preferences.viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
+					.addClass( "env-viewport-" + Preferences.viewportSize);
 					
 
-				$(".env-viewport-size").text( viewportSize );
+				$(".env-viewport-size").text( Preferences.viewportSize );
 				$(".env-viewport-width").text( window.innerWidth );
 				$(".env-viewport-height").text( window.innerHeight );
 			}		

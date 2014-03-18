@@ -7,13 +7,17 @@ define([
 	"backbone",
 	"../routers/mobileRouter",
 	"../models/CategoryModel",
+	"../models/PreferenceModel",
 	"../models/DataModel",
+	"../models/PulseModel",
 	"tagcanvas"
-], function( $, Backbone, Mobile, CategoryModel, DataModel, TagCanvas ) {
+], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, Pulse, TagCanvas ) {
 
     // Extends Backbone.View
     var CategoryView = Backbone.View.extend( {
 
+		timelineTemplate : _.template($("script#timelineItem").html()),
+			
         // The View Constructor
         initialize: function() {
 
@@ -22,7 +26,6 @@ define([
 
         },
 						
-
 		drillDown : function( targetPerson, myCollection, options ) {
 				var person = undefined;
 				$(".drilldown-header-iconicView").hide();
@@ -30,7 +33,7 @@ define([
 				if (targetPerson &&  myCollection)
 				{
 					DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
-							return entry.get("person") === targetPerson;
+							return entry.get("person").sortName() === targetPerson;
 						});
 					
 					var sortName = targetPerson.sortName()
@@ -127,18 +130,49 @@ define([
 							self.drillDown( targetBio[0].bio.sortName, $.CategoryRouter.dailyView.collection, {singleHeader : true} );
 						});
 				}
+				
 			},
 			
         // Renders all of the Category models on the UI
         render: function() {
 
 			var self = this;
+			
+			var templateFn = undefined;
 			var templateName = self.collection.templateName  ||  "script#categoryItems";
 
-			if (self.collection.options.style === "timeline")
+			var filteredModels = undefined;
+			var viewCollection = self.collection;
+			
+			if (viewCollection.options.style === "bios")
 			{
+				if (Preferences.repSearch === "tweetsOnly")
+				{
+					filteredModels = _.filter( viewCollection.models, function( entry, index ) {
+							return entry.get("tweetCnt") !== undefined;
+						});
+				}
+
+				$("#bioFilter_controlGroup").trigger('create');
+				var radioButtons = this.$el.find("input[type='radio']").filter("[name='bioFilter']");
+				radioButtons.filter("#" + Preferences.repSearch).attr("checked", "checked");
+				$(radioButtons).checkboxradio("refresh");
+				$(radioButtons).unbind( "change" );
+				$(radioButtons).bind( "change", function(event, ui) {
+					Preferences.repSearch = $(this).attr("id");
+					self.render();	
+					self.$el.find("ul").listview('refresh');
+				    
+					$.mobile.changePage( "#bios" , { reload : true, reverse: false, changeHash: false } );
+				});			
+			}
+			
+			if (viewCollection.options.style === "timeline")
+			{
+				templateFn = this.timelineTemplate;
+
 				var lastHour = undefined;
-				_.each( self.collection.models, function( entry, index ) {
+				_.each( viewCollection.models, function( entry, index ) {
 						entry = entry.attributes;
 						entry.id = index;
 						var hour = entry.timestamp.getHours();
@@ -155,10 +189,37 @@ define([
 						
 					});
 			}
+
+			var savedModels = viewCollection.models;
+			if (filteredModels)
+			{
+				viewCollection.models = filteredModels;
+			}
 			
-			this.template = _.template( $( templateName ).html(), { "collection": self.collection, "viewportSize" : viewportSize } );
+			var tweetList = this.$el.find("#tweetList");
+			if (tweetList.length > 0)
+			{
+				this.template = _.template( $( "script#tweetList" ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize } );
+				$(tweetList)
+					.empty()
+					.html(this.template);
+			}
+
+			if (Preferences.viewportSize.type === "small")
+			{
+				$(this.$el).find("[data-icon='back']")
+					.attr( "data-iconpos", "notext");
+			}
 			
- 			if (self.collection.options.style === "ctweets")
+						
+			this.template = _.template( $( templateName ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize, "templateFn" : templateFn } );
+			
+ 			if (filteredModels)
+			{
+				viewCollection.models = savedModels;
+			}
+
+			if (viewCollection.options.style === "ctweets")
 			{
 				this.template = DataModel.models.ctweets;
 			}
@@ -168,6 +229,8 @@ define([
 				.empty()
 				.html(this.template);
 
+			DataModel.updateCounts();
+			
 			if (document.location.href.gup( "debugInfo"))
 			{
 				$(".debugInfo")
@@ -179,10 +242,10 @@ define([
 					.hide();
 			}
 			
-			if (self.collection.options.style === "ctweets")
+			if (viewCollection.options.style === "ctweets")
 			{
 				$('#myCanvasContainer').hide();
-				this.template = DataModel.models.ctweets;
+//				this.template = DataModel.models.ctweets;
 				if (document.location.href.gup( "tagcanvas"))
 				{
 					$("#tags").empty().append(DataModel.models.tagcanvas);
@@ -207,15 +270,14 @@ define([
 				}
 			}
 
-
 			this.$el.find(".timeline")
 				.css({"border-color" : "#ddd"});
 				
 			this.$el.find(".timeline_person").on('click', function() {
 					var id = $(this).attr("data-id");
-					var targetPerson = self.collection.models[ id ].get("person");
+					var targetPerson = viewCollection.models[ id ].get("person");
 				
-					self.drillDown( targetPerson, self.collection, {singleHeader : true} );
+					self.drillDown( targetPerson, viewCollection, {singleHeader : true} );
 				
 					return false; // cancel original event to prevent form submitting
 				}); 
@@ -236,6 +298,8 @@ define([
 			
 					return false; // cancel original event to prevent form submitting
 				}); 
+			
+			Pulse.makePulseCharts( this );
 			
             // Maintains chainability
             return this;

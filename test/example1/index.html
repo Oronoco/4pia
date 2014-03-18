@@ -40,11 +40,15 @@ function gup( str, name ) {
 			{
 				return this
 					.replace(/Rep\. /i, "" )
+					.replace(/Rep\. /i, "" )
 					.replace(/Sen\. /i, "" )
+					.replace(/Sen /i, "" )
 					.replace(/Cong\. /i, "" )
 					.replace(/President /i, "" )
 					.replace(/Congressman /i, "" )
-					.replace(/U.S\. Rep\. /i, "" )
+					.replace(/Congressmember /i, "" )
+					.replace(/U\.S\. Rep\. /i, "" )
+					.replace(/U\.S\. /i, "" )
 					.replace(/Senator/i, "" ).trim();
 			};
 
@@ -74,8 +78,6 @@ function messageFromProfile( msg )
 
 	alertTimerId = setTimeout(removeMessage, 1000);
 }
-
-var viewportSize;
 
 function updateLayout() {
   if (window.innerWidth != currentWidth) {
@@ -111,7 +113,7 @@ function updateLayout() {
                 <fieldset>
                     <div data-role="fieldcontain">
                         <label for="username">Enter your username:</label>
-                        <input type="text" value="me@interested.com" name="username" id="username"/>
+                        <input type="text" value="interested_guest@4pia.com" name="username" id="username"/>
                     </div>
                     <div data-role="fieldcontain">
                         <label for="password">Enter your password:</label>
@@ -132,23 +134,24 @@ function updateLayout() {
 
         </div>
     </div>
-    <div data-role="page" id="learn">
-  <div data-role="header">
-    <h1>About 4PIA</h1>
-  </div>
+    
+<div data-role="page" id="learn">
+	<div data-role="header">
+		<h1>About 4PIA</h1>
+	</div>
 
-  <div data-role="main" class="ui-content">
-  <center class="textColor">Political Involvement and Advocacy.</center>
-    <p>4PIA is dedicated to help foster a healthy, productive and interactive dialogue in the United States Congress.
- By bringing together, for the first time, on one page what our elected officials are saying we can actually encourage a tweet-dialogue.
-You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
- <a href="#login" class="ui-btn">Sounds impressive - Go Back</a>
- </div>
+	<div data-role="main" class="ui-content">
+		  <center class="textColor">Political Involvement and Advocacy.</center>
+			<p>4PIA is dedicated to help foster a healthy, productive and interactive dialogue in the United States Congress.
+		 By bringing together, for the first time, on one page what our elected officials are saying we can actually encourage a tweet-dialogue.
+		You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
+		 <a href="#login" class="ui-btn">Sounds impressive - Go Back</a>
+ 	</div>
 
-        <div data-theme="a" data-role="footer" data-position="fixed">
-            <h3> <div class="fourpia_copyright">4PIA &copy; 2013, 2014</div><div class="fourpia_authorization"> Commercial use of this site without express authorization is prohibited.</div></h3>
-        </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h3> <div class="fourpia_copyright">4PIA &copy; 2013, 2014</div><div class="fourpia_authorization"> Commercial use of this site without express authorization is prohibited.</div></h3>
     </div>
+</div>
 
 <div id="categories" data-role="page" data-title="Categories">
 
@@ -177,17 +180,38 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
 </div>
 
-<div id="daily" data-role="page" data-title="Daily">
+<!-- Underscore Template that is used to display all of the Bios Models -->
+<script id="tweetList" type="text/template">
 
-      <div data-role="header">
+     <div data-role="header" data-position="fixed">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-			<center>
-			<img src="images/dem.png" alt="USA" class="category-header-icon">
-			<div class="category-header-text "><span class="dtweetcnt"></span></div>
-			<img src="images/rep.png" style="margin-left:32px" alt="USA" class="category-header-icon">
-			<div class="category-header-text "><span class="rtweetcnt"></span></div>
+		<% if (collection.options.type ==="drillDown" ) { %>
+			<h1 class="drilldown-header-textView">
+				<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
+
+			<center class="drilldown-header-iconicView">
+				<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
+				<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
 			</center>
+		<% } else { %>
+			<center>
+				<% if (collection.options.sidebyside ||  collection.options.type ==="dtweets" ) { %>
+					<img src="images/dem.png" alt="USA" class="category-header-icon">
+					<div class="category-header-text "><span class="dtweetcnt"></span></div>
+				<% } %>
+				<% if (collection.options.sidebyside || collection.options.type ==="rtweets" ) { %>
+					<img src="images/rep.png" alt="USA" class="category-header-icon"
+				
+						<% if (viewportSize.type !=="small"  &&  collection.options.sidebyside) { %>
+							style="margin-left:32px"
+						<% } %>
+				
+					>
+					<div class="category-header-text "><span class="rtweetcnt"></span></div>
+				<% } %>
+			</center>
+		<% } %>
 
 	  </div><!-- /header -->
 
@@ -195,22 +219,24 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
             <ul data-role="listview" data-inset="true">
             </ul>
       </div><!-- /content -->
-  <div data-role="footer">
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Facebook</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Twitter</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Instagram</a>
-  </div>
-</div>
+      
+	<div data-role="footer">
+	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+	</div>
 
-<div id="rtweets" data-role="page" data-title="Republican">
+</script>
+
+
+<div id="pulse" data-role="page" data-title="Pulse" >
 
       <div data-role="header">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#back" data-rel="back" data-icon="back">Back</a>
 
-			<center>
-			<img src="images/rep.png" alt="USA" class="category-header-icon">
-			<div class="category-header-text "><span class="rtweetcnt"></span></div>
-			</center>
+	    <center>
+	    	<img src="images/logo.png" class="pulse-header-icon">
+	    	<div class="pulse-header-text">Pulse</div>
+	    </center>
 
 	  </div><!-- /header -->
 
@@ -218,43 +244,29 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
             <ul data-role="listview" data-inset="true">
             </ul>
       </div><!-- /content -->
-  <div data-role="footer">
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Facebook</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Twitter</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Instagram</a>
-  </div>
-</div>
+      
+	<div data-role="footer">
+	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+	</div>
 
-<div id="dtweets" data-role="page" data-title="Democratic">
-
-      <div data-role="header">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
-			
-			<center>
-			<img src="images/dem.png" alt="USA" class="category-header-icon">
-			<div class="category-header-text "><span class="dtweetcnt"></span></div>
-			</center>
-
-			</div><!-- /header -->
-
-      <div role="main" class="ui-content">
-            <ul data-role="listview" data-inset="true">
-            </ul>
-      </div><!-- /content -->
-  <div data-role="footer">
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Facebook</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Twitter</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Instagram</a>
-  </div>
 </div>
 
 <div id="drillDown" data-role="page" data-title="Tweet Details">
 
       <div data-role="header">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#back" data-rel="back" data-icon="back">Back</a>
 
 		<h1 class="drilldown-header-textView">
 			<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
+
+		<a href="#category?pulse" class="ui-btn-right" style="padding:5px;color: #333;
+text-shadow: 0 1px 0 #f3f3f3;" data-role="button" data-inline="true">
+        <img src="images/twitter-bird-pulse.png" width="20" height="20"><div style="display: inline-block;
+margin-left: 4px;
+position: relative;
+top: -4px;">Pulse</div>
+</a>
 		<center class="drilldown-header-iconicView">
 			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
 			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
@@ -266,12 +278,37 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
             <ul data-role="listview" data-inset="true">
             </ul>
       </div><!-- /content -->
-  <div data-role="footer">
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Facebook</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Twitter</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Add on Instagram</a>
+  <div data-role="footer" data-position="fixed">
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
   </div>
 </div>
+
+
+<div id="xxdrillDown" data-role="page" data-title="Tweet Details">
+
+      <div id="tweetList"> </div>
+      
+</div>
+
+<div id="daily" data-role="page" data-title="Daily">
+
+      <div id="tweetList"> </div>
+      
+</div>
+
+<div id="rtweets" data-role="page" data-title="Republican">
+
+      <div id="tweetList"> </div>
+      
+</div>
+
+<div id="dtweets" data-role="page" data-title="Democratic">
+
+      <div id="tweetList"> </div>
+      
+</div>
+
    <div id="tags" style="display: none;">
       <ul>
         <li><a href="http://www.google.com" target="_blank">Google</a></li>
@@ -302,18 +339,36 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 
 </div>
 
-<div id="bios" data-role="page" data-title="Representatives">
+<div id="bios" data-role="page" data-title="Representatives" >
 
-      <div data-role="header">
+      <div data-role="header" data-position="fixed">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
 
-	    <h1>Representatives</h1>
+	  	<h1>People</h1>
+	  
       </div><!-- /header -->
 
       <div role="main" class="ui-content">
-		   <form class="ui-filterable">
-			  <input id="bioFilter" data-type="search" placeholder="Search for names..">
-			</form>
+			<table border=0 width="100%">
+			<tr>
+			<td>
+				<form class="ui-filterable" style="position:relative"> 
+				  <input id="bioFilter" data-type="search" placeholder="Search for names..">
+				</form>
+			</td>
+			<td width="12%">
+				<div id="bioFilter_controlGroup" data-role="fieldcontain" style="margin-left:20px">
+					<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+						<input type="radio" name="bioFilter" id="all" value="on" checked="checked" />
+						<label for="all">All</label>
+						<input type="radio" name="bioFilter" id="tweetsOnly" value="off" />
+						<label for="tweetsOnly" class="twitter-radio-icon" ></label>
+					</fieldset>
+				</div>
+			</td>
+			</tr>
+			</table>
+
 			<ul data-role="listview" data-filter="true" data-input="#bioFilter" data-autodividers="true" data-inset="true">
            </ul>
       </div><!-- /content -->
@@ -378,11 +433,51 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <!-- Underscore Template that is used to display all of the Bios Models -->
 <script id="forpiaBios" type="text/template">
       <% _.each( collection.toJSON(), function( category, id ) { %>
-			<li><a href="#bios?<%= category.bio.key %>"><%= category.bio.sortName %></a></li>
+			<li><a href="#bios?<%= category.bio.key %>"><%= category.bio.sortName %> <span class="ui-li-count"><%= category.tweetCnt %></span></a></li>
       <% }); %>
 
 </script>
 
+
+<!-- Underscore Template that is used to display all of the Bios Models -->
+<script id="forpiaPulse" type="text/template">
+	 <div class="pulse-chart-container">
+		<div class="pulse-chart" data-type="dailyTweets" id="pulse_dailyTweets">Daily Tweets</div>
+		<div class="pulse-chart" data-type="followers" id="pulse_followers">Followers</div>
+	</div>
+</script>
+
+
+<!-- Underscore Template that is used to display all of the timelineItem Models -->
+<script id="timelineItem" type="text/template">
+	 <li class="ui-li-static timeline  <%= category.categoryClass %>">
+		 <div class="timelineItem">
+			 <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
+			 <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
+
+			 <% if (viewportSize.type ==="small") { %>
+					<div class="timeline_followers">
+						<img class="timeline_twitter" src="images/twitter.png">
+					</div>
+					<div style="clear:both"> </div>
+					<center class="timeline_followers" style="float:none;clear:both;display:block">
+						<%= category.followers_formatted %> followers
+					</center>
+					<div style="clear:both"> </div>
+			<% } else { %>
+					<div class="timeline_followers">
+						<%= category.followers_formatted %> followers
+						<img class="timeline_twitter" src="images/twitter.png">
+
+					 </div>
+					 <div style="clear:both"> </div>
+			<% } %>
+			<div class="timeline_description">
+					<%= category.description %>
+			 </div>
+		</div>
+	</li>
+</script>
 
 <!-- Underscore Template that is used to display all of the Item Models -->
 <script id="forpiaItems" type="text/template">
@@ -399,34 +494,9 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
  					<tr>
  					<td width=48%>
 					<% if (!collection.options.sidebyside || category.categoryClass === "dtweets") { %>
-						 <li class="ui-li-static timeline  <%= category.categoryClass %>">
-						 <div class="timelineItem">
-							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
-							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-
-							  <% if (viewportSize ==="small") { %>
-									<div class="timeline_followers">
-										<img class="timeline_twitter" src="images/twitter.jpg">
-									</div>
-									<div style="clear:both"> </div>
-									<center class="timeline_followers" style="float:none;clear:both;display:block">
-										<%= category.followers_formatted %> followers
-									</center>
-									<div style="clear:both"> </div>
-							<% } else { %>
-									  <div class="timeline_followers">
-											<%= category.followers_formatted %> followers
-											 <img class="timeline_twitter" src="images/twitter.jpg">
-
-									  </div>
-									  <div style="clear:both"> </div>
-									
-							<% } %>
-							 <div class="timeline_description">
-									<%= category.description %>
-							  </div>
-						 </div>
-						 </li>
+						 
+						 <%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
+						
 					<% } %>
 					</td>
   				<% if (collection.options.sidebyside) { %>
@@ -434,37 +504,11 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 					&nbsp;
 					</td>
 					<td width=48%>
-					<% if (category.categoryClass === "rtweets") { %>
-						 <li class="ui-li-static timeline  <%= category.categoryClass %>">
-						 <div class="timelineItem">
-							  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
-							  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-
-							  <% if (viewportSize ==="small") { %>
-									<div class="timeline_followers">
-										<img class="timeline_twitter" src="images/twitter.jpg">
-									</div>
-									<div style="clear:both"> </div>
-									<center class="timeline_followers" style="float:none;clear:both;display:block">
-										<%= category.followers_formatted %> followers
-									</center>
-									<div style="clear:both"> </div>
-							<% } else { %>
-									  <div class="timeline_followers">
-											<%= category.followers_formatted %> followers
-											 <img class="timeline_twitter" src="images/twitter.jpg">
-
-									  </div>
-									  <div style="clear:both"> </div>
-									
-							<% } %>
-
-							  <div class="timeline_description">
-									<%= category.description %>
-							  </div>
-						 </div>
-						 </li>
-					<% } %>
+						<% if (category.categoryClass === "rtweets") { %>
+						 
+							 <%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
+						
+						<% } %>
 					</td>
  				<% } %>
  					</tr>
@@ -477,59 +521,46 @@ You can read the impact of works by viewing the Tweet Cloud(TM) often. </p>
 <!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="forpiaDrill" type="text/template">
 	<table style="position:relative" border=0 width="100%" >
-<% if (collection.drillDown.dualHeader) { %>
-	<tr>
-	<td valign=top>
-		<center>
-			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
-			<div class="drilldown-header-text "><%= collection.drillDown.demCnt %></div>
-			<img src="images/rep.png" style="margin-left:32px" alt="USA" class="drilldown-header-icon">
-			<div class="drilldown-header-text "><%= collection.drillDown.repCnt %></div>
-		</center>
-	</td>
-	</tr>
-<% } %>
-<% if (collection.drillDown.singleHeader) { %>
-	<tr>
-	<td valign=top>
-		<center>
-			<img src="images/<%= collection.drillDown.singleHeader %>.png" alt="USA" class="drilldown-header-icon">
-			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
-		</center>
-	</td>
-	</tr>
-<% } %>
-	<tr>
-<% if (collection.drillDown.url) { %>
-	<td valign=top>
-		<iframe style="position:relative; top: -77px; left: 0px;" frameborder="0" align="top" marginheight="0" width="500" height="450" src="<%= collection.drillDown.url %>">Sen. Lisa Murkowski</iframe>
-	</td>
-<% } %>
-	<td valign=top>
-      <% _.each( collection.toJSON(), function( category, id ) { %>
+	<% if (collection.drillDown.dualHeader) { %>
+		<tr>
+		<td valign=top>
+			<center>
+				<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
+				<div class="drilldown-header-text "><%= collection.drillDown.demCnt %></div>
+				<img src="images/rep.png" style="margin-left:32px" alt="USA" class="drilldown-header-icon">
+				<div class="drilldown-header-text "><%= collection.drillDown.repCnt %></div>
+			</center>
+		</td>
+		</tr>
+	<% } %>
+	<% if (collection.drillDown.singleHeader) { %>
+		<tr>
+		<td valign=top>
+			<center>
+				<img src="images/<%= collection.drillDown.singleHeader %>.png" alt="USA" class="drilldown-header-icon">
+				<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
+			</center>
+		</td>
+		</tr>
+	<% } %>
+		<tr>
+	<% if (collection.drillDown.url) { %>
+		<td valign=top>
+			<iframe style="position:relative; top: -70px; left: -20px;" frameborder="0" align="top" marginheight="0" width="500" height="450" src="<%= collection.drillDown.url %>">Sen. Lisa Murkowski</iframe>
+					</td>
+	<% } %>
+		<td valign=top>
+		  <% _.each( collection.toJSON(), function( category, id ) { %>
 
-  				<% if (category.hourBreak) { %>
+				<% if (category.hourBreak) { %>
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
 				<% } %>
 
-          <li class="ui-li-static timeline   <%= category.categoryClass %>">
-				  <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
-                  <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
-                  <div class="timeline_followers">
-						<%= category.followers_formatted %> followers
-						 <img class="timeline_twitter" src="images/twitter.jpg">
-
-				  </div>
-				  <div style="clear:both"> </div>
-                 <div class="timeline_description">
-						<%= category.description %>
-				  </div>
-
-            </li>
-
-      <% }); %>
-	</td>
-	</tr>
+				<%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
+						
+		  <% }); %>
+		</td>
+		</tr>
 	</table>
 </script>
 
