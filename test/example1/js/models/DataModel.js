@@ -24,6 +24,11 @@ define([
 		start = ss.indexOf( "<table" );
 		ss = ss.substring( start );
 		
+		var meta = [
+				{ name : "followers", tag : /([-,0-9]+) followers$/ },
+				{ name : "cashOnHand", tag : /([-,0-9]+) CashOnHand$/, format : "$#,###" },
+			];
+		
 		var div = $( "<div>" ).html(ss);
 		var table = $(div).find("table");
 		_.each( table, function( tbl, index ) {
@@ -46,9 +51,7 @@ define([
 				}
 
 				var twitter = spans[1];
-				var followers = $(spans[2]).text().match(/([-,0-9]+) followers$/);
-				followers = parseInt( followers[1].replace( /,/g, ""), 10 );
-				var followers_formatted = Numeral(followers).format("#,###");
+				
 				
 				var description = $(tds[3]).text();
 				var hrefs = $(tds[3]).find("a");
@@ -59,12 +62,25 @@ define([
 						categoryClass : categoryClass,
 						timestamp : timestamp,
 						timestamp_formatted : timestamp_formatted,
-						followers : followers,
-						followers_formatted : followers_formatted,
 						description : description,
 						href	: href
 					};
 				
+				_.each( meta, function( entry , key ) {
+						var match = $(spans[2]).text().match( entry.tag );
+						if (_.isArray(match))
+						{
+							var value = parseInt( match[1].replace( /,/g, ""), 10 );
+							tmpl[ entry.name ] = value;
+							tmpl[ entry.name + "_formatted" ] = Numeral(value).format( entry.format ||  "#,###");
+						}
+						else
+						{
+							tmpl[ entry.name ] = undefined;
+							tmpl[ entry.name + "_formatted" ] = undefined;
+						}
+					});
+					
 				data.push( tmpl );
 			});
 			
@@ -1870,14 +1886,49 @@ CynthiaLummis :  {
 					$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
 					$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
 				},
-				
-			loadFAUXdata : function ( callback ) {
+
+				loadFAUXdata : function ( callback ) {
 					var self = this;
-					var dfd_dnews = $.get("data/view-source 4pia.com Dnews_window.php.html");
-					var dfd_rnews = $.get("data/view-source 4pia.com Rnews_window.php.html");
 					
 					var ctweets_debug = document.location.href.gup( "ctweets");
+					var liveData = Preferences.liveData ? "" : "xx";
 					
+					var dfd_dnews = $.Deferred();
+					$.get("http://4pia.com/Dnews_window.php" + liveData)
+						.done(function(response,status,xhr){
+								dfd_dnews.resolve( [ response ]);
+							})
+						.fail(function(){
+								console.log("************ Dnews_window Failed - Check CORS Access-Control-Allow-Origin issue: " , JSON.stringify( arguments));
+								$.get("data/view-source 4pia.com Dnews_window.php.html")
+									.done(function(response,status,xhr){
+											dfd_dnews.resolve( [ response ] );
+										})
+									.fail(function(){
+											console.log("************ Dnews_window Failed - Check file access issue: " , JSON.stringify( arguments));
+											alert("dfd_tweetCloud Failed - Check file access issue");
+											dfd_dnews.reject();
+										});
+							});
+		
+					var dfd_rnews = $.Deferred();
+					$.get("http://4pia.com/Rnews_window.php" + liveData)
+						.done(function(response,status,xhr){
+								dfd_rnews.resolve( [ response ]);
+							})
+						.fail(function(){
+								console.log("************ Rnews_window Failed - Check CORS Access-Control-Allow-Origin issue: " , JSON.stringify( arguments));
+								$.get("data/view-source 4pia.com Rnews_window.php.html")
+									.done(function(response,status,xhr){
+											dfd_rnews.resolve( [ response ] );
+										})
+									.fail(function(){
+											console.log("************ Rnews_window Failed - Check file access issue: " , JSON.stringify( arguments));
+											alert("dfd_tweetCloud Failed - Check file access issue");
+											dfd_rnews.reject();
+										});
+							});
+		
 					var dfd_ctweets = $.Deferred();
 					$.get("http://4pia.com/TweetCloud.php")
 						.done(function(response,status,xhr){
@@ -1906,8 +1957,9 @@ CynthiaLummis :  {
 					
 					$.when( dfd_dnews, dfd_rnews, dfd_people, dfd_ctweets)
 						.done( function(dnews, rnews, people, cloud) {
-								dataModels.dtweets = parseHTML( dnews[0], "dtweets", new Date( 2014, 02, 10) );
-								dataModels.rtweets = parseHTML( rnews[0], "rtweets", new Date( 2014, 02, 10) );
+								var dataDate = (Preferences.liveData ? new Date() : new Date( 2014, 02, 10));
+								dataModels.dtweets = parseHTML( dnews[0], "dtweets", dataDate );
+								dataModels.rtweets = parseHTML( rnews[0], "rtweets", dataDate );
 								
 								dataModels.daily = [];
 								_.each(dataModels.dtweets, function(entry) {

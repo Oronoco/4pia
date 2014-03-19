@@ -276,7 +276,7 @@ define([
 				
 			this.$el.find(".timeline_person").on('click', function() {
 					var id = $(this).attr("data-id");
-					var targetPerson = viewCollection.models[ id ].get("person");
+					var targetPerson = viewCollection.models[ id ].get("person").sortName();
 				
 					self.drillDown( targetPerson, viewCollection, {singleHeader : true} );
 				

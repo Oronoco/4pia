@@ -459,17 +459,30 @@ top: -4px;">Pulse</div>
 			 <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
 
 			 <% if (viewportSize.type ==="small") { %>
-					<div class="timeline_followers">
+					<div class="timeline_meta">
 						<img class="timeline_twitter" src="images/twitter.png">
 					</div>
 					<div style="clear:both"> </div>
-					<center class="timeline_followers" style="float:none;clear:both;display:block">
-						<%= category.followers_formatted %> followers
+					<center class="timeline_meta" style="float:none;clear:both;display:block">
+						<% if (category.cashOnHand_formatted) { %>
+							<%= category.cashOnHand_formatted %> Cash On Hand
+						<% } else { %>
+							<% if (category.followers_formatted) { %>
+								<%= category.followers_formatted %> followers
+							<% } %>
+						<% } %>
+						
 					</center>
 					<div style="clear:both"> </div>
 			<% } else { %>
-					<div class="timeline_followers">
-						<%= category.followers_formatted %> followers
+					<div class="timeline_meta">
+						<% if (category.cashOnHand_formatted) { %>
+							<%= category.cashOnHand_formatted %> Cash On Hand
+						<% } else { %>
+							<% if (category.followers_formatted) { %>
+								<%= category.followers_formatted %> followers
+							<% } %>
+						<% }  %>
 						<img class="timeline_twitter" src="images/twitter.png">
 
 					 </div>

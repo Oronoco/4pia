@@ -10,6 +10,7 @@ define([
 
 	var fourPIA = { 
 			repSearch : "tweetsOnly", 
+			liveData : true,
 			minTweetCloudSize : 3,
 			startTime : new Date(),
 			viewportLimits : [
@@ -18,6 +19,10 @@ define([
 				{ "type" : "large", "limit" : 100000}
 			]
 		};
+
+	var liveData = document.location.href.gup( "liveData");
+	if (liveData === "true") fourPIA.liveData = true;
+	if (liveData === "false") fourPIA.liveData = false;
 
 	// sort by viewport limits
 	fourPIA.viewportLimits.sort( function( a, b ) {
