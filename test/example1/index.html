@@ -155,15 +155,20 @@ function updateLayout() {
 
 <div id="categories" data-role="page" data-title="Categories">
 
-      <div data-role="header">
+     <div data-role="header">
             <h1>Interests 
 				<span class=debugInfo> 
 					<span class="env-viewport-width"></span>,
 					<span class="env-viewport-height"></span> <span class="env-viewport-size"></span>
 				</span>
 			</h1>
-      </div><!-- /header -->
-
+ 		<a href="#refresh" class="ui-btn-right" data-rel="back" data-icon="refresh">Refresh</a>
+     </div><!-- /header -->
+	<div class="forpia-header-refresh" id="refresh">
+		<div class="refreshMsg nextRefresh"> Next update in <span class="forpia-header-refresh-text textColor "></span>&nbsp;seconds</div>
+		<div class="refreshMsg lastRefresh"> Updating on <span class="forpia-header-refresh-text"></span></div>
+	</div><!-- /refresh -->
+ 
       <div role="main" class="ui-content">
              <ul data-role="listview" data-inset="true">
                   <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>

@@ -6,10 +6,11 @@ define([
 	"jquery",
 	"backbone",
 	"../models/CategoryModel",
+	"../models/DataModel",
 	"../models/PreferenceModel",
 	"../collections/CategoriesCollection",
 	"../views/CategoryView"
-], function( $, Backbone, CategoryModel, Preferences, CategoriesCollection, CategoryView ) {
+], function( $, Backbone, CategoryModel, DataModel, Preferences, CategoriesCollection, CategoryView ) {
 
     // Extends Backbone.Router
     var CategoryRouter = Backbone.Router.extend( {
@@ -69,6 +70,7 @@ define([
 			"tagcanvas" : "tagcanvas",
 			"pulse" : "pulse",
 			"bios" : "bios",
+			"refresh" : "refresh",
 
             // When #category? is on the url, the category method is called
             "category?:type": "category"
@@ -111,6 +113,13 @@ define([
 				$.mobile.changePage( pageName , { reverse: false, changeHash: false } );
 			},
  
+		// refresh method
+        refresh: function() {
+			
+			DataModel.refresh(); 
+
+        },
+
 		// Back method
         back: function() {
 			var url = Preferences.lastPageName  ||  "#categories";

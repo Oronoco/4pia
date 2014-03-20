@@ -8,11 +8,23 @@ define([
 	"underscore"
 ], function( $, Backbone, _ ) {
 
+	var constants = {};
+	constants.sec = 1000;
+	constants.min = constants.sec * 60;
+	constants.hour = constants.min * 60;
+	constants.day = constants.hour * 60;
+	
 	var fourPIA = { 
 			repSearch : "tweetsOnly", 
 			liveData : true,
+			constants : constants,
 			minTweetCloudSize : 3,
 			startTime : new Date(),
+			refresh	:	{
+					cnt : 0,
+					lastRefresh : new Date(),
+					duration : constants.min * 1,
+				},
 			viewportLimits : [
 				{ "type" : "small", "limit" : 400},
 				{ "type" : "medium", "limit" : 600},

@@ -112,6 +112,11 @@ require([
 					.attr({"env-viewport-size" : Preferences.viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
 					.addClass( "env-viewport-" + Preferences.viewportSize);
 					
+				if (Preferences.viewportSize.type === "small")
+				{
+					$("[data-icon='refresh']")
+						.attr( "data-iconpos", "notext");
+				}
 
 				$(".env-viewport-size").text( Preferences.viewportSize );
 				$(".env-viewport-width").text( window.innerWidth );
@@ -121,7 +126,7 @@ require([
 			updateDebugInfo();
 
 
-			}
+		}
 	)
 
 	require( [ "jquerymobile" ], function () {
@@ -140,9 +145,11 @@ require([
 				// Show's the jQuery Mobile loading icon
 			$.mobile.loading( "show" );
 
+			$("[data-icon='back']")
+				.attr( "data-iconpos", "notext");
 			DataModel.loadFAUXdata( function() {
 					$.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
-				});
+				}, 0);
 				
 		} else {
 			alert('Please fill all necessary fields');

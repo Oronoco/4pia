@@ -210,8 +210,9 @@ define([
 			{
 				$(this.$el).find("[data-icon='back']")
 					.attr( "data-iconpos", "notext");
+				$("[data-icon='refresh']")
+					.attr( "data-iconpos", "notext");
 			}
-			
 						
 			this.template = _.template( $( templateName ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize, "templateFn" : templateFn } );
 			
@@ -271,6 +272,8 @@ define([
 				}
 			}
 
+			// http://stackoverflow.com/questions/8357756/jquery-mobile-forcing-refresh-of-content
+			
 			this.$el.find(".timeline")
 				.css({"border-color" : "#ddd"});
 				

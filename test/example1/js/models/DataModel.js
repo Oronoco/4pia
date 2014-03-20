@@ -1771,6 +1771,81 @@ CynthiaLummis :  {
 	var publicAPI = {
 			models : dataModels,
 			
+			refresh : function() {
+					
+					var self = this;
+					location.hash = location.hash.replace(/\#.*$/, "");
+					var d =  new Date( Preferences.refresh.lastRefresh );
+					var refreshTimeStamp = Preferences.refresh.lastRefresh.getTime() + Preferences.refresh.duration;
+					var refreshDiff = (refreshTimeStamp - new Date().getTime());
+					var willRefresh = (refreshDiff <= 0)
+					
+					var msg = "";
+					var msgclass = "";
+					if (willRefresh)
+					{
+						msgclass = ".lastRefresh";
+						msg = d.format("mmm d, yyyy")
+							+ " at "
+							+  d.format("h:MM tt");
+							
+						
+					}
+					else
+					{
+						msgclass = ".nextRefresh";
+						msg = Math.round( refreshDiff / 1000 );
+					}
+					
+					$(".forpia-header-refresh").find(".refreshMsg")
+						.hide();
+
+					$(".forpia-header-refresh").find( msgclass )
+						.show();
+					$(".forpia-header-refresh-text").text( msg );
+					$(".forpia-header-refresh")
+						.slideDown("slow");
+						
+					var delay = 3000;
+					var dfd_delay = $.Deferred();
+					setTimeout(function() {
+								dfd_delay.resolve(true);
+							}, delay
+						);
+					
+					if (willRefresh)
+					{
+						var dfd_refresh = $.Deferred();
+						$.when( dfd_delay, dfd_refresh )
+							.done(function() {
+									$.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
+									
+									$(".forpia-header-refresh")
+										.slideUp("fast");
+															
+									$.mobile.loading( "hide" );
+								});
+						
+							// Show's the jQuery Mobile loading icon
+						$.mobile.loading( "show" );
+						Preferences.refresh.cnt++;
+						
+						this.loadFAUXdata( function() {
+								
+								dfd_refresh.resolve(true);
+								
+							}, Preferences.refresh.cnt);
+					}
+					else
+					{
+						dfd_delay
+							.done(function() {
+									$(".forpia-header-refresh")
+										.slideUp("fast");
+								})
+					}
+			},
+				
 			loadCategories : function( method, model, options ) {
 					var dataset = dataModels[ model.type ];
 					if (dataset)
@@ -1889,7 +1964,7 @@ CynthiaLummis :  {
 					$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
 				},
 
-				loadFAUXdata : function ( callback ) {
+				loadFAUXdata : function ( callback, numRefreshes ) {
 					var self = this;
 					var demoDataDate = new Date( 2014, 02, 10);
 					var dataDate = (Preferences.liveData ? new Date() : demoDataDate);
@@ -1966,6 +2041,12 @@ CynthiaLummis :  {
 								dataModels.dtweets = parseHTML( dnews[0], "dtweets", dataDate );
 								dataModels.rtweets = parseHTML( rnews[0], "rtweets", dataDate );
 								
+								while (numRefreshes-- > 0)
+								{
+									dataModels.dtweets.push(dataModels.dtweets[0]);
+									dataModels.rtweets.push(dataModels.rtweets[0]);
+								}
+
 								dataModels.daily = [];
 								_.each(dataModels.dtweets, function(entry) {
 										dataModels.daily.push( entry );
@@ -2013,6 +2094,9 @@ CynthiaLummis :  {
 								}
 
 								self.updateCounts();
+								
+								Preferences.refresh.lastRefresh = new Date();
+
 								callback();
 							});
 				},

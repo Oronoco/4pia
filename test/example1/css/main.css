@@ -146,6 +146,21 @@ display:inline;
 	color: #f99600;
 }
 
+.forpia-header-refresh {
+	width : 100%;
+//	height : 40px;
+	font-size:14px;
+	font-weight:500;
+	background-color: #EEE;
+	text-align: center;
+	margin:0 auto;
+	padding:20px 0px;
+//	display: table-cell;
+//vertical-align: middle;
+
+	display : none;
+}
+
 .timeline, .ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn  {
 .border-style: none;
 }
