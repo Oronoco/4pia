@@ -162,14 +162,14 @@ padding: .3em 1em;
 	padding: 0px;
 	font-weight:500;
 	color:#666;
-  color:#47bbdc;
+  color:#517FD5;
 	padding-right : 8px;
    border-right: 1px solid gray;
 }
 
 .timeline_person:hover {
   cursor: pointer;
-  color:#47bbdc;
+  color:#517FD5;
 	border-bottom: 1px dashed #f99600;
 }
 .timeline_time {
@@ -178,7 +178,7 @@ padding: .3em 1em;
 	font-size:12px;
 	padding: 0px;
 	font-weight:500;
-	color:#47bbdc;
+	color:#517FD5;
 }
 
 .timeline:before {

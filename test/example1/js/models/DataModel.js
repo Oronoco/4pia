@@ -40,14 +40,16 @@ define([
 				var timestamp_formatted;
 				if (timestamp)
 				{
+					var xx = person;
 					person = person.substring( 0, person.length - timestamp[0].length ).trim();
 					var hour = parseInt( timestamp[1], 10);
 					var min = parseInt( timestamp[2], 10);
-					if (timestamp[3] === "P")
-						hour += 11;
+					if (timestamp[3] === "P"  && hour !=12)
+						hour += 12;
 						
 					timestamp = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hour, min);
 					timestamp_formatted = new Date( timestamp ).format("h:MM tt");
+//				console.log( xx, timestamp_formatted );
 				}
 
 				var twitter = spans[1];
@@ -1889,7 +1891,9 @@ CynthiaLummis :  {
 
 				loadFAUXdata : function ( callback ) {
 					var self = this;
-					
+					var demoDataDate = new Date( 2014, 02, 10);
+					var dataDate = (Preferences.liveData ? new Date() : demoDataDate);
+								
 					var ctweets_debug = document.location.href.gup( "ctweets");
 					var liveData = Preferences.liveData ? "" : "xx";
 					
@@ -1902,6 +1906,7 @@ CynthiaLummis :  {
 								console.log("************ Dnews_window Failed - Check CORS Access-Control-Allow-Origin issue: " , JSON.stringify( arguments));
 								$.get("data/view-source 4pia.com Dnews_window.php.html")
 									.done(function(response,status,xhr){
+											dataDate = demoDataDate;
 											dfd_dnews.resolve( [ response ] );
 										})
 									.fail(function(){
@@ -1920,6 +1925,7 @@ CynthiaLummis :  {
 								console.log("************ Rnews_window Failed - Check CORS Access-Control-Allow-Origin issue: " , JSON.stringify( arguments));
 								$.get("data/view-source 4pia.com Rnews_window.php.html")
 									.done(function(response,status,xhr){
+											dataDate = demoDataDate;
 											dfd_rnews.resolve( [ response ] );
 										})
 									.fail(function(){
@@ -1957,7 +1963,6 @@ CynthiaLummis :  {
 					
 					$.when( dfd_dnews, dfd_rnews, dfd_people, dfd_ctweets)
 						.done( function(dnews, rnews, people, cloud) {
-								var dataDate = (Preferences.liveData ? new Date() : new Date( 2014, 02, 10));
 								dataModels.dtweets = parseHTML( dnews[0], "dtweets", dataDate );
 								dataModels.rtweets = parseHTML( rnews[0], "rtweets", dataDate );
 								
