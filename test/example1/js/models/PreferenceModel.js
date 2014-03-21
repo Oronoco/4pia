@@ -13,13 +13,14 @@ define([
 	constants.min = constants.sec * 60;
 	constants.hour = constants.min * 60;
 	constants.day = constants.hour * 60;
-	
+
 	var fourPIA = { 
 			repSearch : "tweetsOnly", 
 			liveData : true,
 			constants : constants,
 			minTweetCloudSize : 3,
 			startTime : new Date(),
+			splashTime : 2000,
 			refresh	:	{
 					cnt : 0,
 					lastRefresh : new Date(),

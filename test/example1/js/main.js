@@ -75,55 +75,68 @@ require([
 		// Set up the "mobileinit" handler before requiring jQuery Mobile's module
 		function () {
 
-			// Prevents all anchor click handling including the addition of active button state and alternate link bluring.
-			$.mobile.linkBindingEnabled = false;
-
-			// Disabling this will prevent jQuery Mobile from handling hash changes
-			$.mobile.hashListeningEnabled = false;
-			
-			// Clear history
-			history.pushState("", document.title, window.location.pathname
-                                                       + window.location.search);
-			
-			function updateDebugInfo() {
-
-				Preferences.viewportSize = document.location.href.gup("viewportSize");
-				if (!Preferences.viewportSize)
-				{
-					Preferences.viewportSize = undefined;
-					_.each( Preferences.viewportLimits, function(entry) {
-							if (window.innerWidth < entry.limit) Preferences.viewportSize = entry;
-						});
-				}
+			//http://stackoverflow.com/questions/17962378/white-page-when-loading-while-using-jquery-mobile
+			var splashDelay = (fourPIAsplashStartTime.getTime() + Preferences.splashTime) - new Date().getTime();
+			var dfd_splashDelay = $.Deferred();
+			setTimeout(function() {
+						dfd_splashDelay.resolve(true);
+					}, splashDelay
+				);
 					
-				if (document.location.href.gup("debugInfo"))
-				{
-					$(".debugInfo")
-						.show();
-				}
-				else
-				{
-					$(".debugInfo")
-						.hide();
-				}
+			dfd_splashDelay
+				.done(function() {
+					$("body")
+						.removeClass( "splash" );
+						
+					// Prevents all anchor click handling including the addition of active button state and alternate link bluring.
+					$.mobile.linkBindingEnabled = false;
 
-				$("body")
-					.attr({"env-viewport-size" : Preferences.viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
-					.addClass( "env-viewport-" + Preferences.viewportSize);
+					// Disabling this will prevent jQuery Mobile from handling hash changes
+					$.mobile.hashListeningEnabled = false;
 					
-				if (Preferences.viewportSize.type === "small")
-				{
-					$("[data-icon='refresh']")
-						.attr( "data-iconpos", "notext");
-				}
+					// Clear history
+					history.pushState("", document.title, window.location.pathname
+															   + window.location.search);
+					
+					function updateDebugInfo() {
 
-				$(".env-viewport-size").text( Preferences.viewportSize );
-				$(".env-viewport-width").text( window.innerWidth );
-				$(".env-viewport-height").text( window.innerHeight );
-			}		
+						Preferences.viewportSize = document.location.href.gup("viewportSize");
+						if (!Preferences.viewportSize)
+						{
+							Preferences.viewportSize = undefined;
+							_.each( Preferences.viewportLimits, function(entry) {
+									if (window.innerWidth < entry.limit) Preferences.viewportSize = entry;
+								});
+						}
+							
+						if (document.location.href.gup("debugInfo"))
+						{
+							$(".debugInfo")
+								.show();
+						}
+						else
+						{
+							$(".debugInfo")
+								.hide();
+						}
 
-			updateDebugInfo();
+						$("body")
+							.attr({"env-viewport-size" : Preferences.viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
+							.addClass( "env-viewport-" + Preferences.viewportSize);
+							
+						if (Preferences.viewportSize.type === "small")
+						{
+							$("[data-icon='refresh']")
+								.attr( "data-iconpos", "notext");
+						}
 
+						$(".env-viewport-size").text( Preferences.viewportSize );
+						$(".env-viewport-width").text( window.innerWidth );
+						$(".env-viewport-height").text( window.innerHeight );
+					}		
+
+					updateDebugInfo();
+			});
 
 		}
 	)
