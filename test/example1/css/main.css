@@ -161,6 +161,14 @@ display:inline;
 	display : none;
 }
 
+.wallpaper-1 {
+	background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.9) 100%),  url(../images/patterns/TwitterBkgrd.jpg) repeat 0 0;
+}
+.wallpaper-2 {
+	background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.6) 100%),  url(../images/patterns/Pattern_Wallpaper_Template.jpg) repeat 0 0;
+}
+
+
 .timeline, .ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn  {
 .border-style: none;
 }
@@ -226,6 +234,7 @@ background-color:lightGray;
 	border-top: 1px solid lightGray;
 	border-bottom: 1px solid lightGray;
 	margin-left:10px;
+	background-color: #FFF;
 }
 
 .timeline {
@@ -239,6 +248,7 @@ background-color:lightGray;
   cursor: pointer;
   margin-left:10px;
   padding: 0;
+  padding-right: 10px;
   border: 0; 
 
 }

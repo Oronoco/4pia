@@ -1970,10 +1970,9 @@ CynthiaLummis :  {
 					var dataDate = (Preferences.liveData ? new Date() : demoDataDate);
 								
 					var ctweets_debug = document.location.href.gup( "ctweets");
-					var liveData = Preferences.liveData ? "" : "xx";
 					
 					var dfd_dnews = $.Deferred();
-					$.get("http://4pia.com/Dnews_window.php" + liveData)
+					$.get( Preferences.liveData ? "http://4pia.com/Dnews_window.php" : "data/view-source 4pia.com Dnews_window.php.html" )
 						.done(function(response,status,xhr){
 								dfd_dnews.resolve( [ response ]);
 							})
@@ -1992,7 +1991,7 @@ CynthiaLummis :  {
 							});
 		
 					var dfd_rnews = $.Deferred();
-					$.get("http://4pia.com/Rnews_window.php" + liveData)
+					$.get(Preferences.liveData ? "http://4pia.com/Rnews_window.php" : "data/view-source 4pia.com Rnews_window.php.html")
 						.done(function(response,status,xhr){
 								dfd_rnews.resolve( [ response ]);
 							})
@@ -2011,7 +2010,7 @@ CynthiaLummis :  {
 							});
 		
 					var dfd_ctweets = $.Deferred();
-					$.get("http://4pia.com/TweetCloud.php")
+					$.get(Preferences.liveData ? "http://4pia.com/TweetCloud.php" : "data/view-source 4pia.com ctweet_window.php.html" )
 						.done(function(response,status,xhr){
 								dfd_ctweets.resolve( [ response ]);
 							})
