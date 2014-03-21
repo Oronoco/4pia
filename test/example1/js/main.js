@@ -20,19 +20,19 @@ require.config( {
 	paths: {
 
 		// Core Libraries
-		"jquery": "../../libs/js/jquery",
+		"jquery": "../../libs/js/jquery.min",
 		"datejs": "../../libs/js/date",
 		"numeral" : '../../libs/js/numeral',
 		"class": '../../libs/js/my.class',
         "tbd" : '../../libs/js/tbd',
 		"dataGen" : '../../js/dataGen',
 		"tagcanvas" : '../../libs/js/tagcanvas/jquery.tagcanvas.min',
-		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
-		"highcharts": "../../libs/js/highcharts/js/highcharts.src",
-		"highcharts_more": "../../libs/js/highcharts/js/highcharts-more.src",
+		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2.min",
+		"highcharts": "../../libs/js/highcharts/js/highcharts",
+		"highcharts_more": "../../libs/js/highcharts/js/highcharts-more",
 		"highcharts_funnel": "../../libs/js/highcharts/js/modules/funnel",
-		"underscore": "../../libs/js/lodash",
-		"backbone": "../../libs/js/backbone",
+		"underscore": "../../libs/js/lodash.min",
+		"backbone": "../../libs/js/backbone.min",
 
 	},
 
@@ -70,7 +70,6 @@ require([
 	"underscore"
 ], function ( $, Backbone, Mobile, DataModel, Preferences, _) {
 	$( document ).on( "mobileinit",
-
 
 
 		// Set up the "mobileinit" handler before requiring jQuery Mobile's module
