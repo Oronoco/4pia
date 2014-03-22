@@ -25,15 +25,19 @@ define([
 		ss = ss.substring( start );
 		
 		var meta = [
+				{ name : "campaignDebt", tag : /([-,0-9]+) CampaignDebt$/, format : "$#,###" },
 				{ name : "followers", tag : /([-,0-9]+) followers$/ },
 				{ name : "cashOnHand", tag : /([-,0-9]+) CashOnHand$/, format : "$#,###" },
 			];
 		
 		var div = $( "<div>" ).html(ss);
 		var table = $(div).find("table");
+
 		_.each( table, function( tbl, index ) {
+		if (true) console.log( index, $(tbl).html());
 //				if (index > 10) return;
 				var spans = $(tbl).find("span");
+				
 				var tds = $(tbl).find("td");
 				var person = $(spans[0]).text();
 				var timestamp = person.match(/\s*(0?[1-9]|1[012]):([0-5]\d)\s*([APap])[mM]$/);
@@ -1813,6 +1817,8 @@ CynthiaLummis :  {
 							}, delay
 						);
 					
+					messageFromProfile( "#refreshDelay:" + refreshDiff );
+
 					if (willRefresh)
 					{
 						var dfd_refresh = $.Deferred();
@@ -2040,12 +2046,6 @@ CynthiaLummis :  {
 								dataModels.dtweets = parseHTML( dnews[0], "dtweets", dataDate );
 								dataModels.rtweets = parseHTML( rnews[0], "rtweets", dataDate );
 								
-								while (numRefreshes-- > 0)
-								{
-									dataModels.dtweets.push(dataModels.dtweets[0]);
-									dataModels.rtweets.push(dataModels.rtweets[0]);
-								}
-
 								dataModels.daily = [];
 								_.each(dataModels.dtweets, function(entry) {
 										dataModels.daily.push( entry );

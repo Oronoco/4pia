@@ -473,8 +473,12 @@ top: -4px;">Pulse</div>
 						<% if (category.cashOnHand_formatted) { %>
 							<%= category.cashOnHand_formatted %> Cash On Hand
 						<% } else { %>
-							<% if (category.followers_formatted) { %>
-								<%= category.followers_formatted %> followers
+							<% if (category.campaignDebt_formatted) { %>
+								<%= category.campaignDebt_formatted %> Campaign Debt
+							<% } else { %>
+								<% if (category.followers_formatted) { %>
+									<%= category.followers_formatted %> followers
+								<% } %>
 							<% } %>
 						<% } %>
 						
@@ -485,8 +489,12 @@ top: -4px;">Pulse</div>
 						<% if (category.cashOnHand_formatted) { %>
 							<%= category.cashOnHand_formatted %> Cash On Hand
 						<% } else { %>
-							<% if (category.followers_formatted) { %>
-								<%= category.followers_formatted %> followers
+							<% if (category.campaignDebt_formatted) { %>
+								<%= category.campaignDebt_formatted %> Campaign Debt
+							<% } else { %>
+								<% if (category.followers_formatted) { %>
+									<%= category.followers_formatted %> followers
+								<% } %>
 							<% } %>
 						<% }  %>
 						<img class="timeline_twitter" src="images/twitter.png">

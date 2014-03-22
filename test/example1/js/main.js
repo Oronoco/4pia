@@ -100,10 +100,10 @@ require([
 					
 					function updateDebugInfo() {
 
-						Preferences.viewportSize = document.location.href.gup("viewportSize");
-						if (!Preferences.viewportSize)
+						var viewportSize = document.location.href.gup("viewportSize");
+						if (!viewportSize)
 						{
-							Preferences.viewportSize = undefined;
+							Preferences.viewportSize = {};
 							_.each( Preferences.viewportLimits, function(entry) {
 									if (window.innerWidth < entry.limit) Preferences.viewportSize = entry;
 								});
@@ -121,8 +121,8 @@ require([
 						}
 
 						$("body")
-							.attr({"env-viewport-size" : Preferences.viewportSize, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
-							.addClass( "env-viewport-" + Preferences.viewportSize);
+							.attr({"env-viewport-size" : Preferences.viewportSize.type, "env-width" : window.innerWidth, "env-height" : window.innerHeight})
+							.addClass( "env-viewport-" + Preferences.viewportSize.type);
 							
 						if (Preferences.viewportSize.type === "small")
 						{
@@ -130,12 +130,14 @@ require([
 								.attr( "data-iconpos", "notext");
 						}
 
-						$(".env-viewport-size").text( Preferences.viewportSize );
+						$(".env-viewport-size").text( Preferences.viewportSize.type );
 						$(".env-viewport-width").text( window.innerWidth );
 						$(".env-viewport-height").text( window.innerHeight );
 					}		
 
 					updateDebugInfo();
+					
+					messageFromProfile( "#splashDelay:" + splashDelay );
 			});
 
 		}

@@ -26,6 +26,7 @@ define([
 					lastRefresh : new Date(),
 					duration : constants.min * 1,
 				},
+			viewportSize : {},
 			viewportLimits : [
 				{ "type" : "small", "limit" : 400},
 				{ "type" : "medium", "limit" : 600},
