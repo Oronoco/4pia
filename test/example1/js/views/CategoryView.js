@@ -10,8 +10,9 @@ define([
 	"../models/PreferenceModel",
 	"../models/DataModel",
 	"../models/PulseModel",
+	"../views/SwipeDelete",
 	"tagcanvas"
-], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, Pulse, TagCanvas ) {
+], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, Pulse, SwipeDelete, TagCanvas ) {
 
     // Extends Backbone.View
     var CategoryView = Backbone.View.extend( {
@@ -78,45 +79,86 @@ define([
 				return $.CategoryRouter.drillDownView.collection.drillDown;
 			},
 			
-		search : function( searchStr ) {
-				var self = this;
-				var myCollection = $.CategoryRouter.dailyView.collection;
-				self.searchCollection( myCollection, function() {
-						var s = searchStr.toLowerCase().trim();
-						var demCnt = 0;
-						var repCnt = 0;
-						DataModel.models.drillDown = _.filter( myCollection.models, function( entry, index ) {
-								var desc = entry.get("person") + " " + entry.get("description");
-								var match = desc.toLowerCase().indexOf( s );
+		removeSearchItem : function( listitem ) {
+					var searchCollection = $.CategoryRouter.searchView.collection;
+					var cid = $(listitem).attr("data-id");
+					var model = searchCollection.get( cid );
+					searchCollection.remove( model );
+                    listitem.remove();
+ 					var list = $(listitem).closest("[data-role='listview']");
+					$( list ).listview( "refresh" );
+			},
+			
+		gather : function( myCollection, searchStr, filter ) {
+				var s = searchStr.toLowerCase().trim().split(",");
+				var demCnt = 0;
+				var repCnt = 0;
+				var drillDown = _.filter( myCollection.models, function( entry, index ) {
+						var desc = entry.get("person") + " " + entry.get("description");
+						var found = false;
+						_.find(s, function(term) {
+						
+								var match = desc.toLowerCase().indexOf( term );
 								if (match >= 0)
 								{
 									if (entry.get("categoryClass") === "rtweets") repCnt++
 									else demCnt++;
-									return true;
+									found = true;
 								}
-								return false;
-							});
-
-						self.drillDown( searchStr, undefined, {dualHeader: true, demCnt : demCnt, repCnt : repCnt} );
-				});
+						});
+						return found;
+					});
+				return { drillDown : drillDown, demCnt : demCnt, repCnt : repCnt };
 			},
 			
-		searchCollection : function ( targetCollection, callback) {
-				
+		countSearchTweets : function() {
+				var self = this;
+				var searchCollection = $.CategoryRouter.dailyView.collection;
+				return self.loadSearchCollection( searchCollection, function() {
+							_.each( self.collection.models, function( entry, index ) {
+									var attr = entry.attributes;
+									var results = self.gather( searchCollection, attr.type );
+									attr.counts = { demCnt : results.demCnt, repCnt : results.repCnt, cid : entry.cid ||  entry.id  } ;
+								});
+						});
+			},
+			
+		search : function( searchStr, filter ) {
+				var self = this;
+				var searchCollection = $.CategoryRouter.dailyView.collection;
+				return self.loadSearchCollection( searchCollection, function() {
+							var results = self.gather( searchCollection, searchStr, filter);
+							DataModel.models.drillDown = results.drillDown;
+						
+							self.drillDown( searchStr, undefined, {dualHeader : true, demCnt : results.demCnt, repCnt : results.repCnt } );
+					});
+			},
+			
+		loadSearchCollection : function ( targetCollection, callback) {
+				var dfd_searchCollection =  $.Deferred();
 				// If there are no collections in the current Category View
 				if (!targetCollection.length) {
 
 					// Show's the jQuery Mobile loading icon
 					$.mobile.loading( "show" );
 
+					targetCollection.options.silent = true; 
+					
 					// Fetches the Collection of Category Models for the current Category View
-					targetCollection.fetch().done( callback );
-
+					dfd_searchCollection = targetCollection.fetch();
 				}
 				else
 				{
-					callback();
+					dfd_searchCollection.resolve();
 				}
+				
+				dfd_searchCollection
+					.done( function() {
+							targetCollection.options.silent = false; 
+							callback();
+						});
+				
+				return dfd_searchCollection;
 			},
 			
 		bios : function( bioKey ) {
@@ -145,6 +187,11 @@ define([
 			var filteredModels = undefined;
 			var viewCollection = self.collection;
 			
+			var dfds = [];
+			if (viewCollection.options.style === "search")
+			{
+				dfds.push( this.countSearchTweets() );
+			}
 			if (viewCollection.options.style === "bios")
 			{
 				if (Preferences.repSearch === "tweetsOnly")
@@ -174,17 +221,17 @@ define([
 
 				var lastHour = undefined;
 				_.each( viewCollection.models, function( entry, index ) {
-						entry = entry.attributes;
-						entry.id = index;
-						var hour = entry.timestamp.getHours();
-						entry.hourBreak = false;
+						var attr = entry.attributes;
+						attr.id = index;
+						var hour = attr.timestamp.getHours();
+						attr.hourBreak = false;
 						if (hour !== lastHour)
 						{
-							entry.hourBreak = true;
-							entry.hour_formatted = 
-								new Date( entry.timestamp ).format("mmmm dd, yyyy") + 
+							attr.hourBreak = true;
+							attr.hour_formatted = 
+								new Date( attr.timestamp ).format("mmmm dd, yyyy") + 
 								" at " + 
-								new Date( entry.timestamp ).format("h tt");
+								new Date( attr.timestamp ).format("h tt");
 							lastHour = hour;
 						}
 						
@@ -211,6 +258,8 @@ define([
 				$(this.$el).find("[data-icon='back']")
 					.attr( "data-iconpos", "notext");
 				$("[data-icon='refresh']")
+					.attr( "data-iconpos", "notext");
+				$("[data-icon='plus']")
 					.attr( "data-iconpos", "notext");
 			}
 						
@@ -244,6 +293,11 @@ define([
 					.hide();
 			}
 			
+			if (viewCollection.options.style === "search")
+			{
+				SwipeDelete.addHandlers( this.$el );
+			}
+
 			if (viewCollection.options.style === "ctweets")
 			{
 				$('#myCanvasContainer').hide();
@@ -271,9 +325,34 @@ define([
 						.prepend( header );
 				}
 			}
-
-			// http://stackoverflow.com/questions/8357756/jquery-mobile-forcing-refresh-of-content
 			
+			// http://stackoverflow.com/questions/15468265/jquery-mobile-dialog-and-backbone-js
+			this.$el.find('a[data-rel="popup"]').on('click', function(event) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					var target = $(this).attr("href");
+					self.$el.find('div[data-role="popup"]').filter(target).popup('open');
+				});
+				
+			this.$el.find('form[name="addSearchTerm"]').find('input[name="addSearchTerm"]').on('click', function(event) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+
+					var form = $(this).closest("form");
+					var searchField = $(form).find('input[name="searchTerm"]');
+					var searchText  = $(searchField).val() || "";
+					searchText = searchText.trim();
+					var target = "#addSearchTerm";
+					self.$el.find('div[data-role="popup"]').filter(target).popup('close');
+					if (searchText.length > 0)
+					{
+						viewCollection.add( { "category": "search", "type": searchText, createdOn : new Date() , counts : { demCnt : 0, repCnt : 0 }}, {silent: true} );
+						self.render();	
+						self.$el.find("ul").listview('refresh');
+					}
+				});
+				
+			// http://stackoverflow.com/questions/8357756/jquery-mobile-forcing-refresh-of-content
 			this.$el.find(".timeline")
 				.css({"border-color" : "#ddd"});
 				
@@ -292,13 +371,22 @@ define([
 					
 					$(elem).addClass("tweetCloudItemPress");
 						
-					 setTimeout( function() {
-						$(elem).removeClass("tweetCloudItemPress");
+					setTimeout( function() {
+							$(elem).removeClass("tweetCloudItemPress");
 
-						var searchStr = $(elem).text();
-						self.search( searchStr );
+							var searchStr = $(elem).text();
+							self.search( searchStr );
 
-							}, 500);
+						}, 500);
+			
+					return false; // cancel original event to prevent form submitting
+				}); 
+			
+			this.$el.find(".searchItem").on('click', function() {
+					var id = $(this).attr("data-id");
+					var searchStr = $(this).closest("li").find(".topic").text();
+
+					self.search( searchStr, id );
 			
 					return false; // cancel original event to prevent form submitting
 				}); 

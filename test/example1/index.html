@@ -4,12 +4,13 @@
 	<title>4PIA</title>
 	<meta name="description" content="">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"; charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
 	<meta name="apple-mobile-web-app-capable" content="yes"/>
 	<LINK REL="apple-touch-icon" HREF="images/apple-touch-icon.png" /> 
 
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile-1.4.2.min.css">
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/swipeDelete.css">
 	<script src="../../libs/js/require.min.js"></script>
 
     <script src="js/main.js"></script>
@@ -175,9 +176,10 @@ function updateLayout() {
                   <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>
                   <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Democratic Tweets <span class="ui-li-count dtweetcnt"></span></a></li>
                   <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
-                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Search Tweet Cloud</a></li>
+                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Tweet Cloud</a></li>
                   <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
-                  <li><a href="#category?pulse" class="bios"><img src="images/twitter-bird-pulse.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">4PIA Pulse</a></li>
+                  <li><a href="#category?pulse" class="bios"><img src="images/twitter-bird-pulse.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Pulse</a></li>
+                  <li><a href="#category?search" class="bios"><img src="images/search.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Search</a></li>
                   <li data-role="list-divider" style="margin-top:20px">Other Interests</li>
 				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
                   <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
@@ -228,8 +230,8 @@ function updateLayout() {
       </div><!-- /content -->
       
 	<div data-role="footer">
-	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
-	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+	    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+	    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
 	</div>
 
 </script>
@@ -253,8 +255,71 @@ function updateLayout() {
       </div><!-- /content -->
       
 	<div data-role="footer">
-	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
-	    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+	    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+	    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+	</div>
+
+</div>
+
+<div data-role="dialog" id="myDialog">
+  <div data-role="header">
+    <h1>My dialog heading</h1>
+  </div>
+  <div data-role="content">
+    <p>Content goes here.</p>
+  </div>
+  <div data-role="footer">
+    <h3>And my footer...</h3>
+  </div>
+</div>
+
+<div id="search" data-role="page" data-title="Search" >
+
+      <div data-role="header" data-position="fixed">
+		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+
+	    <center data-position="fixed">
+	    	<img src="images/search.png" class="pulse-header-icon">
+	    	<div class="pulse-header-text">Search</div>
+	    </center>
+
+ 		<a href="#addSearchTerm" class="ui-btn-right" data-rel="popup" data-icon="plus">Add</a>
+
+	  </div><!-- /header -->
+
+      <div role="main" class="ui-content">
+			<form class="ui-filterable" style="position:relative"> 
+			  <input id="searchFilter" data-type="search" placeholder="Search for tweets with..">
+			</form>
+        <ul id="list" class="touch" data-role="listview" data-filter="true" data-input="#searchFilter" data-icon="false" data-split-icon="delete" data-split-theme="d">
+        </ul>
+		
+	<div data-role="popup" data-dismissible="false" id="addSearchTerm" class="ui-content" data-theme="a" data-overlay-theme="a">
+			<p id="question">Enter Search Text</p>
+			<form name="addSearchTerm" action="" method="post">
+				<input type="text" name="searchTerm" id="searchTerm" placeholder="text">
+				<input type="submit" name="addSearchTerm" id="addSearchTerm" value="Add" data-theme="b" data-icon="plus" data-iconpos="right">
+			</form>
+		</div>
+
+   </div><!-- /content -->
+    <div id="confirm" class="ui-content" data-role="popup" data-theme="none">
+        <p id="question">Are you sure you want to delete</p>
+        <p class="topic ui-li-desc"><strong>Re: This weekend in Maine</strong></p> 
+                    
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <a id="yes" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Yes</a>
+            </div>
+            <div class="ui-block-b">
+                <a id="cancel" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Cancel</a>
+            </div>
+        </div>
+    </div><!-- /popup -->
+      
+	<div data-role="footer" data-position="fixed">
+	    <a  class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+	    <a  class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
 	</div>
 
 </div>
@@ -268,12 +333,12 @@ function updateLayout() {
 			<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
 
 		<a href="#category?pulse" class="ui-btn-right" style="padding:5px;color: #333;
-text-shadow: 0 1px 0 #f3f3f3;" data-role="button" data-inline="true">
-        <img src="images/twitter-bird-pulse.png" width="20" height="20"><div style="display: inline-block;
-margin-left: 4px;
-position: relative;
-top: -4px;">Pulse</div>
-</a>
+			text-shadow: 0 1px 0 #f3f3f3;" data-role="button" data-inline="true">
+					<img src="images/twitter-bird-pulse.png" width="20" height="20"><div style="display: inline-block;
+			margin-left: 4px;
+			position: relative;
+			top: -4px;">Pulse</div>
+		</a>
 		<center class="drilldown-header-iconicView">
 			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
 			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
@@ -286,8 +351,8 @@ top: -4px;">Pulse</div>
             </ul>
       </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
+    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Facebook</a>
+    <a class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left">Twitter</a>
   </div>
 </div>
 
@@ -316,7 +381,7 @@ top: -4px;">Pulse</div>
       
 </div>
 
-   <div id="tags" style="display: none;">
+   	<div id="tags" style="display: none;">
       <ul>
         <li><a href="http://www.google.com" target="_blank">Google</a></li>
         <li><a href="/fish">Fish</a></li>
@@ -325,7 +390,7 @@ top: -4px;">Pulse</div>
         <li><a href="/vinegar">Vinegar</a></li>
       </ul>
     </div>		   
-<div id="ctweets" data-role="page" data-title="Tweet Cloud">
+	<div id="ctweets" data-role="page" data-title="Tweet Cloud">
 
       <div data-role="header">
 		<a href="#categories" data-rel="back" data-icon="back">Back</a>
@@ -360,7 +425,7 @@ top: -4px;">Pulse</div>
 			<tr>
 			<td>
 				<form class="ui-filterable" style="position:relative"> 
-				  <input id="bioFilter" data-type="search" placeholder="Search for names..">
+					<input id="bioFilter" data-type="search" placeholder="Search for names..">
 				</form>
 			</td>
 			<td width="15%">
@@ -443,6 +508,29 @@ top: -4px;">Pulse</div>
 			<li><a href="#bios?<%= category.bio.key %>"><%= category.bio.sortName %> <span class="ui-li-count"><%= category.tweetCnt %></span></a></li>
       <% }); %>
 
+</script>
+
+
+<!-- Underscore Template that is used to display all of the Bios Models -->
+<script id="forpiaSearch" type="text/template">
+      <% _.each( collection.toJSON(), function( category, id ) { %>
+
+            <li  data-id=<%= category.counts.cid %>>
+                 <a href="#demo-mail" class="searchItem">
+                 	<div class="forpiaSearch">
+						<h3 class="topic"><%= category.type %></h3>
+						<img data-id="dtweets" src="images/dem.png" alt="USA" class="searchItem drilldown-header-icon">
+						<div class="drilldown-header-text "><%= category.counts.demCnt %></div>
+						<img data-id="rtweets" src="images/rep.png" style="margin-left:32px" alt="USA" class="searchItem drilldown-header-icon">
+						<div class="drilldown-header-text "><%= category.counts.repCnt %></div>
+						<% if (category.date) { %>
+							<p class="ui-li-aside"><strong>4:37</strong>PM</p>
+						<% } %>
+                  </div>
+                </a>
+                <a class="delete">Delete</a>
+            </li>
+      <% }); %>
 </script>
 
 

@@ -34,7 +34,7 @@ define([
 		var table = $(div).find("table");
 
 		_.each( table, function( tbl, index ) {
-		if (true) console.log( index, $(tbl).html());
+//		if (true) console.log( index, $(tbl).html());
 //				if (index > 10) return;
 				var spans = $(tbl).find("span");
 				
@@ -1775,10 +1775,15 @@ CynthiaLummis :  {
 	var publicAPI = {
 			models : dataModels,
 			
+			updateSearchCounts : function ( categories )
+			{
+				return $.CategoryRouter.searchView.countSearchTweets();
+			},
+			
 			refresh : function() {
 					
 					var self = this;
-					location.hash = location.hash.replace(/\#.*$/, "");
+					location.hash = location.hash.replace(/\#.*$/, "#categories");
 					var d =  new Date( Preferences.refresh.lastRefresh );
 					var refreshTimeStamp = Preferences.refresh.lastRefresh.getTime() + Preferences.refresh.duration;
 					var refreshDiff = (refreshTimeStamp - new Date().getTime());
@@ -1964,6 +1969,7 @@ CynthiaLummis :  {
 				},
 				
 			updateCounts : function() {
+					if (dataModels.bios === undefined) debugger;
 					$("body").find(".biocnt").text( dataModels.bios.length );
 					$("body").find(".dailycnt").text( dataModels.daily.length );
 					$("body").find(".rtweetcnt").text( dataModels.rtweets.length );
@@ -2045,6 +2051,12 @@ CynthiaLummis :  {
 						.done( function(dnews, rnews, people, cloud) {
 								dataModels.dtweets = parseHTML( dnews[0], "dtweets", dataDate );
 								dataModels.rtweets = parseHTML( rnews[0], "rtweets", dataDate );
+								
+								if (document.location.href.gup( "zeroData"))
+								{
+									dataModels.dtweets = [];
+									dataModels.rtweets = [];
+								}
 								
 								dataModels.daily = [];
 								_.each(dataModels.dtweets, function(entry) {

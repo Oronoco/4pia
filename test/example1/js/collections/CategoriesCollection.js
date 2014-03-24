@@ -27,7 +27,9 @@ define([
         // Sample JSON data that in a real app will most likely come from a REST web service
         jsonArray: [
 
-        	{ "category": "healthcare", "type": "Insurance Coverage" },
+        	{ "category": "search", "type": "obama", createdOn : new Date() },
+
+            { "category": "healthcare", "type": "Insurance Coverage" },
 
             { "category": "healthcare", "type": "World Health Organization" },
 
@@ -85,12 +87,29 @@ define([
 				
                 // Calls the options.success method and passes an array of objects (Internally saves these objects as models to the current collection)
                 options.success( categories );
+				
+				var dfd_collectonSuccess = $.Deferred();
+				if (self.options.success)
+				{
+					 dfd_collectonSuccess = self.options.success( categories );
+				}
+				else
+				{
+					dfd_collectonSuccess.resolve();
+				}
+				
+				dfd_collectonSuccess
+					.done( function() {
+							if (!self.options.silent)
+							{
+								// Triggers the custom `added` method (which the Category View listens for)
+								self.trigger( "added" );
+							}
 
-                // Triggers the custom `added` method (which the Category View listens for)
-                self.trigger( "added" );
-
-                // Resolves the deferred object (this triggers the changePage method inside of the Category Router)
-                deferred.resolve();
+							// Resolves the deferred object (this triggers the changePage method inside of the Category Router)
+							deferred.resolve();
+						});
+						
 
             }, 1000);
 

@@ -20,7 +20,7 @@ require.config( {
 	paths: {
 
 		// Core Libraries
-		"jquery": "../../libs/js/jquery.min",
+		"jquery": "../../libs/js/jquery-1.10.2.min",
 		"datejs": "../../libs/js/date",
 		"numeral" : '../../libs/js/numeral',
 		"class": '../../libs/js/my.class',
@@ -75,6 +75,9 @@ require([
 		// Set up the "mobileinit" handler before requiring jQuery Mobile's module
 		function () {
 
+			// Clear history
+			history.pushState("", document.title, window.location.pathname
+															   + window.location.search);
 			//http://stackoverflow.com/questions/17962378/white-page-when-loading-while-using-jquery-mobile
 			var splashDelay = (fourPIAsplashStartTime.getTime() + Preferences.splashTime) - new Date().getTime();
 			var dfd_splashDelay = $.Deferred();
@@ -94,9 +97,6 @@ require([
 					// Disabling this will prevent jQuery Mobile from handling hash changes
 					$.mobile.hashListeningEnabled = false;
 					
-					// Clear history
-					history.pushState("", document.title, window.location.pathname
-															   + window.location.search);
 					
 					function updateDebugInfo() {
 
@@ -146,10 +146,10 @@ require([
 	require( [ "jquerymobile" ], function () {
 
 		// Instantiates a new Backbone.js Mobile Router
-		this.router = new Mobile();
+		this.router = new Mobile.CategoryRouter();
 	});
 	
-  $(document).on('click', '#submit', function() { // catch the form's submit event
+ $(document).on('click', '#submit', function() { // catch the form's submit event
 		if(true ||  $('#username').val().length > 0 && $('#password').val().length > 0){
 			// Send data to server through the ajax call
 			// action is functionality we want to call and outputJSON is our data

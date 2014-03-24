@@ -13,7 +13,7 @@ define([
 ], function( $, Backbone, CategoryModel, DataModel, Preferences, CategoriesCollection, CategoryView ) {
 
     // Extends Backbone.Router
-    var CategoryRouter = Backbone.Router.extend( {
+   var publicAPI = {
 
         // The Router constructor
         initialize: function() {
@@ -27,8 +27,11 @@ define([
             // Instantiates a new Vehicles climate View
             this.climateView = new CategoryView( { el: "#climate", collection: new CategoriesCollection( [] , { type: "climate" } ) } );
 
+          	// Instantiates a new Vehicles search View
+            this.searchView = new CategoryView( { el: "#search", collection: new CategoriesCollection( [] , { success : DataModel.updateSearchCounts, style: "search", type: "search", templateName : "script#forpiaSearch"  } ) } );
+
           	// Instantiates a new tweet pulse bios View
-            this.pulseView = new CategoryView( { el: "#pulse", collection: new CategoriesCollection( [] , { style: "pulse", type: "pulse" , templateName : "script#forpiaPulse" } ) } );
+            this.pulseView = new CategoryView( { el: "#pulse", collection: new CategoriesCollection( [] , { style: "pulse", type: "pulse", templateName : "script#forpiaPulse" } ) } );
 
          	// Instantiates a new tweet cloud bios View
             this.biosView = new CategoryView( { el: "#bios", collection: new CategoriesCollection( [] , { style: "bios", type: "bios", templateName : "script#forpiaBios" } ) } );
@@ -198,9 +201,12 @@ define([
 
         }
 
-    } );
+    };
+	
+	var CategoryRouter = Backbone.Router.extend( publicAPI );
+	publicAPI.CategoryRouter = CategoryRouter;
 
     // Returns the Router class
-    return CategoryRouter;
+    return publicAPI;
 
 } );

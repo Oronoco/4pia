@@ -20,7 +20,7 @@ define([
 			constants : constants,
 			minTweetCloudSize : 3,
 			startTime : new Date(),
-			splashTime : 2000,
+			splashTime : 3000,
 			refresh	:	{
 					cnt : 0,
 					lastRefresh : new Date(),

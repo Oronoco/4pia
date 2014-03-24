@@ -24,14 +24,16 @@
 	min-height:600px; 
 	z-index:999999; 
 	background:#fff no-repeat center center; 
-	background-image:  url(../images/logo.png);
+	background-image:  url(../../../images/161335-10.jpg);
 	background-position: center 25%;
-	content:"Loading..."; 
+	content:"Loading... \A\A 4PIA"; 
+	white-space: pre;
 	font-size: 1.5em;
 	text-align:center; 
 	color:#bbb; 
 	text-shadow:none; 
-	line-height:150px; 
+//	line-height:80px; 
+	padding-top:40px;
 	vertical-align:bottom; 
 	font-family:Arial;
 }
@@ -45,6 +47,7 @@ background-position: 8px;
 background-repeat: no-repeat;
 background-image: url(../images/twitter-bird-light-bgs.png);
 }
+
 
 .xxui-input-search input {
 	padding-left: 3.75em;

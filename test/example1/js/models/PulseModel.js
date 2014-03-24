@@ -203,6 +203,7 @@ define([
 							},
 
 							tooltip: {
+								enabled : false,
 								shared : true,
 								xformatter: function() {
 									return '<b>'+ this.x +'</b><br/>'+
@@ -279,6 +280,7 @@ define([
 							},
 
 							tooltip: {
+								enabled : false,
 								shared : true,
 								xformatter: function() {
 									return '<b>'+ this.x +'</b><br/>'+
@@ -333,6 +335,9 @@ define([
 								// height: pixels or percent
 								// width: pixels or percent
 							}
+						},
+						tooltip: {
+							enabled : false,
 						},
 						legend: {
 							enabled: false
