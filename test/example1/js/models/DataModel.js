@@ -34,6 +34,7 @@ define([
 		var table = $(div).find("table");
 
 		_.each( table, function( tbl, index ) {
+				var xx = $(tbl).html();
 //		if (true) console.log( index, $(tbl).html());
 //				if (index > 10) return;
 				var spans = $(tbl).find("span");
@@ -44,13 +45,21 @@ define([
 				var timestamp_formatted;
 				if (timestamp)
 				{
-					var xx = person;
 					person = person.substring( 0, person.length - timestamp[0].length ).trim();
 					var hour = parseInt( timestamp[1], 10);
 					var min = parseInt( timestamp[2], 10);
-					if (timestamp[3] === "P"  && hour !=12)
-						hour += 12;
-						
+					if (timestamp[3] === "P")
+					{
+						if (hour !=12)
+							hour += 12;
+					}
+					else
+					{
+						if (hour === 12)
+							hour = 0;
+					}
+//					if (hour === 5 &&  min === 19) debugger;
+					
 					timestamp = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hour, min);
 					timestamp_formatted = new Date( timestamp ).format("h:MM tt");
 //				console.log( xx, timestamp_formatted );

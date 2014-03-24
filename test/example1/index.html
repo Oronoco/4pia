@@ -261,17 +261,6 @@ function updateLayout() {
 
 </div>
 
-<div data-role="dialog" id="myDialog">
-  <div data-role="header">
-    <h1>My dialog heading</h1>
-  </div>
-  <div data-role="content">
-    <p>Content goes here.</p>
-  </div>
-  <div data-role="footer">
-    <h3>And my footer...</h3>
-  </div>
-</div>
 
 <div id="search" data-role="page" data-title="Search" >
 
@@ -305,7 +294,7 @@ function updateLayout() {
    </div><!-- /content -->
     <div id="confirm" class="ui-content" data-role="popup" data-theme="none">
         <p id="question">Are you sure you want to delete</p>
-        <p class="topic ui-li-desc"><strong>Re: This weekend in Maine</strong></p> 
+        <p class="topic ui-li-desc"><strong>text</strong></p> 
                     
         <div class="ui-grid-a">
             <div class="ui-block-a">
@@ -592,6 +581,9 @@ function updateLayout() {
 			<% } %>
 			<div class="timeline_description">
 					<%= category.description %>
+					<% if (category.href) { %>
+						&nbsp;&nbsp;&nbsp;<a href ="<%= category.href %>" target="_blank">Link </a>
+					<% }%>
 			 </div>
 		</div>
 	</li>
