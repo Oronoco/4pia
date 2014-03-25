@@ -8,7 +8,8 @@ define([
 	"underscore",
 	'numeral', 
 	"datejs",
-	"../models/PreferenceModel"
+	"../models/PreferenceModel",
+	"jstorage"
 ], function( $, Backbone, _, Numeral, datejs, Preferences ) {
 
     // The Model constructor
@@ -1789,6 +1790,58 @@ CynthiaLummis :  {
 				return $.CategoryRouter.searchView.countSearchTweets();
 			},
 			
+			updateSearchModel : function( collection ) {
+					var lookup = {};
+					dataModels.search = [
+							{ "category": "search", "type": "obama", createdOn : new Date() },
+							{ "category": "search", "type": "today", createdOn : new Date() },
+						];
+						
+					var storedValues = $.jStorage.get( Preferences.storageAuthKey );
+					if (storedValues === null)
+					{
+						storedValues = [];
+					}
+					else
+					{
+						dataModels.search = [];
+					}
+					
+					if (collection)
+					{
+						dataModels.search = collection.toJSON();
+						storedValues = []; 
+					}
+					
+					_.each( dataModels.search, function( entry ) {
+							lookup[ entry.type ] = entry;
+						});
+						
+						
+					_.each( storedValues, function( entry ) {
+							entry.category = "search";
+							entry.createdOn = entry.d;
+							entry.type = entry.t;
+							if (lookup[ entry.type ] === undefined)
+							{
+								lookup[ entry.type ] = entry;
+							}
+						});
+						
+					storedValues = []; 
+					dataModels.search = [];
+					_.each( lookup, function( entry ) {
+							dataModels.search.push( entry );
+							storedValues.push({
+									 "t": entry.type, 
+									 "d" : entry.createdOn
+								});
+						});
+						
+					
+					$.jStorage.set( Preferences.storageAuthKey, storedValues );
+				},
+				
 			refresh : function() {
 					
 					var self = this;
@@ -1985,7 +2038,7 @@ CynthiaLummis :  {
 					$("body").find(".dtweetcnt").text( dataModels.dtweets.length );
 				},
 
-				loadFAUXdata : function ( callback, numRefreshes ) {
+			loadFAUXdata : function ( callback, numRefreshes ) {
 					var self = this;
 					var demoDataDate = new Date( 2014, 02, 10);
 					var dataDate = (Preferences.liveData ? new Date() : demoDataDate);
@@ -2106,11 +2159,8 @@ CynthiaLummis :  {
 										return a.bio.sortName.localeCompare( b.bio.sortName );
 									});
 									
-								dataModels.search = [
-										{ "category": "search", "type": "obama", createdOn : new Date() },
-										{ "category": "search", "type": "today", createdOn : new Date() },
-									];
-									
+								self.updateSearchModel();
+								
 								dataModels.drillDown = [];
 								dataModels.people = people;
 								if (cloud !== true)

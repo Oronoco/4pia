@@ -80,13 +80,15 @@ define([
 			},
 			
 		removeSearchItem : function( listitem ) {
-					var searchCollection = $.CategoryRouter.searchView.collection;
-					var cid = $(listitem).attr("data-id");
-					var model = searchCollection.get( cid );
-					searchCollection.remove( model );
-                    listitem.remove();
- 					var list = $(listitem).closest("[data-role='listview']");
-					$( list ).listview( "refresh" );
+				var searchCollection = $.CategoryRouter.searchView.collection;
+				var cid = $(listitem).attr("data-id");
+				var model = searchCollection.get( cid );
+				searchCollection.remove( model );
+                listitem.remove();
+ 				var list = $(listitem).closest("[data-role='listview']");
+				$( list ).listview( "refresh" );
+				
+				DataModel.updateSearchModel( searchCollection );
 			},
 			
 		gather : function( models, searchStr, filter) {
@@ -97,7 +99,11 @@ define([
 						var desc = entry.get("person") + " " + entry.get("description");
 						var found = false;
 						_.find(s, function(term) {
-						
+								term = term.trim();
+								if (term.length === 0)
+								{
+									return;
+								}
 								var match = desc.toLowerCase().indexOf( term );
 								if (match >= 0)
 								{
@@ -370,6 +376,9 @@ define([
 					if (searchText.length > 0)
 					{
 						viewCollection.add( { "category": "search", "type": searchText, createdOn : new Date() , counts : { demCnt : 0, repCnt : 0 }}, {silent: true} );
+						
+						DataModel.updateSearchModel( viewCollection );
+
 						self.render();	
 						self.$el.find("ul").listview('refresh');
 					}

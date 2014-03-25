@@ -25,6 +25,7 @@ require.config( {
 		"numeral" : '../../libs/js/numeral',
 		"class": '../../libs/js/my.class',
         "tbd" : '../../libs/js/tbd',
+		"jstorage": "../../libs/js/jstorage",
 		"dataGen" : '../../js/dataGen',
 		"tagcanvas" : '../../libs/js/tagcanvas/jquery.tagcanvas.min',
 		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2.min",
@@ -33,13 +34,17 @@ require.config( {
 		"highcharts_funnel": "../../libs/js/highcharts/js/modules/funnel",
 		"underscore": "../../libs/js/lodash.min",
 		"backbone": "../../libs/js/backbone.min",
+		"md5": "../../libs/js/md5",
 
 	},
 
 	// Sets the configuration for your third party scripts that are not AMD compatible
 	shim: {
 
-       'highcharts_more': {
+       'md5': {
+            exports: 'CryptoJS',
+        },
+      'highcharts_more': {
             deps:["highcharts"]
         },
        'highcharts_funnel': {
@@ -67,8 +72,10 @@ require([
 	"js/routers/mobileRouter",
 	"js/models/DataModel",
 	"js/models/PreferenceModel",
-	"underscore"
-], function ( $, Backbone, Mobile, DataModel, Preferences, _) {
+	"underscore",
+	'md5', 
+	"jstorage"
+], function ( $, Backbone, Mobile, DataModel, Preferences, _, CryptoJS ) {
 	$( document ).on( "mobileinit",
 
 
@@ -150,21 +157,24 @@ require([
 	});
 	
  $(document).on('click', '#submit', function() { // catch the form's submit event
-		if(true ||  $('#username').val().length > 0 && $('#password').val().length > 0){
+		if (true ||  $('#username').val().length > 0 && $('#password').val().length > 0){
 			// Send data to server through the ajax call
 			// action is functionality we want to call and outputJSON is our data
 			           
-				messageFromProfile( "#user:" + $('#username').val() );
+			messageFromProfile( "#user:" + $('#username').val() );
 
 				// Show's the jQuery Mobile loading icon
 			$.mobile.loading( "show" );
 
-			var preloadModels = [
-					"search"
-				];
-				
+			var credentials = { name : $('#username').val(), pwd : $('#password').val() };
+			
+			var key = JSON.stringify( credentials );
+			var hash = CryptoJS.MD5( key );
+			Preferences.storageAuthKey = hash.toString(CryptoJS.enc.Hex);
+
 			$("[data-icon='back']")
 				.attr( "data-iconpos", "notext");
+				
 			DataModel.loadFAUXdata( function() {
 					$.mobile.changePage( "#categories" , { reverse: false, changeHash: false } );
 				}, 0);
