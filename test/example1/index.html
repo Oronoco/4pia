@@ -164,7 +164,7 @@ function updateLayout() {
 					<span class="env-viewport-height"></span> <span class="env-viewport-size"></span>
 				</span>
 			</h1>
- 		<a href="#refresh" class="ui-btn-right" data-rel="back" data-icon="refresh">Refresh</a>
+ 		<a href="#refresh" class="ui-btn-right" data-rel="back"  data-platformResize="true" data-icon="refresh">Refresh</a>
      </div><!-- /header -->
 	<div class="forpia-header-refresh" id="refresh">
 		<div class="refreshMsg nextRefresh"> Next update in <span class="forpia-header-refresh-text textColor "></span>&nbsp;seconds</div>
@@ -193,7 +193,7 @@ function updateLayout() {
 <script id="tweetList" type="text/template">
 
      <div data-role="header" data-position="fixed">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 		<% if (collection.options.type ==="drillDown" ) { %>
 			<h1 class="drilldown-header-textView">
@@ -240,7 +240,7 @@ function updateLayout() {
 <div id="pulse" data-role="page" data-title="Pulse" >
 
       <div data-role="header">
-		<a href="#back" data-rel="back" data-icon="back">Back</a>
+		<a href="#back" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 	    <center>
 	    	<img src="images/twitter-bird-pulse.png" class="pulse-header-icon">
@@ -265,20 +265,20 @@ function updateLayout() {
 <div id="search" data-role="page" data-title="Search" >
 
       <div data-role="header" data-position="fixed">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 	    <center data-position="fixed">
 	    	<img src="images/search.png" class="pulse-header-icon">
 	    	<div class="pulse-header-text">Search</div>
 	    </center>
 
- 		<a href="#addSearchTerm" class="ui-btn-right" data-rel="popup" data-icon="plus">Add</a>
+ 		<a href="#addSearchTerm" class="ui-btn-right" data-rel="popup"  data-platformResize="true" data-icon="plus">Add</a>
 
 	  </div><!-- /header -->
 
       <div role="main" class="ui-content">
 			<form class="ui-filterable" style="position:relative"> 
-			  <input id="searchFilter" data-type="search" placeholder="Search for tweets with..">
+			  <input id="searchFilter" data-type="search" placeholder="..">
 			</form>
         <ul id="list" class="touch" data-role="listview" data-filter="true" data-input="#searchFilter" data-icon="false" data-split-icon="delete" data-split-theme="d">
         </ul>
@@ -316,7 +316,7 @@ function updateLayout() {
 <div id="drillDown" data-role="page" data-title="Tweet Details">
 
       <div data-role="header">
-		<a href="#back" data-rel="back" data-icon="back">Back</a>
+		<a href="#back" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 		<h1 class="drilldown-header-textView">
 			<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
@@ -382,7 +382,7 @@ function updateLayout() {
 	<div id="ctweets" data-role="page" data-title="Tweet Cloud">
 
       <div data-role="header">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 	    <h1>Tweet Cloud</h1>
       </div><!-- /header -->
@@ -403,7 +403,7 @@ function updateLayout() {
 <div id="bios" data-role="page" data-title="Representatives" >
 
       <div data-role="header" data-position="fixed">
-		<a href="#categories" data-rel="back" data-icon="back">Back</a>
+		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 	  	<h1>People</h1>
 	  
@@ -536,7 +536,7 @@ function updateLayout() {
 
 <!-- Underscore Template that is used to display all of the timelineItem Models -->
 <script id="timelineItem" type="text/template">
-	 <li class="ui-li-static timeline  <%= category.categoryClass %>">
+	 <li class="ui-li-static timeline  <%= category.searchMatchClass %> <%= category.categoryClass %>">
 		 <div class="timelineItem">
 			 <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 			 <div class="timeline_time"> <%= category.timestamp_formatted %> </div>

@@ -216,16 +216,16 @@ padding: .3em 1em;
 	margin-left: 12px;
 	font-size:12px;
 	padding: 0px;
-	font-weight:500;
+	font-weight:bold;
 	color:#666;
-  color:#517FD5;
+	color:#517FD5;
 	padding-right : 8px;
-   border-right: 1px solid gray;
+	border-right: 1px solid gray;
 }
 
 .timeline_person:hover {
-  cursor: pointer;
-  color:#517FD5;
+	cursor: pointer;
+	color:#517FD5;
 	border-bottom: 1px dashed #f99600;
 }
 .timeline_time {
@@ -247,12 +247,33 @@ width: 12px;
 border-radius: 8px 0 0 8px;
 background-color:lightGray;
 }
-.dtweets:before {
-		background-color:#232066;
+
+.timeline:after {
+content: "";
+position: absolute;
+top: 0;
+bottom: 0;
+left: 100%;
+width: 8px;
+border-radius: 0 8px 8px 0;
+background-color:lightGray;
 }
+
+.dtweets:before {
+	background-color:#232066;
+}
+
+.searchMatch:before {
+	width:16px;
+	background-repeat:no-repeat;
+	background-image:  url(../images/search.png);
+	background-position: center 25%;
+}
+
 .rtweets:before {
 		background-color:#E91D0E;
 }
+
 .timeline_description {
 	display:block;
 	margin-left: 12px;

@@ -16,6 +16,7 @@ define([
 
             // Sets the type instance property (ie. animals)
            	this.options = options;
+			this.viewAdded = false;
 			this.type = options.type;
             this.templateName = options.templateName;
 
@@ -27,9 +28,7 @@ define([
         // Sample JSON data that in a real app will most likely come from a REST web service
         jsonArray: [
 
-        	{ "category": "search", "type": "obama", createdOn : new Date() },
-
-            { "category": "healthcare", "type": "Insurance Coverage" },
+        	{ "category": "healthcare", "type": "Insurance Coverage" },
 
             { "category": "healthcare", "type": "World Health Organization" },
 
@@ -55,6 +54,56 @@ define([
 
         ],
 
+		loadCollection : function( self ) {
+				var dfd_search = $.Deferred();
+				
+				if (self.options.style === "timeline")
+				{
+					var searchCollection = $.CategoryRouter.searchView.collection;
+					searchCollection.options.silent = true;
+					dfd_search = searchCollection.fetch()
+						.done( function() {
+								searchCollection.options.silent = false;
+							});
+				}
+				else
+				{
+					dfd_search.resolve();
+				}
+
+				var dfd_collection = $.Deferred();
+				dfd_search
+					.done( function() {
+								// If there are no collections in the current Category View
+								if (!self.length) 
+								{
+
+									// Show's the jQuery Mobile loading icon
+									$.mobile.loading( "show" );
+
+									// Fetches the Collection of Category Models for the current Category View
+									self.fetch()
+										.done(function() { dfd_collection.resolve(); })
+										.fail(function() { dfd_collection.reject(); })
+								}
+
+								// If there already collections in the current Category View
+								else 
+								{
+									if (!self.viewAdded)
+									{
+										self.trigger( "added" );
+										self.viewAdded = true;
+									}
+									
+									dfd_collection.resolve();
+								}
+						});
+						
+				
+				
+				return $.when( dfd_search, dfd_collection );
+			},
         // Overriding the Backbone.sync method (the Backbone.fetch method calls the sync method when trying to fetch data)
         sync: function( method, model, options ) {
 
@@ -104,6 +153,8 @@ define([
 							{
 								// Triggers the custom `added` method (which the Category View listens for)
 								self.trigger( "added" );
+								
+								self.viewAdded = true;
 							}
 
 							// Resolves the deferred object (this triggers the changePage method inside of the Category Router)

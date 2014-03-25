@@ -159,6 +159,10 @@ require([
 				// Show's the jQuery Mobile loading icon
 			$.mobile.loading( "show" );
 
+			var preloadModels = [
+					"search"
+				];
+				
 			$("[data-icon='back']")
 				.attr( "data-iconpos", "notext");
 			DataModel.loadFAUXdata( function() {

@@ -172,32 +172,15 @@ define([
         // Category method that passes in the type that is appended to the url hash
         category: function(type) {
 
-		var self = this;
+			var self = this;
 			
             // Stores the current Category View  inside of the currentView variable
             var currentView = this[ type + "View" ];
 
-            // If there are no collections in the current Category View
-            if(!currentView.collection.length) {
-
-                // Show's the jQuery Mobile loading icon
-                $.mobile.loading( "show" );
-
-                // Fetches the Collection of Category Models for the current Category View
-                currentView.collection.fetch().done( function() {
-
-					self.changePage( "#" + type );
-    
-                } );
-
-            }
-
-            // If there already collections in the current Category View
-            else {
-
-  				self.changePage( "#" + type );
- 
-            }
+			currentView.collection.loadCollection( currentView.collection )
+				.done(function() {
+						self.changePage( "#" + type );
+					});
 
         }
 

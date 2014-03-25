@@ -89,11 +89,11 @@ define([
 					$( list ).listview( "refresh" );
 			},
 			
-		gather : function( myCollection, searchStr, filter ) {
+		gather : function( models, searchStr, filter) {
 				var s = searchStr.toLowerCase().trim().split(",");
 				var demCnt = 0;
 				var repCnt = 0;
-				var drillDown = _.filter( myCollection.models, function( entry, index ) {
+				var drillDown = _.filter( models, function( entry, index ) {
 						var desc = entry.get("person") + " " + entry.get("description");
 						var found = false;
 						_.find(s, function(term) {
@@ -111,13 +111,28 @@ define([
 				return { drillDown : drillDown, demCnt : demCnt, repCnt : repCnt };
 			},
 			
+		matchSearchTerms : function( item ) {
+				var self = this;
+				var found = undefined;
+				var searchCollection = $.CategoryRouter.searchView.collection;
+				_.each( searchCollection.models, function( entry, index ) {
+						var attr = entry.attributes;
+						var results = self.gather( [ item ], attr.type );
+						if (results.demCnt  ||  results.repCnt)
+						{
+							found = found || { demCnt : results.demCnt, repCnt : results.repCnt, cid : entry.cid ||  entry.id  };
+						}
+					});
+				return found;
+			},
+			
 		countSearchTweets : function() {
 				var self = this;
 				var searchCollection = $.CategoryRouter.dailyView.collection;
 				return self.loadSearchCollection( searchCollection, function() {
 							_.each( self.collection.models, function( entry, index ) {
 									var attr = entry.attributes;
-									var results = self.gather( searchCollection, attr.type );
+									var results = self.gather( searchCollection.models, attr.type );
 									attr.counts = { demCnt : results.demCnt, repCnt : results.repCnt, cid : entry.cid ||  entry.id  } ;
 								});
 						});
@@ -127,7 +142,7 @@ define([
 				var self = this;
 				var searchCollection = $.CategoryRouter.dailyView.collection;
 				return self.loadSearchCollection( searchCollection, function() {
-							var results = self.gather( searchCollection, searchStr, filter);
+							var results = self.gather( searchCollection.models, searchStr, filter);
 							DataModel.models.drillDown = results.drillDown;
 						
 							self.drillDown( searchStr, undefined, {dualHeader : true, demCnt : results.demCnt, repCnt : results.repCnt } );
@@ -235,6 +250,10 @@ define([
 							lastHour = hour;
 						}
 						
+						if (self.matchSearchTerms( entry ))
+						{
+							attr.searchMatchClass = "searchMatch";
+						}
 					});
 			}
 
@@ -254,12 +273,8 @@ define([
 			}
 
 			if (Preferences.viewportSize.type === "small")
-			{
-				$(this.$el).find("[data-icon='back']")
-					.attr( "data-iconpos", "notext");
-				$("[data-icon='refresh']")
-					.attr( "data-iconpos", "notext");
-				$("[data-icon='plus']")
+			{ data-platformResize="true"
+				$(this.$el).find("[data-platformResize='true']")
 					.attr( "data-iconpos", "notext");
 			}
 						
@@ -331,8 +346,16 @@ define([
 					event.preventDefault();
 					event.stopImmediatePropagation();
 					var target = $(this).attr("href");
-					self.$el.find('div[data-role="popup"]').filter(target).popup('open');
-				});
+					var popup = self.$el.find('div[data-role="popup"]').filter(target);
+					$(popup)
+						.popup({
+								afteropen: function( event, ui ) {
+									$('#searchTerm').focus();
+								}
+							})
+						.popup('open', { positionTo: "window" });
+
+			});
 				
 			this.$el.find('form[name="addSearchTerm"]').find('input[name="addSearchTerm"]').on('click', function(event) {
 					event.preventDefault();

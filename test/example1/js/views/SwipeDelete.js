@@ -11,7 +11,7 @@ define([
 	function addHandlers( self )
 	{
 	    // If it's not a touch device...
-	    if ( ! $.mobile.support.touch ) {
+	    if ( true || ! $.mobile.support.touch ) {
 	        // Remove the class that is used to hide the delete button on touch devices
 	        $(self).find( "#list" ).removeClass( "touch" );
 	        // Click delete split-button to remove list item

@@ -2106,6 +2106,11 @@ CynthiaLummis :  {
 										return a.bio.sortName.localeCompare( b.bio.sortName );
 									});
 									
+								dataModels.search = [
+										{ "category": "search", "type": "obama", createdOn : new Date() },
+										{ "category": "search", "type": "today", createdOn : new Date() },
+									];
+									
 								dataModels.drillDown = [];
 								dataModels.people = people;
 								if (cloud !== true)
