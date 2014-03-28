@@ -65,7 +65,7 @@ filter: Alpha(Opacity=50);
 opacity: .5;
 }
 .xxtwitter_pulse:hover {
-		background-color:#F00;
+	background-color:#F00;
 }
 
 .env-viewport-large .ui-header {
@@ -77,7 +77,6 @@ opacity: .5;
 
 .tweetCloudContents {
 	margin-left :-46px;
-	
 }
 
 .tweetCloudHeader {
@@ -238,14 +237,14 @@ padding: .3em 1em;
 }
 
 .timeline:before {
-content: "";
-position: absolute;
-top: 0;
-bottom: 0;
-left: 0;
-width: 12px;
-border-radius: 8px 0 0 8px;
-background-color:lightGray;
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 8px;
+	border-radius: 8px 0 0 8px;
+	background-color:lightGray;
 }
 
 .timeline:after {
@@ -263,15 +262,23 @@ background-color:lightGray;
 	background-color:#232066;
 }
 
+.rtweets:before {
+	background-color:#E91D0E;
+}
+
+.dtweets:after {
+	background-color:#232066;
+}
+
+.rtweets:after {
+		background-color:#E91D0E;
+}
+
 .searchMatch:before {
 	width:16px;
 	background-repeat:no-repeat;
 	background-image:  url(../images/search.png);
 	background-position: center 25%;
-}
-
-.rtweets:before {
-		background-color:#E91D0E;
 }
 
 .timeline_description {
@@ -317,24 +324,39 @@ background-color:lightGray;
 	float:right;
 }
 
-.timeline_category_rtweets {
-background-color: #E91D0E;
-background-color: #999;
-}
-.timeline_category_dtweets {
-background-color: #232066;
-background-color: #999;
+.timeline_category_rtweets, .timeline_category_dtweets {
+  /* fallback */
+  background-color: #EEE;
+  background-image: url(images/radial_bg.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  /* Safari 4-5, Chrome 1-9 */
+  /* Can't specify a percentage size? Laaaaaame. */
+  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#999), to(#EEE));
+
+  /* Safari 5.1+, Chrome 10+ */
+  background: -webkit-radial-gradient(circle, #999, #EEE);
+
+  /* Firefox 3.6+ */
+  background: -moz-radial-gradient(circle, #999, #EEE);
+
+  /* IE 10 */
+  background: -ms-radial-gradient(circle, #999, #EEE);
+
+  /* Opera couldn't do radial gradients, then at some point they started supporting the -webkit- syntax, how it kinda does but it's kinda broken (doesn't do sizing) */
 }
 
+
 .timeline_heading {
-height: 21px;
-position: relative;
-border-left: 1px solid #E9E9E8;
-border-right: 1px solid #E9E9E8;
-border-top: 1px solid #E9E9E8;
-border-top-left-radius: 12px;
-border-top-right-radius: 12px;
-text-align: center;
-color: white;
-text-shadow: black 0.1em 0.1em 0.2em;
+	height: 21px;
+	position: relative;
+	border-left: 1px solid #E9E9E8;
+	border-right: 1px solid #E9E9E8;
+	border-top: 1px solid #E9E9E8;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	text-align: center;
+	color: white;
+	text-shadow: black 0.1em 0.1em 0.2em;
 }

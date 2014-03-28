@@ -171,21 +171,21 @@ function updateLayout() {
 		<div class="refreshMsg lastRefresh"> Updating on <span class="forpia-header-refresh-text"></span></div>
 	</div><!-- /refresh -->
  
-      <div role="main" class="ui-content">
-             <ul data-role="listview" data-inset="true">
-                  <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>
-                  <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Democratic Tweets <span class="ui-li-count dtweetcnt"></span></a></li>
-                  <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
-                  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Tweet Cloud</a></li>
-                  <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
-                  <li><a href="#category?pulse" class="bios"><img src="images/twitter-bird-pulse.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Pulse</a></li>
-                  <li><a href="#category?search" class="bios"><img src="images/search.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Search</a></li>
-                  <li data-role="list-divider" style="margin-top:20px">Other Interests</li>
-				  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
-                  <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
-                  <li><a href="#category?climate" class="climate">Climate Change</a></li>
-            </ul>
-      </div><!-- /content -->
+     <div role="main" class="ui-content">
+		 <ul data-role="listview" data-inset="true">
+			  <li><a href="#category?daily" class="daily"><img src="images/logo.png" style="margin-top:-10px" alt="USA" class="ui-li-icon">Daily Tweets <span class="ui-li-count dailycnt"></span></a></li>
+			  <li><a href="#category?dtweets" class="dtweets"><img src="images/dem.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Democratic Tweets <span class="ui-li-count dtweetcnt"></span></a></li>
+			  <li><a href="#category?rtweets" class="rtweets"><img src="images/rep.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Republican Tweets <span class="ui-li-count rtweetcnt"></span></a></li>
+			  <li><a href="#category?ctweets" class="ctweets"><img src="images/cloud_logo.png" style="margin-top:0px" alt="USA" class="ui-li-icon">Tweet Cloud</a></li>
+			  <li><a href="#category?bios" class="bios"><img src="images/seal.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Representatives <span class="ui-li-count biocnt"></a></li>
+			  <li><a href="#category?pulse" class="bios"><img src="images/twitter-bird-pulse.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Pulse</a></li>
+			  <li><a href="#category?search" class="bios"><img src="images/search2.png" style="margin-top:-6px" alt="USA" class="ui-li-icon">Search</a></li>
+			  <li data-role="list-divider" style="margin-top:20px">Other Interests</li>
+			  <li><a href="#category?healthcare" class="healthcare">Healthcare</a></li>
+			  <li><a href="#category?ukraine" class="ukraine">Ukraine</a></li>
+			  <li><a href="#category?climate" class="climate">Climate Change</a></li>
+		</ul>
+     </div><!-- /content -->
 
 </div>
 
@@ -197,11 +197,17 @@ function updateLayout() {
 
 		<% if (collection.options.type ==="drillDown" ) { %>
 			<h1 class="drilldown-header-textView">
-				<span class="drilltweeter"></span><div class="category-header-text "><span class="drilltweetcnt"></span></div></h1>
+				<span class="drilltweeter"></span>
+				<div class="category-header-text ">
+					<span class="drilltweetcnt"></span>
+				</div>
+			</h1>
 
 			<center class="drilldown-header-iconicView">
 				<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
-				<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
+				<div class="drilldown-header-text ">
+					<span class="drilltweetcnt"></span>
+				</div>
 			</center>
 		<% } else { %>
 			<center>
@@ -215,9 +221,17 @@ function updateLayout() {
 						<% if (viewportSize.type !=="small"  &&  collection.options.sidebyside) { %>
 							style="margin-left:32px"
 						<% } %>
-				
 					>
 					<div class="category-header-text "><span class="rtweetcnt"></span></div>
+				<% } %>
+				<% if (searchCnt > 0) { %>
+					<img src="images/search2.png" alt="USA" class="category-header-icon"
+				
+						<% if (viewportSize.type !=="small") { %>
+							style="margin-left:32px"
+						<% } %>
+					>
+					<div class="category-header-text "><%= searchCnt %></div>
 				<% } %>
 			</center>
 		<% } %>
@@ -268,7 +282,7 @@ function updateLayout() {
 		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
 	    <center data-position="fixed">
-	    	<img src="images/search.png" class="pulse-header-icon">
+	    	<img src="images/search2.png" class="pulse-header-icon">
 	    	<div class="pulse-header-text">Search</div>
 	    </center>
 
@@ -331,6 +345,8 @@ function updateLayout() {
 		<center class="drilldown-header-iconicView">
 			<img src="images/dem.png" alt="USA" class="drilldown-header-icon">
 			<div class="drilldown-header-text "><span class="drilltweetcnt"></span></div>
+			<img src="images/search2.png" alt="USA" class="category-header-icon">
+			<div class="category-header-text "><span class="drillsearchcnt"></span></div>
 		</center>
 
 	  </div><!-- /header -->
@@ -411,23 +427,23 @@ function updateLayout() {
 
       <div role="main" class="ui-content">
 			<table border=0 width="100%">
-			<tr>
-			<td>
-				<form class="ui-filterable" style="position:relative"> 
-					<input id="bioFilter" data-type="search" placeholder="Search for names..">
-				</form>
-			</td>
-			<td width="15%">
-				<div id="bioFilter_controlGroup" data-role="fieldcontain" style="margin-left:20px">
-					<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-						<input type="radio" name="bioFilter" id="all" value="on" checked="checked" />
-						<label for="all">All</label>
-						<input type="radio" name="bioFilter" id="tweetsOnly" value="off" />
-						<label for="tweetsOnly" class="twitter-radio-icon" ></label>
-					</fieldset>
-				</div>
-			</td>
-			</tr>
+				<tr>
+					<td>
+						<form class="ui-filterable" style="position:relative"> 
+							<input id="bioFilter" data-type="search" placeholder="Search for names..">
+						</form>
+					</td>
+					<td width="15%">
+						<div id="bioFilter_controlGroup" data-role="fieldcontain" style="margin-left:20px">
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="bioFilter" id="all" value="on" checked="checked" />
+								<label for="all">All</label>
+								<input type="radio" name="bioFilter" id="tweetsOnly" value="off" />
+								<label for="tweetsOnly" class="twitter-radio-icon" ></label>
+							</fieldset>
+						</div>
+					</td>
+				</tr>
 			</table>
 
 			<ul data-role="listview" data-filter="true" data-input="#bioFilter" data-autodividers="true" data-inset="true">
@@ -598,7 +614,7 @@ function updateLayout() {
 						</table>
 					<% } %>
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
-					<table style="position:relative" border=0 width="100%">
+					<table style="position:relative" border=0 width="99%">
 				<% } %>
 
  					<tr>
@@ -666,8 +682,9 @@ function updateLayout() {
 					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
 				<% } %>
 
+				<div style="width:99%">
 				<%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
-						
+				</div>
 		  <% }); %>
 		</td>
 		</tr>

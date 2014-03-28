@@ -28,6 +28,7 @@ define([
         },
 						
 		drillDown : function( targetPerson, myCollection, options ) {
+				var self = this;
 				var person = undefined;
 				$(".drilldown-header-iconicView").hide();
 				$(".drilldown-header-textView").show();
@@ -68,9 +69,19 @@ define([
 				// Triggers the custom `added` method (which the Category View listens for)
                 $.CategoryRouter.drillDownView.collection.trigger( "added" );
 
+				var drillsearchcnt = 0;
+				_.each( DataModel.models.drillDown, function( entry, index ) {
+					var attr = entry.attributes;
+						if (self.matchSearchTerms( entry ))
+						{
+							drillsearchcnt++;
+							attr.searchMatchClass = "searchMatch";
+						}
+					});
 
 				$("body").find(".drilltweeter").text( targetPerson );
 				$("body").find(".drilltweetcnt").text( DataModel.models.drillDown.length );
+				$("body").find(".drillsearchcnt").text( drillsearchcnt );
 				
 				messageFromProfile( "#drillDown?" + targetPerson );
 				
@@ -190,7 +201,7 @@ define([
 					
 				if (targetBio.length)
 				{
-					self.searchCollection( $.CategoryRouter.dailyView.collection, function() {
+					self.loadSearchCollection( $.CategoryRouter.dailyView.collection, function() {
 							self.drillDown( targetBio[0].bio.sortName, $.CategoryRouter.dailyView.collection, {singleHeader : true} );
 						});
 				}
@@ -202,6 +213,7 @@ define([
 
 			var self = this;
 			
+			var searchCnt = 0;
 			var templateFn = undefined;
 			var templateName = self.collection.templateName  ||  "script#categoryItems";
 
@@ -236,6 +248,7 @@ define([
 				});			
 			}
 			
+			
 			if (viewCollection.options.style === "timeline")
 			{
 				templateFn = this.timelineTemplate;
@@ -258,6 +271,7 @@ define([
 						
 						if (self.matchSearchTerms( entry ))
 						{
+							searchCnt++;
 							attr.searchMatchClass = "searchMatch";
 						}
 					});
@@ -272,19 +286,19 @@ define([
 			var tweetList = this.$el.find("#tweetList");
 			if (tweetList.length > 0)
 			{
-				this.template = _.template( $( "script#tweetList" ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize } );
+				this.template = _.template( $( "script#tweetList" ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize, searchCnt : searchCnt } );
 				$(tweetList)
 					.empty()
 					.html(this.template);
 			}
 
 			if (Preferences.viewportSize.type === "small")
-			{ data-platformResize="true"
+			{ 
 				$(this.$el).find("[data-platformResize='true']")
 					.attr( "data-iconpos", "notext");
 			}
 						
-			this.template = _.template( $( templateName ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize, "templateFn" : templateFn } );
+			this.template = _.template( $( templateName ).html(), { "collection": viewCollection, "viewportSize" : Preferences.viewportSize, "templateFn" : templateFn, searchCnt : searchCnt } );
 			
  			if (filteredModels)
 			{

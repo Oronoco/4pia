@@ -98,6 +98,7 @@ define([
             var currentView = this[ type + "View" ];
 				
 			Preferences.lastPageName = "#" + type + "?" + bioKey;
+			console.log( "*****", Preferences.lastPageName);
 
 			currentView.bios( bioKey );
 			
@@ -108,6 +109,7 @@ define([
 				if (pageName != "#pulse")
 				{
 					Preferences.lastPageName = pageName;
+					console.log( "*****", Preferences.lastPageName);
 				}
 				
 				messageFromProfile( pageName );
@@ -126,6 +128,9 @@ define([
 		// Back method
         back: function() {
 			var url = Preferences.lastPageName  ||  "#categories";
+			console.log( "***** back", url, window.location);
+	//		location.hash = location.hash.replace(/\#.*$/, url);
+					
 			this.changePage( url );
         },
 

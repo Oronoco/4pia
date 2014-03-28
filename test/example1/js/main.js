@@ -103,7 +103,13 @@ require([
 
 					// Disabling this will prevent jQuery Mobile from handling hash changes
 					$.mobile.hashListeningEnabled = false;
-					
+	
+$.mobile.ajaxEnabled            = false;
+$.mobile.linkBindingEnabled     = false;
+$.mobile.hashListeningEnabled   = false;
+$.mobile.pushStateEnabled       = false;
+$.mobile.changePage.defaults.changeHash = false;
+				
 					
 					function updateDebugInfo() {
 
