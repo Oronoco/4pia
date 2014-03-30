@@ -11,8 +11,13 @@ define([
 	var constants = {};
 	constants.sec = 1000;
 	constants.min = constants.sec * 60;
-	constants.hour = constants.min * 60;
-	constants.day = constants.hour * 60;
+	constants.quarterHour = constants.min * 15;
+	constants.halfHour = constants.quarterHour * 2;
+	constants.hour = constants.halfHour * 2;
+	constants.quarterDay = constants.hour * 6;
+	constants.halfDay = constants.quarterDay * 2;
+	constants.day = constants.halfDay * 2;
+	constants.week = constants.day * 7;
 
 	var fourPIA = { 
 			repSearch : "tweetsOnly", 

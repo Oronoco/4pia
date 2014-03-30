@@ -216,3 +216,16 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.php
+*.pl
+php/LineChartData.txt
+php/RawTweets.txt
+php/ProgressBar.html
+php/TweetCloudWords.txt
+php/Utils.js
+php/Words.txt
+php/facing-off.jpg
+php/postinfo.html
+php/style.css
+php/x86_PHP5.3.zip
+php/xtream_codes.so

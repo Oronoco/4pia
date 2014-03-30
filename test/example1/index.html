@@ -91,7 +91,6 @@ function updateLayout() {
   }
 };
 
-
 </script>
 
 </head>
@@ -596,11 +595,14 @@ function updateLayout() {
 					 <div style="clear:both"> </div>
 			<% } %>
 			<div class="timeline_description">
-					<%= category.description %>
-					<% if (category.href) { %>
-						&nbsp;&nbsp;&nbsp;<a href ="<%= category.href %>" target="_blank">Link </a>
-					<% }%>
-			 </div>
+				<%= category.description %>
+				<% if (category.href) { %>
+					&nbsp;&nbsp;&nbsp;<a href="<%= category.href %>" target="_blank">Link </a>
+				<% }%>
+			</div>
+			<% if (category.cardContent) { %>
+				<img class="timeline_cardContent" src="<%= category.cardContent %>" >
+			<% }%>
 		</div>
 	</li>
 </script>
@@ -676,16 +678,22 @@ function updateLayout() {
 					</td>
 	<% } %>
 		<td valign=top>
-		  <% _.each( collection.toJSON(), function( category, id ) { %>
+			
+			<div id="tweetfeed">
+				<% _.each( collection.toJSON(), function( category, id ) { %>
 
-				<% if (category.hourBreak) { %>
-					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
-				<% } %>
+					<% if (category.hourBreak) { %>
+						<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
+					<% } %>
 
-				<div style="width:99%">
-				<%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
-				</div>
-		  <% }); %>
+					<div style="width:99%">
+					<%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
+					</div>
+				<% }); %>
+				<a  class="timeline_showmore" id="yes" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Loading More Tweets</a>
+			</div>
+			
+			<a  class="timeline_linkToMore" id="yes" data-role="button" data-mini="true" data-shadow="false" data-theme="b" data-rel="back">Read more on Twitter</a>
 		</td>
 		</tr>
 	</table>

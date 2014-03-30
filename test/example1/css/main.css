@@ -326,23 +326,23 @@ background-color:lightGray;
 
 .timeline_category_rtweets, .timeline_category_dtweets {
   /* fallback */
-  background-color: #EEE;
+  background-color: #FFF;
   background-image: url(images/radial_bg.png);
   background-position: center center;
   background-repeat: no-repeat;
 
   /* Safari 4-5, Chrome 1-9 */
   /* Can't specify a percentage size? Laaaaaame. */
-  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#999), to(#EEE));
+  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#999), to(#FFF));
 
   /* Safari 5.1+, Chrome 10+ */
-  background: -webkit-radial-gradient(circle, #999, #EEE);
+  background: -webkit-radial-gradient(circle, #888, #FFF);
 
   /* Firefox 3.6+ */
-  background: -moz-radial-gradient(circle, #999, #EEE);
+  background: -moz-radial-gradient(circle, #888, #FFF);
 
   /* IE 10 */
-  background: -ms-radial-gradient(circle, #999, #EEE);
+  background: -ms-radial-gradient(circle, #888, #FFF);
 
   /* Opera couldn't do radial gradients, then at some point they started supporting the -webkit- syntax, how it kinda does but it's kinda broken (doesn't do sizing) */
 }
@@ -351,12 +351,37 @@ background-color:lightGray;
 .timeline_heading {
 	height: 21px;
 	position: relative;
-	border-left: 1px solid #E9E9E8;
-	border-right: 1px solid #E9E9E8;
-	border-top: 1px solid #E9E9E8;
+//	border-left: 1px solid #E9E9E8;
+//	border-right: 1px solid #E9E9E8;
+//	border-top: 1px solid #E9E9E8;
 	border-top-left-radius: 12px;
 	border-top-right-radius: 12px;
 	text-align: center;
 	color: white;
 	text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+.timeline_cardContent
+{
+	padding-left:10px;
+	padding-top:5px;
+	max-height : 320px;
+//	border: 2px solid black;
+	border-radius: 30px;
+	-moz-border-radius: 30px;
+	-khtml-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-box-shadow: 4px 4px 5px #888;
+-webkit-box-shadow: 4px 4px 5px #888;
+box-shadow: 4px 4px 5px #888;
+		
+}
+
+.timeline_showmore {
+	padding-top : 10px;
+	display:none;
+}
+.timeline_linkToMore {
+	padding-top : 10px;
+	display:none;
 }

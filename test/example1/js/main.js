@@ -1,5 +1,7 @@
 // Sets the require.js configuration for your application.
 
+function isServerAccess() { return  (/^http:\/\//.test(location.href))};
+
 function removeFromGlobal(name, force) 
 {
     var ptr = this[name];
@@ -20,7 +22,8 @@ require.config( {
 	paths: {
 
 		// Core Libraries
-		"jquery": "../../libs/js/jquery-1.10.2.min",
+		"jquery": isServerAccess() ? "../../libs/js/jquery-1.10.2.min" : "../../libs/js/jquery-1.10.2",
+		"jquerymobile": isServerAccess() ? "../../libs/js/jquerymobile/jquery.mobile-1.4.2.min" : "../../libs/js/jquerymobile/jquery.mobile-1.4.2",
 		"datejs": "../../libs/js/date",
 		"numeral" : '../../libs/js/numeral',
 		"class": '../../libs/js/my.class',
@@ -28,7 +31,6 @@ require.config( {
 		"jstorage": "../../libs/js/jstorage",
 		"dataGen" : '../../js/dataGen',
 		"tagcanvas" : '../../libs/js/tagcanvas/jquery.tagcanvas.min',
-		"jquerymobile": "../../libs/js/jquerymobile/jquery.mobile-1.4.2.min",
 		"highcharts": "../../libs/js/highcharts/js/highcharts",
 		"highcharts_more": "../../libs/js/highcharts/js/highcharts-more",
 		"highcharts_funnel": "../../libs/js/highcharts/js/modules/funnel",

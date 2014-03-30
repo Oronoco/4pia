@@ -9,10 +9,11 @@ define([
 	"../models/CategoryModel",
 	"../models/PreferenceModel",
 	"../models/DataModel",
+	"../models/TwitterModel",
 	"../models/PulseModel",
 	"../views/SwipeDelete",
 	"tagcanvas"
-], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, Pulse, SwipeDelete, TagCanvas ) {
+], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, TwitterModel, Pulse, SwipeDelete, TagCanvas ) {
 
     // Extends Backbone.View
     var CategoryView = Backbone.View.extend( {
@@ -30,6 +31,9 @@ define([
 		drillDown : function( targetPerson, myCollection, options ) {
 				var self = this;
 				var person = undefined;
+				var tweetfeed = undefined;
+				var timestamp = new Date().getTime();
+					
 				$(".drilldown-header-iconicView").hide();
 				$(".drilldown-header-textView").show();
 				if (targetPerson &&  myCollection)
@@ -38,15 +42,50 @@ define([
 							return entry.get("person").sortName() === targetPerson;
 						});
 					
+					var categoryClass = DataModel.models.drillDown.length > 0 ? DataModel.models.drillDown[0].attributes.categoryClass :  myCollection.type;
 					var sortName = targetPerson.sortName()
 
 					person = _.find( DataModel.models.people, function( entry, key ) {
 								return  (entry.name.toLowerCase().indexOf( sortName.toLowerCase()) > 0);
 							});
+
+					var processID = new Date().getTime();
+					var tweetfeed = undefined;
+					
+					if (person)
+					{
+						tweetfeed = TwitterModel.loadPersonTweets(person.key, timestamp)
+							.done(function( tweetCollection, req_timeStamp ) {
+								var showMoreTweets = $("#drillDown").find(".timeline_showmore");
+								if (showMoreTweets.length > 0)
+									{
+										$(showMoreTweets)
+											.show();
+											
+										var feedSearchCnt = self.prepareTimeline( tweetCollection, { categoryClass : categoryClass, secondaryThreshold : Preferences.constants.day });
+										var itemTemplate = _.template( $( "script#forpiaItems" ).html(), { "collection": tweetCollection, "viewportSize" : Preferences.viewportSize, "templateFn" : self.timelineTemplate, searchCnt : feedSearchCnt } );
+										$("#drillDown").find("#tweetfeed")
+											.empty()
+											.html(itemTemplate);
+											
+										if (person.twitterPageURL) 
+										{
+											$("#drillDown").find(".timeline_linkToMore")
+												.show()
+												.on('click', function() {
+														window.open(person.twitterPageURL, '_blank');
+														return false; // cancel original event to prevent form submitting
+													}); ;
+										}
+										
+										$("body").find(".drillsearchcnt").text( feedSearchCnt );
+
+									}
+								});
+					}
 					
 					if (options && options.singleHeader)
 					{
-						var categoryClass = DataModel.models.drillDown.length > 0 ? DataModel.models.drillDown[0].attributes.categoryClass :  myCollection.type;
 
 						if (categoryClass === "dtweets"  ||  categoryClass === "rtweets")
 						{
@@ -62,7 +101,9 @@ define([
 				$.CategoryRouter.drillDownView.collection.drillDown = $.extend({
 						targetPerson : targetPerson,
 						person	: person,
-						url : person ? person.url : false
+						url : person ? person.url : false,
+						tweetfeed :  person ? tweetfeed : undefined,
+						timestamp : timestamp
 					}, options );
 					
 				$.CategoryRouter.drillDownView.collection.models = DataModel.models.drillDown;
@@ -85,7 +126,8 @@ define([
 				
 				messageFromProfile( "#drillDown?" + targetPerson );
 				
-				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false } );
+				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false, fromHashChange:true } );
+				location.hash = location.hash.replace(/\#.*$/, "#drilldown");
 				
 				return $.CategoryRouter.drillDownView.collection.drillDown;
 			},
@@ -193,6 +235,59 @@ define([
 				return dfd_searchCollection;
 			},
 			
+		prepareTimeline : function( viewCollection, options ) {
+				options = options || {};
+				
+				var threshold = options.threshold ||  Preferences.constants.hour;
+				var secondaryThreshold = options.secondaryThreshold ||  threshold;
+
+				var searchCnt = 0;
+				var self = this;
+				var lastHourBreak = undefined;
+				var lastDay = undefined;
+				_.each( viewCollection.models, function( entry, index ) {
+						var attr = entry.attributes;
+						attr.id = index;
+						attr.categoryClass = options.categoryClass  ||  attr.categoryClass;
+
+
+						attr.hourBreak = false;
+						
+						var diff=lastHourBreak ? lastHourBreak.getTime() - attr.timestamp.getTime() : 0;
+						console.log(lastHourBreak,attr.timestamp,  diff, threshold, diff/Preferences.constants.hour);
+
+						if (lastHourBreak === undefined ||  lastHourBreak.getTime() - attr.timestamp.getTime() > threshold )
+						{
+							
+							attr.hourBreak = true;
+							attr.hour_formatted = 
+								new Date( attr.timestamp ).format("mmmm dd, yyyy") + 
+								" at " + 
+								new Date( attr.timestamp ).format("h tt");
+								
+							lastHourBreak = new Date( attr.timestamp.getFullYear(), attr.timestamp.getMonth(), attr.timestamp.getDate(), attr.timestamp.getHours() + 1);
+							lastDay = lastDay  ||  lastHourBreak.getDate();
+							
+							if ( lastHourBreak.getDate() != lastDay )
+							{
+								threshold = secondaryThreshold;
+								lastHourBreak = new Date( lastHourBreak.getFullYear(), lastHourBreak.getMonth(), lastHourBreak.getDate() + 1);
+								attr.hour_formatted = 
+									new Date( attr.timestamp ).format("mmmm dd, yyyy");
+							}
+						}
+						attr.numDaysOld  = lastDay - lastHourBreak.getDate();
+							
+						if (self.matchSearchTerms( entry ))
+						{
+							searchCnt++;
+							attr.searchMatchClass = "searchMatch";
+						}
+						
+					});
+				return searchCnt;
+			},
+			
 		bios : function( bioKey ) {
 				var self = this;
 				var targetBio = _.filter( DataModel.models.bios, function( entry, index ) {
@@ -253,28 +348,8 @@ define([
 			{
 				templateFn = this.timelineTemplate;
 
-				var lastHour = undefined;
-				_.each( viewCollection.models, function( entry, index ) {
-						var attr = entry.attributes;
-						attr.id = index;
-						var hour = attr.timestamp.getHours();
-						attr.hourBreak = false;
-						if (hour !== lastHour)
-						{
-							attr.hourBreak = true;
-							attr.hour_formatted = 
-								new Date( attr.timestamp ).format("mmmm dd, yyyy") + 
-								" at " + 
-								new Date( attr.timestamp ).format("h tt");
-							lastHour = hour;
-						}
-						
-						if (self.matchSearchTerms( entry ))
-						{
-							searchCnt++;
-							attr.searchMatchClass = "searchMatch";
-						}
-					});
+				searchCnt = self.prepareTimeline( viewCollection );
+				
 			}
 
 			var savedModels = viewCollection.models;
