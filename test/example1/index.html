@@ -217,7 +217,7 @@ function updateLayout() {
 				<% if (collection.options.sidebyside || collection.options.type ==="rtweets" ) { %>
 					<img src="images/rep.png" alt="USA" class="category-header-icon"
 				
-						<% if (viewportSize.type !=="small"  &&  collection.options.sidebyside) { %>
+						<% if (viewportSize.type !== "small"  &&  collection.options.sidebyside) { %>
 							style="margin-left:32px"
 						<% } %>
 					>
@@ -226,7 +226,7 @@ function updateLayout() {
 				<% if (searchCnt > 0) { %>
 					<img src="images/search2.png" alt="USA" class="category-header-icon"
 				
-						<% if (viewportSize.type !=="small") { %>
+						<% if (viewportSize.type !== "small") { %>
 							style="margin-left:32px"
 						<% } %>
 					>
@@ -556,7 +556,7 @@ function updateLayout() {
 			 <div class="timeline_person" data-id=<%= category.id %> > <%= category.person %> </div>
 			 <div class="timeline_time"> <%= category.timestamp_formatted %> </div>
 
-			 <% if (viewportSize.type ==="small") { %>
+			 <% if (viewportSize.type === "small") { %>
 					<div class="timeline_meta">
 						<img class="timeline_twitter" src="images/twitter.png">
 					</div>
@@ -600,7 +600,7 @@ function updateLayout() {
 					&nbsp;&nbsp;&nbsp;<a href="<%= category.href %>" target="_blank">Link </a>
 				<% }%>
 			</div>
-			<% if (category.cardContent) { %>
+			<% if (viewportSize.type === "large"  &&  category.cardContent) { %>
 				<img class="timeline_cardContent" src="<%= category.cardContent %>" >
 			<% }%>
 		</div>

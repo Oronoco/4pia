@@ -37,6 +37,7 @@ define([
 //				if (index > 10) return;
 
 				var tweet 	= $(item).find(".tweet");
+				if (tweet.length === 0) return;
 				var time 	= $(tweet).find(".time");
 				var text 	= $(tweet).find(".tweet-text");
 				var hashtags = $(text).find(".twitter-hashtag");

@@ -64,7 +64,7 @@
             //Code for Sat
 
 		//execute an SQL statement and return a recordset
-          $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.Likes,t1.Name FROM Congress.Tweets2 t1, Congress.FB t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
+          $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.Likes,t1.Name,t1.CardURL,t1.DataURL,t1.LargeURL FROM Congress.Tweets2 t1, Congress.FB t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
           $result = mysql_query($query)or die(mysql_error());
           while($row = mysql_fetch_assoc($result)) {
            $Name      = $row['oname'];
@@ -73,7 +73,11 @@
            $Lik       = $row['Likes'];
            $tid       = $row['Name'];
            $coh       = "$".number_format($Fol);
-
+			$cardURL = $row['CardURL'];
+			$dataURL = $row['DataURL'];
+			$largeURL = $row['LargeURL'];
+			
+			
            echo "<span class='Apple-style-span' style='border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; '>
 <table cellpadding='5' cellspacing='0' border='0' width='100%' style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: normal normal normal 11px/normal arial, sans-serif; font-weight: normal; '>
 	<tr>
@@ -99,6 +103,11 @@
 				<span class='title' style='color: rgb(0, 51, 255); font: normal normal normal 12px/normal arial, sans-serif; font-weight: bold; '>
 				<font face='Arial' style='text-align: right; font-size: x-small; color: green; '>
 				$Lik Facebook Likes</font></span></span></td>
+				<td id=meta style='display:none'> 
+					<div id='cardURL'>$cardURL</div>
+					<div id='dataURL'>$dataURL</div>
+					<div id='largeURL'>$largeURL</div>
+				</td>
 				</tr>
 			<tr>
 				<td colspan='5' valign='top'><align=left>$Tweet</align=left></td>
@@ -120,7 +129,7 @@
             //Code for Fri
 
 		//execute an SQL statement and return a recordset
-          $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.Debt,t1.Name FROM Congress.Tweets2 t1, Congress.HouseMembers t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
+          $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.Debt,t1.Name,t1.CardURL,t1.DataURL,t1.LargeURL FROM Congress.Tweets2 t1, Congress.HouseMembers t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
           $result = mysql_query($query)or die(mysql_error());
           while($row = mysql_fetch_assoc($result)) {
            $Name      = $row['oname'];
@@ -129,6 +138,9 @@
            $Fol       = $row['Debt'];
            $tid       = $row['Name'];
            $coh       = "$".number_format($Fol);
+			$cardURL = $row['CardURL'];
+			$dataURL = $row['DataURL'];
+			$largeURL = $row['LargeURL'];
 
            echo "<span class='Apple-style-span' style='border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; '>
 <table cellpadding='5' cellspacing='0' border='0' width='100%' style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: normal normal normal 11px/normal arial, sans-serif; font-weight: normal; '>
@@ -155,6 +167,11 @@
 				<span class='title' style='color: rgb(0, 51, 255); font: normal normal normal 12px/normal arial, sans-serif; font-weight: bold; '>
 				<font face='Arial' style='text-align: right; font-size: x-small; color: green; '>
 				$coh CampaignDebt</font></span></span></td>
+				<td id=meta style='display:none'> 
+					<div id='cardURL'>$cardURL</div>
+					<div id='dataURL'>$dataURL</div>
+					<div id='largeURL'>$largeURL</div>
+				</td>
 				</tr>
 			<tr width='70%'>
   			   <td colspan='5' valign='top'><align=left>$Tweet</align=left></td>
@@ -175,7 +192,7 @@
             //Code for wed
 
 	    //execute an SQL statement and return a recordset
-        $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.CashOnHand,t1.Name FROM Congress.Tweets2 t1, Congress.HouseMembers t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
+        $query  = "SELECT t1.oname,t1.Tweet,t1.TTime,t2.CashOnHand,t1.Name,t1.CardURL,t1.DataURL,t1.LargeURL FROM Congress.Tweets2 t1, Congress.HouseMembers t2 WHERE t1.Party = 'R' AND t1.Code = t2.Code order by t1.GTime DESC";
         $result = mysql_query($query)or die(mysql_error());
         while($row = mysql_fetch_assoc($result)) {
          $Name      = $row['oname'];
@@ -184,6 +201,9 @@
          $Fol       = $row['CashOnHand'];
          $tid       = $row['Name'];
          $coh       = "$".number_format($Fol);     
+			$cardURL = $row['CardURL'];
+			$dataURL = $row['DataURL'];
+			$largeURL = $row['LargeURL'];
 
                     
 
@@ -216,6 +236,11 @@
 			 <span class='title' style='color: rgb(0, 51, 255); font: normal normal normal 12px/normal arial, sans-serif; font-weight: bold; '>
 				<font face='Arial' style='text-align: right; font-size: x-small; color: green; '>
 				$coh CashOnHand</font></span></span></td>
+				<td id=meta style='display:none'> 
+					<div id='cardURL'>$cardURL</div>
+					<div id='dataURL'>$dataURL</div>
+					<div id='largeURL'>$largeURL</div>
+				</td>
 			</tr>
 			<tr width='70%'>
   			   <td colspan='5' valign='top'><align=left>$Tweet</align=left></td>
@@ -232,7 +257,7 @@
 
 
 		 //execute an SQL statement and return a recordset
-      $query  = "SELECT oname,Tweet,TTime,Foll,Name FROM Congress.Tweets2 WHERE Party = 'R' order by GTime DESC";
+      $query  = "SELECT oname,Tweet,TTime,Foll,Name,CardURL,DataURL,LargeURL FROM Congress.Tweets2 WHERE Party = 'R' order by GTime DESC";
       $result = mysql_query($query)or die(mysql_error());
       while($row = mysql_fetch_assoc($result)) {
        $Name      = $row['oname'];
@@ -240,6 +265,9 @@
        $Tim       = $row['TTime'];
        $Followers = $row['Foll'];
        $tid       = $row['Name'];
+			$cardURL = $row['CardURL'];
+			$dataURL = $row['DataURL'];
+			$largeURL = $row['LargeURL'];
 
        echo "<span class='Apple-style-span' style='border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; '>
               <table cellpadding='5' cellspacing='0' border='0' width='100%' style='background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: normal normal normal 11px/normal arial, sans-serif; font-weight: normal; '>
@@ -266,6 +294,11 @@
 				<span class='title' style='color: rgb(0, 51, 255); font: normal normal normal 12px/normal arial, sans-serif; font-weight: bold; '>
 				<font face='Arial' style='text-align: right; font-size: x-small; color: green; '>
 				$Followers followers</font></span></span></td>
+				<td id=meta style='display:none'> 
+					<div id='cardURL'>$cardURL</div>
+					<div id='dataURL'>$dataURL</div>
+					<div id='largeURL'>$largeURL</div>
+				</td>
 				</tr>
 			<tr width='70%'>
   			   <td colspan='5' valign='top'><align=left>$Tweet</align=left></td>

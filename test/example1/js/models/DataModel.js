@@ -70,6 +70,20 @@ define([
 
 				var twitter = spans[1];
 				
+				var cardContent = undefined;
+				var twitterMeta = $(tbl).find("#meta");
+				if (twitterMeta.length > 0)
+				{
+					var cardURL  = $(twitterMeta).find("#cardURL").text()  || undefined;
+					var dataURL  = $(twitterMeta).find("#dataURL").text()  || undefined;
+					var largeURL = $(twitterMeta).find("#largeURL").text() || undefined;
+					
+					if (dataURL)
+					{
+						cardContent = dataURL;
+					}
+				}
+				
 				var desc = $(tds[ tds.length - 1 ]);
 				var description = $(desc).text();
 				var hrefs = $(desc).find("a");
@@ -82,6 +96,7 @@ define([
 						timestamp : timestamp,
 						timestamp_formatted : timestamp_formatted,
 						description : description,
+						cardContent : cardContent,
 						href	: href
 					};
 				
@@ -266,7 +281,7 @@ define([
 					var pos = cloud.indexOf("<body>") + 6;
 					var str = cloud.substring( pos );
 					var div = $("<div>").html(str);
-					var contents = $(div).find("#contents")
+					var contents = $(div).find("#content")
 						.addClass("tweetCloudContents");
 						
 					var header = $(contents).find("h2")

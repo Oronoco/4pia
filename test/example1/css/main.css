@@ -365,7 +365,8 @@ background-color:lightGray;
 {
 	padding-left:10px;
 	padding-top:5px;
-	max-height : 320px;
+	max-width : 320px;
+	max-height : 240px;
 //	border: 2px solid black;
 	border-radius: 30px;
 	-moz-border-radius: 30px;
