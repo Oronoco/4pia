@@ -46,13 +46,22 @@ require.config( {
        'md5': {
             exports: 'CryptoJS',
         },
-      'highcharts_more': {
+       'jstorage': {
+            deps:["jquery"]
+        },
+       'highcharts': {
+            deps:["jquery"]
+        },
+       'tagcanvas': {
+            deps:["jquery"]
+        },
+       'highcharts_more': {
             deps:["highcharts"]
         },
        'highcharts_funnel': {
             deps:["highcharts"]
         },
-      'tbd': {
+       'tbd': {
             exports: 'tbd',
             init: function() {
 //                return removeFromGlobal('tbd');

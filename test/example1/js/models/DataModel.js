@@ -33,6 +33,8 @@ define([
 		
 		var div = $( "<div>" ).html(ss);
 		var table = $(div).find("table");
+		var filtered = $(table).filter("#contents");
+		if (filtered) table = filtered;
 
 		_.each( table, function( tbl, index ) {
 				var xx = $(tbl).html();
@@ -68,10 +70,11 @@ define([
 
 				var twitter = spans[1];
 				
-				
-				var description = $(tds[3]).text();
-				var hrefs = $(tds[3]).find("a");
-				var href = hrefs[0].href;
+				var desc = $(tds[ tds.length - 1 ]);
+				var description = $(desc).text();
+				var hrefs = $(desc).find("a");
+//				console.log( $(desc)[0], hrefs, description );
+				var href = hrefs.length ? hrefs[0].href : undefined;
 				var tmpl = {
 						person : person,
 						type : "timeline_category_" + categoryClass,
@@ -107,7 +110,7 @@ define([
 					if (aTime === bTime) return 0;
 					return -1;
 				});
-				
+
 		return data;
 	}
 
