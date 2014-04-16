@@ -216,8 +216,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-*.php
-*.pl
 php/LineChartData.txt
 php/RawTweets.txt
 php/ProgressBar.html
