@@ -394,6 +394,15 @@ function updateLayout() {
         <li><a href="/vinegar">Vinegar</a></li>
       </ul>
     </div>		   
+   	<div id="scope" style="display: none;">
+      <ul>
+        <li><a href="http://www.google.com" target="_blank">Google</a></li>
+        <li><a href="/fish">Fish</a></li>
+        <li><a href="/chips">Chips</a></li>
+        <li><a href="/salt">Salt</a></li>
+        <li><a href="/vinegar">Vinegar</a></li>
+      </ul>
+    </div>		   
 	<div id="ctweets" data-role="page" data-title="Tweet Cloud">
 
       <div data-role="header">
@@ -541,6 +550,18 @@ function updateLayout() {
 <!-- Underscore Template that is used to display all of the Bios Models -->
 <script id="forpiaPulse" type="text/template">
 	 <div class="pulse-chart-container">
+		<div class="Tweeterverse" style="display:none">
+			<center style="padding:20px 0px">
+				Tweeter-verse
+			</center>
+			<canvas style="float:left;display:inline" class="pulse-chart" data-type="scope" id="pulse_scope" >Tweet Scope</canvas>
+			<div class="pulse_twitterverse" style="float:left;padding:20px">
+				<p>
+					Select an item in the cloud to see more details
+				</p>
+			</div>
+			<div style="clear:both"> </div>
+		</div>
 		<div class="pulse-chart" data-type="dailyTweets" id="pulse_dailyTweets">Daily Tweets</div>
 		<div class="pulse-chart" data-type="followers" id="pulse_followers">Followers</div>
 		<div class="pulse-chart" data-type="funnel" id="pulse_followers">Tweet Funnel</div>

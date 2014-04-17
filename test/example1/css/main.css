@@ -361,6 +361,22 @@ background-color:lightGray;
 	text-shadow: black 0.1em 0.1em 0.2em;
 }
 
+.pulse_twitterverse
+{
+	display:inline;
+	width : 30%;
+	height: 200px;
+	background-color:lightGray;
+	
+	border-radius: 30px;
+	-moz-border-radius: 30px;
+	-khtml-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-box-shadow: 4px 4px 5px #888;
+-webkit-box-shadow: 4px 4px 5px #888;
+box-shadow: 4px 4px 5px #888;
+}
+
 .timeline_cardContent
 {
 	padding-left:10px;

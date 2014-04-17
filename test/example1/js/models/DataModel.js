@@ -34,7 +34,7 @@ define([
 		var div = $( "<div>" ).html(ss);
 		var table = $(div).find("table");
 		var filtered = $(table).filter("#contents");
-		if (filtered) table = filtered;
+		if (filtered.length) table = filtered;
 
 		_.each( table, function( tbl, index ) {
 				var xx = $(tbl).html();

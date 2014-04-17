@@ -147,6 +147,62 @@ define([
 				});
 		},
 		
+		scope : function( view, elem, person, personName  ) {
+				personName = "Pres. Obama";
+				if (personName === undefined)
+				{
+					return $("<div>");
+				}
+				if (Preferences.viewportSize.type === "small")
+				{
+					return $("<div>");
+				}
+				$(".Tweeterverse").show();
+				
+				var ul = DataModel.models.tagcanvas;
+				var ul = $("<ul>");
+				var tags = [
+						"district",
+						"voters",
+						"staffers",
+						"website",
+						"constituents",
+						"bills",
+						"Jane Doe",
+						"causes",
+						"public relations",
+						"elections",
+						personName
+					];
+					//<li class="tagcanvas tagcanvas0"><a href="#tagcanvas?0" class="tweetCloudItem">bronx</a></li>
+				_.each( tags, function( name, index ) {
+						var li = $("<li class='tagcanvas tagcanvas'" + index + " +>");
+						var href = $("<a href='#scopecanvas?" + index + "' class='tweetCloudItem'>" + name + "</a></li>");
+						$(li).append( href );
+						$(ul).append(li);
+					});
+					
+				var myCanvas = elem;
+				$(myCanvas)
+					.css({ height : 200, width : "50%" });
+					
+				$("#scope").empty().append( ul );
+				
+				if(!$(myCanvas).tagcanvas({
+				  textColour: '#47bbdc',
+				  outlineColour: '#ff00ff',
+				  reverse: true,
+				  depth: 0.8,
+				  maxSpeed: 0.05,
+//					  shape : "vcylinder"
+				},'scope')) {
+				  // something went wrong, hide the canvas container
+//				  $('#myCanvasContainer').hide();
+debugger;
+				}
+				return myCanvas;
+			},
+			
 		dailyTweets : function( view, elem, person, personName  ) {
 				var chartContainer = $("<div>")
 					.css({
