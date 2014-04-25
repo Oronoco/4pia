@@ -12,8 +12,9 @@ define([
 	"../models/TwitterModel",
 	"../models/PulseModel",
 	"../views/SwipeDelete",
+	"../views/Share",
 	"tagcanvas"
-], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, TwitterModel, Pulse, SwipeDelete, TagCanvas ) {
+], function( $, Backbone, Mobile, CategoryModel, Preferences, DataModel, TwitterModel, Pulse, SwipeDelete, Share, TagCanvas ) {
 
     // Extends Backbone.View
     var CategoryView = Backbone.View.extend( {
@@ -331,16 +332,29 @@ define([
 
 				$("#bioFilter_controlGroup").trigger('create');
 				var radioButtons = this.$el.find("input[type='radio']").filter("[name='bioFilter']");
-				radioButtons.filter("#" + Preferences.repSearch).attr("checked", "checked");
-				$(radioButtons).checkboxradio("refresh");
 				$(radioButtons).unbind( "change" );
-				$(radioButtons).bind( "change", function(event, ui) {
-					Preferences.repSearch = $(this).attr("id");
-					self.render();	
-					self.$el.find("ul").listview('refresh');
-				    
-					$.mobile.changePage( "#bios" , { reload : true, reverse: false, changeHash: false } );
-				});			
+				if (filteredModels  &&  filteredModels.length === 0)
+				{
+					radioButtons.filter("#all")
+						.attr("checked", "checked");
+
+					$(radioButtons)
+						.attr("disabled", "true")
+						.checkboxradio("refresh");
+					filteredModels = undefined;
+				}
+				else
+				{
+					radioButtons.filter("#" + Preferences.repSearch).attr("checked", "checked");
+					$(radioButtons).checkboxradio("refresh");
+					$(radioButtons).bind( "change", function(event, ui) {
+						Preferences.repSearch = $(this).attr("id");
+						self.render();	
+						self.$el.find("ul").listview('refresh');
+					
+						$.mobile.changePage( "#bios" , { reload : true, reverse: false, changeHash: false } );
+					});	
+				}		
 			}
 			
 			
@@ -473,6 +487,11 @@ define([
 					}
 				});
 				
+			this.$el.find(".timeline_share" ).on('click', function() {
+					var id = $(this).attr("data-id");
+					Share.clickHandler( viewCollection.models[ id ] );
+				});
+
 			// http://stackoverflow.com/questions/8357756/jquery-mobile-forcing-refresh-of-content
 			this.$el.find(".timeline")
 				.css({"border-color" : "#ddd"});

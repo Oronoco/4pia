@@ -279,7 +279,10 @@ define([
 			markupTweetCloud : function( cloud ) {
 
 					var pos = cloud.indexOf("<body>") + 6;
-					var str = cloud.substring( pos );
+					var str = cloud.substring( pos )
+						.replace("beta/images/veto.png", "")
+						.replace("beta/images/cloud.png", "");
+						
 					var div = $("<div>").html(str);
 					var contents = $(div).find("#content")
 						.addClass("tweetCloudContents");

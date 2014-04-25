@@ -18,6 +18,11 @@
 
 var fourPIAsplashStartTime = new Date();
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 function gup( str, name ) {
 		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 		var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -29,35 +34,45 @@ function gup( str, name ) {
 			return results[1];
 	};
 
-			String.prototype.gup = function( name )
-			{
-				return gup( this, name );
-			};
+String.prototype.gup = function( name )
+{
+	return gup( this, name );
+};
 
-		String.prototype.trim = function ()
-			{
-				return this.replace(/^\s*/, "").replace(/\s*$/, "");
-			};
-			
-	String.prototype.sortName = function ()
-			{
-				return this
-					.replace(/Rep\. /i, "" )
-					.replace(/Rep\. /i, "" )
-					.replace(/Sen\. /i, "" )
-					.replace(/Sen /i, "" )
-					.replace(/Cong\. /i, "" )
-					.replace(/President /i, "" )
-					.replace(/Congressman /i, "" )
-					.replace(/Congressmember /i, "" )
-					.replace(/U\.S\. Rep\. /i, "" )
-					.replace(/U\.S\. /i, "" )
-					.replace(/Senator/i, "" ).trim();
-			};
+String.prototype.makeSearchText = function()
+	{
+		return this.replace(/&/g, "").replace(/  /g, " ").replace(/ /g, "+");
+	}
+
+String.prototype.trim = function ()
+	{
+		return this.replace(/^\s*/, "").replace(/\s*$/, "");
+	};
+		
+String.prototype.sortName = function ()
+		{
+			return this
+				.replace(/Rep\. /i, "" )
+				.replace(/Rep\. /i, "" )
+				.replace(/Sen\. /i, "" )
+				.replace(/Sen /i, "" )
+				.replace(/Cong\. /i, "" )
+				.replace(/President /i, "" )
+				.replace(/Congressman /i, "" )
+				.replace(/Congressmember /i, "" )
+				.replace(/U\.S\. Rep\. /i, "" )
+				.replace(/U\.S\. /i, "" )
+				.replace(/Senator/i, "" ).trim();
+		};
 
 
-			var alertTimerId = 0;
+var alertTimerId = 0;
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 function removeMessage()
 {
 	var elem = document.getElementById("pageCounter");
@@ -66,6 +81,11 @@ function removeMessage()
 	alertTimerId = 0;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 function messageFromProfile( msg )
 {
 
@@ -82,6 +102,11 @@ function messageFromProfile( msg )
 	alertTimerId = setTimeout(removeMessage, 1000);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 function updateLayout() {
   if (window.innerWidth != currentWidth) {
     currentWidth = window.innerWidth;
@@ -191,6 +216,15 @@ function updateLayout() {
 <!-- Underscore Template that is used to display all of the Bios Models -->
 <script id="tweetList" type="text/template">
 
+	<div data-role="panel" id="sharePanel" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
+		
+		<div id=content />
+		<br>
+		<center>
+			<a data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-inline="true">Close</a>
+		</center>
+	</div><!-- /sharePanel -->
+	
      <div data-role="header" data-position="fixed">
 		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
@@ -424,7 +458,7 @@ function updateLayout() {
 
 </div>
 
-<div id="bios" data-role="page" data-title="Representatives" >
+<div id="bios" data-role="page" data-title="People" >
 
       <div data-role="header" data-position="fixed">
 		<a href="#categories" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
@@ -569,6 +603,7 @@ function updateLayout() {
 	</div>
 </script>
 
+			
 
 <!-- Underscore Template that is used to display all of the timelineItem Models -->
 <script id="timelineItem" type="text/template">
@@ -580,6 +615,7 @@ function updateLayout() {
 			 <% if (viewportSize.type === "small") { %>
 					<div class="timeline_meta">
 						<img class="timeline_twitter" src="images/twitter.png">
+						
 					</div>
 					<div style="clear:both"> </div>
 					<center class="timeline_meta" style="float:none;clear:both;display:block">
@@ -610,8 +646,9 @@ function updateLayout() {
 								<% } %>
 							<% } %>
 						<% }  %>
-						<img class="timeline_twitter" src="images/twitter.png">
-
+						
+						<img class="timeline_twitter timeline_share" src="images/share3.png" data-id=<%= category.id %>>
+			
 					 </div>
 					 <div style="clear:both"> </div>
 			<% } %>
@@ -666,6 +703,60 @@ function updateLayout() {
 					</table>
 </script>
 
+
+<!-- Underscore Template that is used to display all of the Drill Models -->
+<script id="shareItem" type="text/template">
+	<img class=sharePanel_titleicon src="images/share3.png" > <%= category.person %>
+	<% if (siteOptions.description) { %>
+		<p class=sharePanel_description>
+			<%= category.description %>
+		</p>
+	<% } %>
+
+	<% if (siteOptions.message) { %>
+		<h4>Send to Friends...</h4>
+		<% _.each( siteOptions.message, function( site ) { %>
+			<img class=sharePanel_icon title="<%= site.label %>" src="<%= site.url %>" data-implemented=<%= site.implemented %> data-id="<%= site.id %>" >
+		<% }); %>
+		<div style="clear:both"> </div>
+	<% } %>
+
+	<% if (siteOptions.image) { %>
+		<h4>Share Image...</h4>
+		
+		<% if (siteOptions.imagePreview) { %>
+			<img src="images/share2.png" style="float: left; margin-right: 8px; width: 64px; position: relative; top: 7.5px; border-width: 0px; border-right-style: dotted;">
+		<% } %>
+		
+		<% _.each( siteOptions.image, function( site ) { %>
+			<img class=sharePanel_icon title="<%= site.label %>" src="<%= site.url %>" data-implemented=<%= site.implemented %> data-id="<%= site.id %>" >
+		<% }); %>
+		<div style="clear:both"> </div>
+	<% } %>
+
+	<% if (siteOptions.search) { %>
+		<h4>
+			<div data-role="fieldcontain">
+				Search...
+				<% if (hashTags && hashTags.length > 0) { %>
+					<select name="select-hashTags" id="select-hashTags">
+						<% _.each( hashTags, function( item, index ) { %>
+							<option value="<%= index %>"><%= item %></option>
+						<% }); %>
+					</select>
+				<% } %>
+			</div>
+		</h4>
+		<% _.each( siteOptions.search, function( site ) { %>
+			<% if (site.enabled  != false) { %>
+				<img class=sharePanel_icon title="<%= site.label %>" src="<%= site.url %>" data-implemented=<%= site.implemented %> data-id="<%= site.id %>" >
+			<% } %>
+		<% }); %>
+		<div style="clear:both"> </div>
+		
+	<% } %>
+
+</script>
 
 <!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="forpiaDrill" type="text/template">

@@ -301,11 +301,16 @@ background-color:lightGray;
 .timeline {
 	position:relative;
 }
+
+.timeline_share {
+  width: auto;
+}
+
 .timeline_twitter {
 	display:inline-block;
 	position:relative;
 	top:4px;
-  width: 58px;
+  max-height: 24px;
   cursor: pointer;
   margin-left:10px;
   padding: 0;
@@ -375,6 +380,31 @@ background-color:lightGray;
 	-moz-box-shadow: 4px 4px 5px #888;
 -webkit-box-shadow: 4px 4px 5px #888;
 box-shadow: 4px 4px 5px #888;
+}
+
+.sharePanel_titleicon {
+    height: 24px;
+    margin-right:8px;
+    background-color: white;
+}
+
+.sharePanel_icon {
+    width: 48px;
+    float: left;
+    margin-right:6px;
+    margin-bottom:2px;
+}
+
+.sharePanel_icon:hover {
+	cursor: pointer;
+	border-radius: 30px;
+	-moz-border-radius: 30px;
+	-khtml-border-radius: 30px;
+	-webkit-border-radius: 30px;
+}
+
+.sharePanel_description {
+    font-size: 10px;
 }
 
 .timeline_cardContent
