@@ -382,10 +382,21 @@ background-color:lightGray;
 box-shadow: 4px 4px 5px #888;
 }
 
+.sharePanel_close {
+	position:absolute;
+	top:0px;
+	left:86%;
+}
+
+.sharePanel_title {
+    font-size: 14px;
+    margin-top:12px;
+    margin-bottom:8px;
+}
+
 .sharePanel_titleicon {
     height: 24px;
     margin-right:8px;
-    background-color: white;
 }
 
 .sharePanel_icon {

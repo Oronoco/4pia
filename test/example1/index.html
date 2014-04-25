@@ -2,6 +2,7 @@
 <html class="no-js ui-mobile-rendering" lang="en">
 <head>
 	<title>4PIA</title>
+	<meta http-equiv="pragma" content="no-cache" />
 	<meta name="description" content="">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"; charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -216,13 +217,12 @@ function updateLayout() {
 <!-- Underscore Template that is used to display all of the Bios Models -->
 <script id="tweetList" type="text/template">
 
-	<div data-role="panel" id="sharePanel" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
+	<div data-role="panel" id="sharePanel_timeline" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
 		
-		<div id=content />
-		<br>
-		<center>
-			<a data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-inline="true">Close</a>
-		</center>
+		<div id=content ></div>
+		<div class=sharePanel_close>
+			<a data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" data-mini="true" data-inline="true">Close</a>
+		</div>
 	</div><!-- /sharePanel -->
 	
      <div data-role="header" data-position="fixed">
@@ -362,6 +362,13 @@ function updateLayout() {
 
 <div id="drillDown" data-role="page" data-title="Tweet Details">
 
+	<div data-role="panel" id="sharePanel_drillDown" data-position="right" data-display="overlay" data-dismissible="true" data-theme="b">
+		
+		<div id=content > </div>
+		<div class=sharePanel_close>
+			<a data-rel="close" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" data-mini="true" data-inline="true">Close</a>
+		</div>
+	</div><!-- /sharePanel -->
       <div data-role="header">
 		<a href="#back" data-rel="back" data-icon="back" data-platformResize="true">Back</a>
 
@@ -614,7 +621,7 @@ function updateLayout() {
 
 			 <% if (viewportSize.type === "small") { %>
 					<div class="timeline_meta">
-						<img class="timeline_twitter" src="images/twitter.png">
+						<img class="timeline_twitter timeline_share" src="images/share3.png" data-id=<%= category.id %>>
 						
 					</div>
 					<div style="clear:both"> </div>
@@ -667,46 +674,44 @@ function updateLayout() {
 
 <!-- Underscore Template that is used to display all of the Item Models -->
 <script id="forpiaItems" type="text/template">
-      <% _.each( collection.toJSON(), function( category, id ) { %>
+	<% _.each( collection.toJSON(), function( category, id ) { %>
 
-  				<% if (category.hourBreak) { %>
+		<% if (category.hourBreak) { %>
+					
+			<div class="timeline_heading <%= category.type %> " 
 					<% if (id > 0) { %>
-						</table>
+						style="margin-top:4px"
 					<% } %>
-					<div class="timeline_heading <%= category.type %> "><%= category.hour_formatted %></div>
-					<table style="position:relative" border=0 width="99%">
+				><%= category.hour_formatted %></div>
+		<% } %>
+		<div style="
+			margin-top:4px;
+				<% if (viewportSize.type !== "small") { %>
+					<% if (collection.options.sidebyside) { %>
+						width:48%;
+					<% } else { %>
+						width:99%;
+					<% } %>
+				<% } else { %>
+					width:75%;
 				<% } %>
-
- 					<tr>
- 					<td width=48%>
-					<% if (!collection.options.sidebyside || category.categoryClass === "dtweets") { %>
-						 
-						 <%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
-						
-					<% } %>
-					</td>
-  				<% if (collection.options.sidebyside) { %>
-					<td >
-					&nbsp;
-					</td>
-					<td width=48%>
-						<% if (category.categoryClass === "rtweets") { %>
-						 
-							 <%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
-						
-						<% } %>
-					</td>
- 				<% } %>
- 					</tr>
-
-      <% }); %>
-					</table>
-</script>
+				
+				<% if (category.categoryClass === "rtweets") { %>
+					float:right;margin-right:10px;
+				<% } else { %>
+					float:left;margin-left:4px;
+				<% } %>
+			">
+			<%= templateFn({ "category" : category, "collection" : collection,  "viewportSize" : viewportSize, "id" : id}) %>
+		</div>
+		<div style="clear:both" />
+	<% }); %>
+ </script>
 
 
 <!-- Underscore Template that is used to display all of the Drill Models -->
 <script id="shareItem" type="text/template">
-	<img class=sharePanel_titleicon src="images/share3.png" > <%= category.person %>
+	<img class=sharePanel_titleicon src="images/share3_white.png" > <%= category.person %>
 	<% if (siteOptions.description) { %>
 		<p class=sharePanel_description>
 			<%= category.description %>
@@ -714,15 +719,16 @@ function updateLayout() {
 	<% } %>
 
 	<% if (siteOptions.message) { %>
-		<h4>Send to Friends...</h4>
+		<p class=sharePanel_title>Send to Friends...</p>
 		<% _.each( siteOptions.message, function( site ) { %>
 			<img class=sharePanel_icon title="<%= site.label %>" src="<%= site.url %>" data-implemented=<%= site.implemented %> data-id="<%= site.id %>" >
 		<% }); %>
 		<div style="clear:both"> </div>
+		<div id=faceBookContainer />
 	<% } %>
 
 	<% if (siteOptions.image) { %>
-		<h4>Share Image...</h4>
+		<p class=sharePanel_title>Share Image...</p>
 		
 		<% if (siteOptions.imagePreview) { %>
 			<img src="images/share2.png" style="float: left; margin-right: 8px; width: 64px; position: relative; top: 7.5px; border-width: 0px; border-right-style: dotted;">
@@ -735,7 +741,7 @@ function updateLayout() {
 	<% } %>
 
 	<% if (siteOptions.search) { %>
-		<h4>
+		<p class=sharePanel_title >
 			<div data-role="fieldcontain">
 				Search...
 				<% if (hashTags && hashTags.length > 0) { %>

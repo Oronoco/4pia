@@ -35,6 +35,8 @@ define([
 				var tweetfeed = undefined;
 				var timestamp = new Date().getTime();
 					
+				var dfd_drillInitialized = $.Deferred();
+				
 				$(".drilldown-header-iconicView").hide();
 				$(".drilldown-header-textView").show();
 				if (targetPerson &&  myCollection)
@@ -51,13 +53,16 @@ define([
 							});
 
 					var processID = new Date().getTime();
-					var tweetfeed = undefined;
 					
 					if (person)
 					{
-						tweetfeed = TwitterModel.loadPersonTweets(person.key, timestamp)
-							.done(function( tweetCollection, req_timeStamp ) {
-								var showMoreTweets = $("#drillDown").find(".timeline_showmore");
+						tweetfeed = TwitterModel.loadPersonTweets(person.key, timestamp);
+						$.when( tweetfeed, dfd_drillInitialized )
+							.done(function( tweetfeedArgs, initArgs ) {
+								var tweetCollection = tweetfeedArgs[0];
+								var req_timeStamp = tweetfeedArgs[1];
+								
+								var showMoreTweets = $("#drillDown").find(".timeline_linkToMore");
 								if (showMoreTweets.length > 0)
 									{
 										$(showMoreTweets)
@@ -69,6 +74,11 @@ define([
 											.empty()
 											.html(itemTemplate);
 											
+										$("#drillDown").find(".timeline_share" ).on('click', function() {
+												var id = $(this).attr("data-id");
+												Share.clickHandler( tweetCollection.models[ id ], $("#sharePanel_drillDown") );
+											});
+
 										if (person.twitterPageURL) 
 										{
 											$("#drillDown").find(".timeline_linkToMore")
@@ -129,6 +139,8 @@ define([
 				
 				$.mobile.changePage( "#drillDown" , { reverse: false, changeHash: false, fromHashChange:true } );
 				location.hash = location.hash.replace(/\#.*$/, "#drilldown");
+				
+				dfd_drillInitialized.resolve();
 				
 				return $.CategoryRouter.drillDownView.collection.drillDown;
 			},
@@ -489,7 +501,7 @@ define([
 				
 			this.$el.find(".timeline_share" ).on('click', function() {
 					var id = $(this).attr("data-id");
-					Share.clickHandler( viewCollection.models[ id ] );
+					Share.clickHandler( viewCollection.models[ id ], $("#sharePanel_timeline") );
 				});
 
 			// http://stackoverflow.com/questions/8357756/jquery-mobile-forcing-refresh-of-content

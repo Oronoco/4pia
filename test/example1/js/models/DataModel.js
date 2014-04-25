@@ -26,9 +26,9 @@ define([
 		ss = ss.substring( start );
 		
 		var meta = [
-				{ name : "campaignDebt", tag : /([-,0-9]+) CampaignDebt$/, format : "$#,###" },
-				{ name : "followers", tag : /([-,0-9]+) followers$/ },
-				{ name : "cashOnHand", tag : /([-,0-9]+) CashOnHand$/, format : "$#,###" },
+				{ name : "campaignDebt", tag : /([-,0-9]+)\s*CampaignDebt$/i, format : "$#,###" },
+				{ name : "followers", tag : /([-,0-9]+)\s*followers$/i },
+				{ name : "cashOnHand", tag : /([-,0-9]+)\s*CashOnHand$/i, format : "$#,###" },
 			];
 		
 		var div = $( "<div>" ).html(ss);
@@ -100,8 +100,9 @@ define([
 						href	: href
 					};
 				
+				var metaText = $(spans).filter(".title").text();
 				_.each( meta, function( entry , key ) {
-						var match = $(spans[2]).text().match( entry.tag );
+						var match = metaText.match( entry.tag );
 						if (_.isArray(match))
 						{
 							var value = parseInt( match[1].replace( /,/g, ""), 10 );

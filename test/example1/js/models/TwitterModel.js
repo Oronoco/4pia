@@ -63,10 +63,13 @@ define([
 				{
 					_.each( links, function( elem ) {
 							var linkText = $(elem).text();
+							
+							// remove the linkText from the description
 							var resultText = description.replace( linkText, "" );
 							if (resultText.length != description.length )
 							{
-								href = linkText;
+								// if something was removed then remember that link
+								href = $(elem).attr("href") ||  linkText;
 								description = resultText;
 							}
 						});

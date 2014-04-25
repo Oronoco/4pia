@@ -12,6 +12,7 @@ define([
 
 	var hashTagRegEx = /(#|＃)([a-z0-9_\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0100-\u024f\u0253-\u0254\u0256-\u0257\u0300-\u036f\u1e00-\u1eff\u0400-\u04ff\u0500-\u0527\u2de0-\u2dff\ua640-\ua69f\u0591-\u05bf\u05c1-\u05c2\u05c4-\u05c5\u05d0-\u05ea\u05f0-\u05f4\ufb12-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4f\u0610-\u061a\u0620-\u065f\u066e-\u06d3\u06d5-\u06dc\u06de-\u06e8\u06ea-\u06ef\u06fa-\u06fc\u0750-\u077f\u08a2-\u08ac\u08e4-\u08fe\ufb50-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\u200c-\u200c\u0e01-\u0e3a\u0e40-\u0e4e\u1100-\u11ff\u3130-\u3185\ua960-\ua97f\uac00-\ud7af\ud7b0-\ud7ff\uffa1-\uffdc\u30a1-\u30fa\u30fc-\u30fe\uff66-\uff9f\uff10-\uff19\uff21-\uff3a\uff41-\uff5a\u3041-\u3096\u3099-\u309e\u3400-\u4dbf\u4e00-\u9fff\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2f800-\u2fa1f]*[a-z_\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0100-\u024f\u0253-\u0254\u0256-\u0257\u0300-\u036f\u1e00-\u1eff\u0400-\u04ff\u0500-\u0527\u2de0-\u2dff\ua640-\ua69f\u0591-\u05bf\u05c1-\u05c2\u05c4-\u05c5\u05d0-\u05ea\u05f0-\u05f4\ufb12-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4f\u0610-\u061a\u0620-\u065f\u066e-\u06d3\u06d5-\u06dc\u06de-\u06e8\u06ea-\u06ef\u06fa-\u06fc\u0750-\u077f\u08a2-\u08ac\u08e4-\u08fe\ufb50-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\u200c-\u200c\u0e01-\u0e3a\u0e40-\u0e4e\u1100-\u11ff\u3130-\u3185\ua960-\ua97f\uac00-\ud7af\ud7b0-\ud7ff\uffa1-\uffdc\u30a1-\u30fa\u30fc-\u30fe\uff66-\uff9f\uff10-\uff19\uff21-\uff3a\uff41-\uff5a\u3041-\u3096\u3099-\u309e\u3400-\u4dbf\u4e00-\u9fff\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2f800-\u2fa1f][a-z0-9_\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0100-\u024f\u0253-\u0254\u0256-\u0257\u0300-\u036f\u1e00-\u1eff\u0400-\u04ff\u0500-\u0527\u2de0-\u2dff\ua640-\ua69f\u0591-\u05bf\u05c1-\u05c2\u05c4-\u05c5\u05d0-\u05ea\u05f0-\u05f4\ufb12-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufb4f\u0610-\u061a\u0620-\u065f\u066e-\u06d3\u06d5-\u06dc\u06de-\u06e8\u06ea-\u06ef\u06fa-\u06fc\u0750-\u077f\u08a2-\u08ac\u08e4-\u08fe\ufb50-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\u200c-\u200c\u0e01-\u0e3a\u0e40-\u0e4e\u1100-\u11ff\u3130-\u3185\ua960-\ua97f\uac00-\ud7af\ud7b0-\ud7ff\uffa1-\uffdc\u30a1-\u30fa\u30fc-\u30fe\uff66-\uff9f\uff10-\uff19\uff21-\uff3a\uff41-\uff5a\u3041-\u3096\u3099-\u309e\u3400-\u4dbf\u4e00-\u9fff\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2f800-\u2fa1f]*)/gi;
 	
+	var tweetSample = "Tweet from '{person}'!"
 	var emailSample = "Hi.\n\nI recently read this tweet from '{person}'.  In the tweet, it says \n\n\"{description}\"\n\nRead more and then tell me what you think at:\n\n{twitterPageURL}\n\nEnjoy!"
 	var emailAddress = "interested_friend@email.com";
 	var input = "#hasta #mañana #babהַ";
@@ -153,6 +154,32 @@ define([
 		return s;
 	};
 
+	function getSiteVariables(entry)
+	{
+		var hashTags = entry.get("description").match(hashTagRegEx);
+		var targetPerson = entry.get("person").sortName();
+
+		var person = _.find( DataModel.models.people, function( entry, key ) {
+				return  (entry.name.toLowerCase().indexOf( targetPerson.toLowerCase()) > 0);
+			});
+
+		var variables = {
+				twitterPageURL : undefined,
+				targetPerson : targetPerson,
+				person : entry.attributes.person,
+				description : entry.attributes.description,
+				model : person,
+				hashTags : hashTags
+			};
+	
+		if (person)
+		{
+			variables.related = person.key;
+			variables.twitterPageURL = person.twitterPageURL;
+		}
+		return variables;
+	}
+	
 	var siteCallbacks = {	
 	
 			googleImage1 : function( searchText, orig, entry ) {
@@ -186,25 +213,35 @@ define([
 			defaultCallback : function( searchText, orig, entry ) {
 						alert("Not Implemented");
 					},
+			faceBook : function( searchText, orig, entry ) {
+						$("#facebook_like")
+							.toggle();
+					},
+			tweet   : function( searchText, orig, entry ) {
+						var variables = getSiteVariables( entry );
+
+						var tweet = tweetSample.toHTMLFromWildCardText( variables );
+						var url = "http://twitter.com/share?"
+							+ "url=" + encodeURIComponent(variables.twitterPageURL)
+							+ "&hashtags=" + encodeURIComponent((variables.hashTags || []).join(","))
+							+ "&related=" + encodeURIComponent(variables.related)
+							+ "&text=" + encodeURIComponent(tweet);
+
+		/*
+		<a href="http://twitter.com/share" class="twitter-share-button"
+		data-url="http://dev.twitter.com/pages/tweet_button"
+		data-via="your_screen_name"
+		data-text="Checking out this page about Tweet Buttons"
+		data-related="anywhere:The Javascript API"
+		data-count="vertical">Tweet</a>
+		*/
+						sendWindowOpen("social", url, "Twitter:" + variables.person);
+						messageFromProfile("tweet " + variables.person);
+					},
 			email : function( searchText, orig, entry ) {
-						var targetPerson = entry.get("person").sortName();
-						
-						var person = _.find( DataModel.models.people, function( entry, key ) {
-								return  (entry.name.toLowerCase().indexOf( targetPerson.toLowerCase()) > 0);
-							});
+						var variables = getSiteVariables( entry );
 
-						var variables = {
-								twitterPageURL : undefined,
-								person : entry.attributes.person,
-								description : entry.attributes.description
-							};
-							
-						if (person)
-						{
-							variables.twitterPageURL = person.twitterPageURL;
-						}
-
-						var subject = "Email about tweet from " + targetPerson;
+						var subject = "Email about tweet from " + variables.targetPerson;
 						subject = encodeURIComponent(subject);
 						
 						var body_message = emailSample.toHTMLFromWildCardText( variables );
@@ -226,16 +263,24 @@ define([
 			description : false,
 			message : [
 					{
-						id		: "msg_twitter",
-						title	: "Twitter",
-						label	: "Twitter",
-						url	  	: "images/shareLogos/otherLogo_twitter.png",
+						id		: "msg_tweet",
+						title	: "Tweet",
+						label	: "Tweet",
+						url	  	: "images/shareLogos/logo_tweet.png",
+						callback: siteCallbacks.tweet
+					},
+					{
+						id		: "msg_retweet",
+						title	: "Retweet",
+						label	: "Retweet",
+						url	  	: "images/shareLogos/logo_retweet.png",
 					},
 					{
 						id		: "msg_faceBook",
 						title	: "Facebook",
 						label	: "Facebook",
 						url	  	: "images/shareLogos/otherLogo_facebook.png",
+						callback: siteCallbacks.faceBook
 					},
 					{
 						id		: "msg_email",
@@ -330,15 +375,58 @@ define([
 			
 
 	var publicAPI = {
-			clickHandler : function( entry ) {
+			addFaceBook : function( container, entry ) {
+			
+					var variables = getSiteVariables( entry );
+
+					var dim = {w:250,h:70};
+
+					var likeURL = "http://www.facebook.com/plugins/like.php?"
+						+ "href=" + encodeURIComponent( variables.twitterPageURL )
+						+ "&amp;layout=standard"
+						+ "&amp;show_faces=false"
+						+ "&amp;width=" + dim.w
+						+ "&amp;height=" + dim.h
+						+ "&amp;action=like"
+						+ "&amp;colorscheme=light"
+						+ "&amp;font=arial";
+	//https://developers.facebook.com/docs/plugins/like-button/#faqlayouts
+	//console.log(likeURL);
+					var like = $("<iframe id=facebook_like>")
+						.css({
+								"position" : "absolute",
+								"top" :  0,
+								"left" : 0,
+								"float" : "left",
+								"background-color" : "lightGray",
+								"width" : dim.w,
+								"height" : dim.h
+							})
+						.attr("width", dim.w )
+						.attr("height", dim.h )
+						.attr("src", likeURL )
+						.attr("frameborder", 0)
+						.attr("allowTransparency", true)
+						.hide();
+						
+					container
+						.css({
+								"position" : "relative",
+							})
+						.append( like )
+
+				},
+			clickHandler : function( entry, sharePanel) {
 					//entry.attributes.cardContent = "https://pbs.twimg.com/media/BjwSHM4CAAE1J9O.jpg";
+					
+					sharePanel = sharePanel || $("#sharePanel_timeline");
 					
 					var cardContent = entry.get("cardContent");
 					
-					var matches = entry.get("description").match(hashTagRegEx);
+					var hashTags = entry.get("description").match(hashTagRegEx);
 					var requirements = { 
 							hasImageTags : cardContent ? true : false, 
-							hasHashTags  : matches  &&  (matches.length > 0) ? true : false
+							hasHashTags  : hashTags  &&  (hashTags.length > 0) ? true : false
 						};
 
 					_.each( siteOptionsLookup, function( entry ) {
@@ -366,24 +454,32 @@ define([
 							}
 						});
 						
-					var shareTemplate = _.template( $( "script#shareItem" ).html(), { "viewportSize" : Preferences.viewportSize, category : entry.attributes, siteOptions : myOptions, hashTags : matches } );
-					$( "#sharePanel" ).find("#content")
+					var shareTemplate = _.template( $( "script#shareItem" ).html(), { "viewportSize" : Preferences.viewportSize, category : entry.attributes, siteOptions : myOptions, hashTags : hashTags } );
+					$(sharePanel).find("#content")
 						.empty()
 						.html(shareTemplate);
 					
-					$( "#sharePanel" ).find(".sharePanel_icon").filter("[data-implemented='false']")
+					$(sharePanel).find(".sharePanel_icon").filter("[data-implemented='false']")
 						.css({
 								opacity : 0.15
 							});
 					
 					var selectedMatch = 0;
-					var myselect = $( "#sharePanel" ).find("#select-hashTags");
-					myselect[0].selectedIndex = selectedMatch;
+					var myselect = $(sharePanel).find("#select-hashTags");
+					if (myselect.length > 0)
+					{
+						myselect[0].selectedIndex = selectedMatch;
+					}
 					
-					$( "#sharePanel" ).find(".sharePanel_icon").on('click', function() {
+					$(sharePanel).find(".sharePanel_icon").on('click', function() {
 							var siteEntry = siteOptionsLookup[ $(this).attr("data-id") ];
-							var selectedIndex = myselect[0].selectedIndex;
-							var searchText = encodeURIComponent( matches[selectedIndex]  || "" );
+							var searchText = "";
+							if (myselect.length > 0)
+							{
+								var selectedIndex = myselect[0].selectedIndex;
+								searchText = encodeURIComponent( hashTags[selectedIndex]  || "" );
+							}
+							
 							var callback = siteEntry.callback ||  siteCallbacks.defaultCallback;
 							if (callback)
 							{
@@ -392,9 +488,10 @@ define([
 			
 							return false; // cancel original event to prevent form submitting
 						}); 
+					publicAPI.addFaceBook( $("#faceBookContainer"), entry );
 					
-					$( "#sharePanel" ).trigger( "updatelayout" );
-					$( "#sharePanel" ).panel( "open"  );
+					$(sharePanel).trigger( "updatelayout" );
+					$(sharePanel).panel( "open"  );
 				}
 		};
 		
