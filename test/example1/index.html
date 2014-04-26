@@ -15,6 +15,7 @@
 	<script src="../../libs/js/require.min.js"></script>
 
     <script src="js/main.js"></script>
+    
 <script language="JavaScript" type="text/javascript">
 
 var fourPIAsplashStartTime = new Date();
@@ -35,21 +36,73 @@ function gup( str, name ) {
 			return results[1];
 	};
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 String.prototype.gup = function( name )
 {
 	return gup( this, name );
 };
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 String.prototype.makeSearchText = function()
 	{
 		return this.replace(/&/g, "").replace(/  /g, " ").replace(/ /g, "+");
 	}
 
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
+String.prototype.extractJSON = function()
+{
+	try
+	{
+		var jsonText = this.match(/\/\*{json}\*\/\s*(.*?)\s*\/\*{json}\*\//i);
+//		console.log( jsonText[1] )
+		var json = JSON.parse( jsonText[1] );
+		return json;
+	}
+	catch (err)
+	{
+		console.log("************ JSON Parse Error: " , JSON.stringify( arguments ));
+								
+		return {};
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 String.prototype.trim = function ()
 	{
 		return this.replace(/^\s*/, "").replace(/\s*$/, "");
 	};
 		
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
 String.prototype.sortName = function ()
 		{
 			return this
@@ -57,6 +110,7 @@ String.prototype.sortName = function ()
 				.replace(/Rep\. /i, "" )
 				.replace(/Sen\. /i, "" )
 				.replace(/Sen /i, "" )
+				.replace(/Del\. /i, "" )
 				.replace(/Cong\. /i, "" )
 				.replace(/President /i, "" )
 				.replace(/Congressman /i, "" )
@@ -793,7 +847,7 @@ function updateLayout() {
 	<% if (collection.drillDown.url) { %>
 		<td valign=top>
 			<iframe style="position:relative; top: -70px; left: -20px;" frameborder="0" align="top" marginheight="0" width="500" height="450" src="<%= collection.drillDown.url %>">Sen. Lisa Murkowski</iframe>
-					</td>
+		</td>
 	<% } %>
 		<td valign=top>
 			

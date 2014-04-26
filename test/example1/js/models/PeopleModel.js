@@ -4,7 +4,9 @@
 // Includes file dependencies
 define([
 	"jquery",
-], function( $ ) {
+	"underscore",
+	"../models/PreferenceModel",
+], function( $, _, Preferences ) {
 
 var people = {
 
@@ -1635,17 +1637,62 @@ CynthiaLummis :  {
 
 };
 
+function makePeopleTable( table )
+{
+	table = table || people;
+	return _.each( table, function( entry, key ) {
+		if (entry.File  &&  entry.File.endsWith(".ht"))
+		{
+			entry.File += "ml";
+		}
+		if (entry.File  &&  entry.File.endsWith(".htm"))
+		{
+			entry.File += "l";
+		}
+		
+		entry.profileImageURL = "http://twitter.com/api/users/profile_image/" + key;
+		entry.twitterPageURL = "http://twitter.com/" + key;
+		entry.url = entry.File ? "http://4pia.com/" + entry.File : undefined;
+		entry.key = key;
+		entry.sortName = entry.name.sortName();
+		
+	});
+}
+
 var publicAPI = {
-		people : people,
 		loadModel : function() {
 		
-					var dfd_people = _.each( this.people, function( entry, key ) {
-							entry.profileImageURL = "http://twitter.com/api/users/profile_image/" + key;
-							entry.twitterPageURL = "http://twitter.com/" + key;
-							entry.url = "http://4pia.com/" + entry.File;
-							entry.key = key;
-							entry.sortName = entry.name.sortName()
-						});
+				var dfd_people = $.Deferred();
+				var staticTable = makePeopleTable();
+				
+				if (Preferences.liveData)
+				{
+					$.get("http://4pia.com/mobileQuery.php?command=queryHouseMembers")
+						.done(function(response,status,xhr){
+								var data = response.extractJSON();
+								var results = {};
+								_.each( data.json, function( entry, index ) {
+										var item = {};
+										results[ entry.tid ] = {
+												name :  entry.name,
+												party :  entry.party,
+												house :  entry.house,
+												File : entry.fileNum  ||  undefined
+											};
+									});
+								var table = makePeopleTable(results);
+								dfd_people.resolve( table );
+							})
+						.fail(function() {
+								console.log("************ People load Failed: " , JSON.stringify( arguments ));
+								dfd_people.resolve( staticTable );
+							});
+				}
+				else
+				{
+					dfd_people.resolve( staticTable );
+				}
+					
 				return dfd_people;
 
 			}

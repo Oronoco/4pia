@@ -135,7 +135,8 @@ define([
 						return;
 					}
 					
-					var twitterURL_live = "https://twitter.com/" + person.key;
+					var twitterURL_live  = "https://twitter.com/" + person.key;
+					var twitterURL_php   = "http://4pia.com/mobileQuery.php?command=getUrlContents&field=\"" + twitterURL_live + "\"";
 					var twitterURL_local = "data/view-source twitter.com " + person.key + ".html";
 					
 					var dfd_loader = $.Deferred();
@@ -147,21 +148,30 @@ define([
 					}
 					else
 					{
+					
 						var dfd_twitter = $.Deferred();
-						$.get(Preferences.liveData ? twitterURL_live : twitterURL_local )
+						$.get(Preferences.liveData ? twitterURL_php : twitterURL_local )
 							.done(function(response,status,xhr){
-									dfd_twitter.resolve( [ response ]);
+									var data = response.extractJSON();
+									dfd_twitter.resolve( [ data.json.page ]);
 								})
 							.fail(function(){
-									console.log("************ twitter.com Failed: " , twitterURL_local, JSON.stringify( arguments ));
-									$.get( twitterURL_local )
+									console.log("************ twitterURL_php Failed: " , twitterURL_php, JSON.stringify( arguments ));
+									$.get( twitterURL_live )
 										.done(function(response,status,xhr){
-												dfd_twitter.resolve( [ response ] );
+												dfd_twitter.resolve( [ response ]);
 											})
 										.fail(function(){
-												console.log("************ twitter.com Failed - Check file access issue: ", twitterURL_local , JSON.stringify( arguments));
-												alert("dfd_tweetCloud Failed - Check file access issue " + twitterURL_local);
-												dfd_twitter.reject();
+												console.log("************ twitterURL_live Failed: " , twitterURL_live, JSON.stringify( arguments ));
+												$.get( twitterURL_local )
+													.done(function(response,status,xhr){
+															dfd_twitter.resolve( [ response ] );
+														})
+													.fail(function(){
+															console.log("************ twitter.com Failed - Check file access issue: ", twitterURL_local , JSON.stringify( arguments));
+															alert("dfd_tweetCloud Failed - Check file access issue " + twitterURL_local);
+															dfd_twitter.reject();
+														});
 											});
 								});
 						

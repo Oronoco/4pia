@@ -56,6 +56,11 @@ define([
 					
 					if (person)
 					{
+						if (person.party)
+						{
+							categoryClass = (person.party === 'D') ? "dtweets" : "rtweets";
+						}
+						
 						tweetfeed = TwitterModel.loadPersonTweets(person.key, timestamp);
 						$.when( tweetfeed, dfd_drillInitialized )
 							.done(function( tweetfeedArgs, initArgs ) {
